@@ -12,6 +12,11 @@ app.use(cors())
 // json parser for post requests.
 app.use(express.json())
 
+// integrate react front end
+/* HTTP GET request it will first check if the build directory contains a file corresponding 
+to the request's address. If a correct file is found, express will return it. */
+app.use(express.static('build'))
+
 app.use(morgan(function (tokens, req, res) {
     return [
         tokens.method(req, res),
