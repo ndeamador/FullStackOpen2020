@@ -1,1 +1,1 @@
-https://ndeamador-fso2020-phonebook.herokuapp.com/api/persons/
+https://ndeamador-fso2020-phonebook.herokuapp.com/

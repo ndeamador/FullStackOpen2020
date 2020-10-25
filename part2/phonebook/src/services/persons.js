@@ -1,6 +1,9 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
 
+// because we are exporting the front end as a production build and both backend and frontend are
+// served from the same address, we can declare baseUrl as a relative URL.
+const baseUrl = '/api/persons'
+// const baseUrl = 'https://ndeamador-fso2020-phonebook.herokuapp.com/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
