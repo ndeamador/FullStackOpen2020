@@ -2,7 +2,12 @@ const { response } = require('express')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
 
+
+// cors to allow the front end in port 3000 to acccess the server in a different port (3001).
+// Essentially we circumvent the "same origin policy".
+app.use(cors())
 
 // json parser for post requests.
 app.use(express.json())
@@ -124,7 +129,7 @@ app.post('/api/persons', (request, response) => {
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
