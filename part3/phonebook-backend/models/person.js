@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+
 
 
 
@@ -20,9 +22,22 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 // As Mongo is schemaless, it's possible to store documents with other structures.
 // This way, Mongoose gives a standard constructor at application level.
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: {
+        type: String,
+        minlength: 3,
+        required: true,
+        unique: true
+    },
+    number: {
+        type: String,
+        minlength: 8,
+        required: true
+    },
 })
+
+// Appli yhe uniqueValidator plugin to personSchema (so that we can have the custom unique property):
+personSchema.plugin(uniqueValidator)
+
 
 // We do some formatting to the personSchema:
 // don't return the automatically added __v (version) property
