@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 // if this file is executed with a command of less than two words, request the password
 // it's meant to be executed as node mongo.js  password
 if (process.argv.length < 3) {
-    console.log('Please provide the password as an argument: node mongo.js <password>');
+    console.log('Please provide the password as an argument: node mongo.js <password>')
     process.exit(1)
 }
 
@@ -32,7 +32,7 @@ const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length === 3) {
 
-    // Prints all notes stored in database: 
+    // Prints all notes stored in database:
     Person.find({}).then(result => {
         console.log('\nphonebook:')
         result.forEach(person => {
@@ -51,7 +51,7 @@ else if (process.argv.length > 3) {
         number: number
     })
 
-    // Save object to the database with the .save method 
+    // Save object to the database with the .save method
     // it's important to close the connection or the program will never finish execution.
 
     person.save().then(response => {

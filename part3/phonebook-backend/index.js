@@ -1,5 +1,5 @@
-/* It's important that dotenv gets imported before the person model is imported. 
-This ensures that the environment variables from the .env file are available globally 
+/* It's important that dotenv gets imported before the person model is imported.
+This ensures that the environment variables from the .env file are available globally
 before the code from the other modules is imported. */
 require('dotenv').config()
 // const { response } = require('express')
@@ -19,7 +19,7 @@ app.use(cors())
 
 
 // integrate react front end
-/* HTTP GET request it will first check if the build directory contains a file corresponding 
+/* HTTP GET request it will first check if the build directory contains a file corresponding
 to the request's address. If a correct file is found, express will return it. */
 app.use(express.static('build'))
 
@@ -47,7 +47,7 @@ app.get('/info', (request, response) => {
     // The search conditions use Mongo's syntax: https://docs.mongodb.com/manual/reference/operator/
     Person.find({}).then(persons => {
         let numberOfContacts = persons.length
-        let currentDate = new Date();
+        let currentDate = new Date()
         response.send(`<p>Phonebook has info for ${numberOfContacts} people <br><br>${currentDate}</p>`)
     })
 })
@@ -75,8 +75,8 @@ app.get('/api/persons/:id', (request, response, next) => {
         //     response.status(400).send({ error: 'malformatted id' })
         // })
 
-        /* If next was called without a parameter, then the execution would simply move onto the 
-        next route or middleware. If the next function is called with a parameter, then the 
+        /* If next was called without a parameter, then the execution would simply move onto the
+        next route or middleware. If the next function is called with a parameter, then the
         execution will continue to the error handler middleware. */
         .catch(error => next(error))
 })
@@ -86,8 +86,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
         .then(result => {
             response.status(204).end()
-            if(result === null) {
-                console.log('Contact had already been deleted from the database.');
+            if (result === null) {
+                console.log('Contact had already been deleted from the database.')
             }
         })
         .catch(error => next(error))
@@ -97,7 +97,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
 
     const body = request.body
-    console.log(body);
+    console.log(body)
 
     const person = new Person({
         name: body.name,
@@ -108,7 +108,7 @@ app.post('/api/persons', (request, response, next) => {
         .save()
         // In the first then we receive savedNote object returned by Mongoose and format it.
         .then(savedPerson => { return savedPerson.toJSON() })
-        /* The response is sent inside of the callback function (.then) for the save operation. 
+        /* The response is sent inside of the callback function (.then) for the save operation.
          This ensures that the response is sent only if the operation succeeded.  */
         .then(savedAndFormattedContact => { response.json(savedAndFormattedContact) })
         .catch(error => next(error))
@@ -131,10 +131,10 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 
     Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
-    // Person.findByIdAndUpdate(request.params.id, person, { new: true})
+        // Person.findByIdAndUpdate(request.params.id, person, { new: true})
         .then(updatedContact => {
-            if(updatedContact === null) {
-                console.log('Contact not found in database.');
+            if (updatedContact === null) {
+                console.log('Contact not found in database.')
             }
             response.json(updatedContact)
         })
@@ -143,7 +143,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 
 
-/* It's also important that the middleware for handling unsupported routes is next to the 
+/* It's also important that the middleware for handling unsupported routes is next to the
 last middleware that is loaded into Express, just before the error handler. */
 // If we put it ahead the route handlers, they won't load and we will get an unknownEndpoint when loading the page.
 
@@ -157,7 +157,7 @@ app.use(unknownEndpoint)
 
 
 const errorHandler = (error, request, response, next) => {
-    console.log('error name: ', error.name);
+    console.log('error name: ', error.name)
     console.error('error message: ', error.message)
 
     if (error.name === 'CastError') {

@@ -27,6 +27,28 @@ const App = () => {
 
 
 
+  const notificationTimeout = () => {
+    setTimeout(() => {
+      setNewMessage(
+        {
+          type: null,
+          text: null
+        }
+      )
+    }, 5000)
+  }
+
+  const handleGenericError = (err) => {
+
+    console.log(err.response.data)
+
+    setNewMessage({
+      type: 'error',
+      text: `${err.name}: ${err.response.data.error}`
+    })
+  }
+
+
 
   const addContact = (event) => {
     event.preventDefault()
@@ -39,6 +61,7 @@ const App = () => {
           text: `Name can't be empty`
         })
 
+      notificationTimeout()
     }
     else if (newName.trim() !== '') {
 
@@ -61,47 +84,48 @@ const App = () => {
           personService
             .update(backEndId, personObject)
             .then(returnedContact => {
-              // used returnedContact instead of personObject for the update as adding the object with no id was creating an error when deleting.
-              setPersons(persons.map(person => person.id === returnedContact.id ? returnedContact : person))
-              setNewName('')
-              setNewNumber('')
+              // if the contact to update has been deleted in the database, delete it from the front end
+              if (returnedContact === null) {
+                setPersons(persons.filter(person => person.id !== backEndId))
 
-              setNewMessage(
-                {
-                  type: 'success',
-                  text: `${returnedContact.name}'s number changed to ${returnedContact.number}`
-                })
-              setTimeout(() => {
                 setNewMessage(
                   {
-                    type: null,
-                    text: null
-                  }
-                )
-              }, 5000)
+                    type: 'exception',
+                    text: `Contact ${newName} not found in server. Phonebook updated.`
+                  })
 
+                  notificationTimeout()
 
-            })
-            .catch(err=> {
-              setPersons(persons.filter(person => person.id !== backEndId))
+              } else {
+                // used returnedContact instead of personObject for the update as adding the object with no id was creating an error when deleting.
+                setPersons(persons.map(person => person.id === returnedContact.id ? returnedContact : person))
+                setNewName('')
+                setNewNumber('')
 
-              setNewMessage(
-                {
-                  type: 'error',
-                  text: `${err.name}: Contact not found in server. Phonebook updated.`
-                })
-              setTimeout(() => {
                 setNewMessage(
                   {
-                    type: null,
-                    text: null
-                  }
-                )
-              }, 5000)
-            })
+                    type: 'success',
+                    text: `${returnedContact.name}'s number changed to ${returnedContact.number}`
+                  })
 
+                notificationTimeout()
+              }
+            })
+            .catch(err => {
+
+              // setPersons(persons.filter(person => person.id !== backEndId))
+
+              // setNewMessage(
+              //   {
+              //     type: 'error',
+              //     text: `${err.name}: Contact ${newName} was already deleted from server. Phonebook updated.`
+              //   })
+
+              handleGenericError(err)
+              notificationTimeout()
+
+            })
         }
-
       }
       // if the contact does not exist
       else {
@@ -123,15 +147,14 @@ const App = () => {
                 type: 'success',
                 text: `Added contact ${newName}`
               })
-            setTimeout(() => {
-              setNewMessage(
-                {
-                  type: null,
-                  text: null
-                }
-              )
-            }, 5000)
 
+            notificationTimeout()
+
+          })
+          .catch(err => {
+
+            handleGenericError(err)
+            notificationTimeout()
           })
       }
     }
@@ -163,30 +186,19 @@ const App = () => {
             type: 'success',
             text: `Contact ${contactToDelete.name} deleted.`
           })
-          setTimeout(() => {
-            setNewMessage(
-              {
-                type: null,
-                text: null
-              }
-            )
-          }, 5000)
+
+          notificationTimeout()
+
         })
         .catch(err => {
-          setPersons(persons.filter(person => person.id !== contactToDelete.id))
+          // setPersons(persons.filter(person => person.id !== contactToDelete.id))
+          // setNewMessage({
+          //   type: 'error',
+          //   text: `${err.name}: Contact ${contactToDelete.name} not found in the server. Phonebook updated.`
+          // })
 
-          setNewMessage({
-            type: 'error',
-            text: `${err.name}: Contact ${contactToDelete.name} was already removed from the server. Phonebook updated.`
-          })
-          setTimeout(() => {
-            setNewMessage(
-              {
-                type: null,
-                text: null
-              }
-            )
-          }, 5000)
+          handleGenericError(err)
+          notificationTimeout()
         })
 
     }
