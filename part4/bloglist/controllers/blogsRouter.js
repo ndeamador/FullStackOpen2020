@@ -10,23 +10,38 @@ const Blog = require('../models/blog')
 
 
 // These are relative paths, since in app js the router has been linked to the address api/blogs  (so route /:id goes to api/blogs/:id)
-blogsRouter.get('/', (request, response) => {
-    Blog
-        .find({})
-        .then(blogs => {
-            response.json(blogs)
-        })
+blogsRouter.get('/', async (request, response) => {
+
+    const blogs = await Blog.find({})
+    response.json(blogs)
 })
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
     const blog = new Blog(request.body)
 
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-        .catch(error => next(error))
+    const result = await blog.save()
+    response.status(200).json(result)
 })
+
+
+// // Old version with callbacks instead of async/await
+// blogsRouter.get('/', (request, response) => {
+//     Blog
+//         .find({})
+//         .then(blogs => {
+//             response.json(blogs)
+//         })
+// })
+
+// blogsRouter.post('/', (request, response, next) => {
+//     const blog = new Blog(request.body)
+
+//     blog
+//         .save()
+//         .then(result => {
+//             response.status(201).json(result)
+//         })
+//         .catch(error => next(error))
+// })
 
 module.exports = blogsRouter
