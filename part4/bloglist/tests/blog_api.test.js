@@ -4,28 +4,31 @@ const app = require('../app')
 // Since this test is done with the actual Mongo testing DB, we import the required parts to prepare and
 // reset the database before and after each test.
 const Blog = require('../models/blog')
-const initialBlogs = [
-  {
-    title: 'Creating Adam',
-    author: 'test',
-    url: 'test.t',
-    likes: 1
-  },
-  {
-    title: 'Creating Eve',
-    author: 'test',
-    url: 'test.t',
-    likes: 2
-  }
-]
+const helper = require('./test_helper')
+
+// const initialBlogs = [
+//   {
+//     title: 'Creating Adam',
+//     author: 'test',
+//     url: 'test.t',
+//     likes: 1
+//   },
+//   {
+//     title: 'Creating Eve',
+//     author: 'test',
+//     url: 'test.t',
+//     likes: 2
+//   }
+// ]
+
 // JestbeforeEAch method runs a function before each test in the file.
 // In this case, we wipe the databse and then insert the two blogs above.
 // To wipe the data base, we use the deleteMany method which deletes all blogs matching the conditions ({} = no conditions)
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 })
 
@@ -44,13 +47,13 @@ describe('API testing', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
-  
+
 
   test('two blogs are returned', async () => {
     const response = await api.get('/api/blogs')
 
     expect(200)
-    expect(response.body).toHaveLength(initialBlogs.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
 
@@ -66,16 +69,10 @@ describe('API testing', () => {
 
 
   test('HTTP POST to /api/blogs successfully creates new blog', async () => {
-    const newBlog = {
-      title: 'newcomer',
-      author: 'test',
-      url: 'test.t',
-      likes: 3
-    }
 
     await api
       .post('/api/blogs')
-      .send(newBlog)
+      .send(helper.genericNewBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -83,7 +80,7 @@ describe('API testing', () => {
 
     const blogTitleList = response.body.map(r => r.title)
 
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
     expect(blogTitleList).toContain(
       'newcomer'
     )
@@ -91,60 +88,42 @@ describe('API testing', () => {
 
 
   test('likes property defaults to 0 if missing', async () => {
-    const newBlog = {
-      title: 'missing likes test',
-      url: 'test.t',
-      author: 'test'
-    }
 
     await api
       .post('/api/blogs')
-      .send(newBlog)
+      .send(helper.noLikesBlog)
       .expect(200)
 
     const response = await api.get('/api/blogs')
-
-    expect(response.body[initialBlogs.length].likes).toBe(0)
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    
+    expect(response.body[helper.initialBlogs.length].likes).toBe(0)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
   })
 
 
   test('Server responds with status 400 both title AND url are missing from request', async () => {
-    // Should be successful
-    const noTitleBlog = {
-      author: 'he who writes no title',
-      url: 'test.t'
-    }
 
-    // Should be successful
-    const noUrlBlog = {
-      author: 'he who writes no url',
-      title: 'test'
-    }
-
-    // Should return 400 due to missing both title and url
-    const onlyAuthorBlog = {
-      author: 'he who writes nothing',
-    }
-
+    // Blog with title but no url should be successful
     await api
       .post('/api/blogs')
-      .send(noTitleBlog)
+      .send(helper.noTitleBlog)
       .expect(200)
 
+    // Blog with url but no title should be successful
     await api
       .post('/api/blogs')
-      .send(noUrlBlog)
+      .send(helper.noUrlBlog)
       .expect(200)
 
+    // Blog without title AND url should return 400
     await api
       .post('/api/blogs')
-      .send(onlyAuthorBlog)
+      .send(helper.onlyAuthorBlog)
       .expect(400)
 
     const response = await api.get('/api/blogs')
 
-    expect(response.body).toHaveLength(initialBlogs.length + 2)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 2)
   })
 })
 

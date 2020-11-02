@@ -1,6 +1,8 @@
 // ¿Config imported first to make sure dotenv is imported as early as possible?
 const config  = require('./utils/config')
 const express = require('express')
+// express-async-errors handles async errors on its own, so we don't need try-catch blocks or the next function.
+require('express-async-errors')
 const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogsRouter')
