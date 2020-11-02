@@ -5,7 +5,10 @@ const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: Number
+  likes: {
+    type: Number,
+    default: 0
+  }
 })
 
 // Format the object returned by Moongose by modifying the toJson method of the schema.

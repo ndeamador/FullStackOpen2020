@@ -53,7 +53,6 @@ describe('API testing', () => {
   test('Check that primary key is formatted as id and not _id', async () => {
     const blogs = await api.get('/api/blogs')
 
-    console.log(blogs.body[0].id);
     expect(200)
     // check that the id property (transformed from _id in blogs.js) is defined with Jest's toBeDefined() method
     // https://jestjs.io/docs/en/expect#tobedefined
@@ -85,20 +84,22 @@ describe('API testing', () => {
     )
   })
 
-  // test('likes property defaults to 0 if missing', async () => {
-  //   const newBlog = {
-  //     title: "missing likes test",
-  //     author: 'test'
-  //   }
+  test('likes property defaults to 0 if missing', async () => {
+    const newBlog = {
+      title: "missing likes test",
+      author: 'test'
+    }
 
-  //   await api
-  //     .post('/api/blogs')
-  //     .send(newBlog)
-  //     .expect(400)
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
 
-  //   const response = await api.get('/api/blogs')
-  //   expect(response.bod).toHaveLength(initialBlogs.lentgh)
-  // })
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[initialBlogs.length].likes).toBe(0)
+
+  })
 })
 
 
