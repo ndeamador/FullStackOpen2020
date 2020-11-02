@@ -8,11 +8,13 @@ const initialBlogs = [
   {
     title: 'Creating Adam',
     author: 'test',
+    url: 'test.t',
     likes: 1
   },
   {
     title: 'Creating Eve',
     author: 'test',
+    url: 'test.t',
     likes: 2
   }
 ]
@@ -42,6 +44,7 @@ describe('API testing', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
+  
 
   test('two blogs are returned', async () => {
     const response = await api.get('/api/blogs')
@@ -49,6 +52,7 @@ describe('API testing', () => {
     expect(200)
     expect(response.body).toHaveLength(initialBlogs.length)
   })
+
 
   test('Check that primary key is formatted as id and not _id', async () => {
     const blogs = await api.get('/api/blogs')
@@ -65,6 +69,7 @@ describe('API testing', () => {
     const newBlog = {
       title: 'newcomer',
       author: 'test',
+      url: 'test.t',
       likes: 3
     }
 
@@ -84,9 +89,11 @@ describe('API testing', () => {
     )
   })
 
+
   test('likes property defaults to 0 if missing', async () => {
     const newBlog = {
-      title: "missing likes test",
+      title: 'missing likes test',
+      url: 'test.t',
       author: 'test'
     }
 
@@ -98,7 +105,46 @@ describe('API testing', () => {
     const response = await api.get('/api/blogs')
 
     expect(response.body[initialBlogs.length].likes).toBe(0)
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+  })
 
+
+  test('Server responds with status 400 both title AND url are missing from request', async () => {
+    // Should be successful
+    const noTitleBlog = {
+      author: 'he who writes no title',
+      url: 'test.t'
+    }
+
+    // Should be successful
+    const noUrlBlog = {
+      author: 'he who writes no url',
+      title: 'test'
+    }
+
+    // Should return 400 due to missing both title and url
+    const onlyAuthorBlog = {
+      author: 'he who writes nothing',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(noTitleBlog)
+      .expect(200)
+
+    await api
+      .post('/api/blogs')
+      .send(noUrlBlog)
+      .expect(200)
+
+    await api
+      .post('/api/blogs')
+      .send(onlyAuthorBlog)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+
+    expect(response.body).toHaveLength(initialBlogs.length + 2)
   })
 })
 

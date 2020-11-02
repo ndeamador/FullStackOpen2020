@@ -16,11 +16,29 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
-    const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response, next) => {
+    try {
+        const blog = new Blog(request.body)
 
-    const result = await blog.save()
-    response.status(200).json(result)
+        if (!blog.title && !blog.url) {   
+            return response.status(400).json({ error: 'Blog requires title or url' })            
+        }
+
+        const result = await blog.save()
+
+        response.status(200).json(result)
+    }
+    catch (exception) {
+        next(exception)
+    }
+
+
+    // const blog = new Blog(request.body)
+
+    // const result = await blog.save()
+    // response.status(200).json(result)
+
+
 })
 
 
