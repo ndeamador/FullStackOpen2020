@@ -8,6 +8,12 @@ const blogSchema = new mongoose.Schema({
   likes: { 
     type: Number, 
     default: 0 
+  },
+  // Added information about the user who creates the blog
+  // Unlike in relational databases, references are stored in both the user and blog documents.
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 

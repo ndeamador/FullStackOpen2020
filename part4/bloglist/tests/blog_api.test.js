@@ -9,7 +9,6 @@ const app = require('../app')
 const api = supertest(app)
 
 // Since this test is done with the actual Mongo testing DB, we import the required parts to prepare and
-// reset the database before and after each test.
 const Blog = require('../models/blog')
 
 

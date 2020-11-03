@@ -5,7 +5,8 @@ const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
-const blogsRouter = require('./controllers/blogsRouter')
+const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
@@ -28,6 +29,7 @@ app.use(express.json())
 // since the express.Router() object in blogsRouter.js is a middleware, we use it with app.use:
 // the first parameter indicates the root of the used route (the routes in blogsRouter.js are relative to this one)
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 
 
 module.exports = app

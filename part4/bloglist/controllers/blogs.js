@@ -6,6 +6,7 @@ const blogsRouter = require('express').Router()
 
 // establishing connection to the database has been done in app.js, so the blog model only defines the schema for blogs
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 
 // These are relative paths, since in app js the router has been linked to the address api/blogs  (so route /:id goes to api/blogs/:id)
@@ -15,8 +16,10 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)
 })
 
+
 blogsRouter.post('/', async (request, response) => {
     const blog = new Blog(request.body)
+    // const user = await User.findById()
 
     if (!blog.title && !blog.url) {
         return response.status(400).json({ error: 'Blog requires title or url' })
@@ -26,6 +29,7 @@ blogsRouter.post('/', async (request, response) => {
 
     response.status(200).json(result)
 })
+
 
 blogsRouter.get('/:id', async (request, response) => {
 
@@ -49,6 +53,7 @@ blogsRouter.get('/:id', async (request, response) => {
         response.status(404).end()
     }
 })
+
 
 blogsRouter.put('/:id', async (request, response) => {
 
@@ -74,6 +79,7 @@ blogsRouter.put('/:id', async (request, response) => {
         response.status(404).json({ error: 'Blog not found in database' })
     }
 })
+
 
 blogsRouter.delete('/:id', async (request, response) => {
     await Blog.findByIdAndRemove(request.params.id)
