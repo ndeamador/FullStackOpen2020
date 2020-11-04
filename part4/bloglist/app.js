@@ -9,6 +9,7 @@ const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const logger = require('./utils/logger')
+const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
 
@@ -26,12 +27,16 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, us
 
 
 app.use(cors())
+// The json-parser middleware should be among the very first middleware loaded into Express
 app.use(express.json())
 // since the express.Router() object in blogsRouter.js is a middleware, we use it with app.use:
 // the first parameter indicates the root of the used route (the routes in blogsRouter.js are relative to this one)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 
 

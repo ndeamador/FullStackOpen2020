@@ -14,17 +14,32 @@ usersRouter.get('/', async (request, response) => {
 
 
 usersRouter.post('/', async (request, response) => {
+    console.log('USERSROUTER POST ===============================================')
     const body = request.body
+    console.log(body);
+
+    // It's not a good idea to test password restrictions with just Mongoose restrictions, so we validate them first in the controller
+    // This due to the received (uncrypted) password not being the same as the stored hash.
+    if (!body.password || body.password.length < 3 ) {
+        console.log('A password of at least 3 characters is required')
+        return response.status(401).json({ error: 'A password of at least 3 characters is required' })
+    }
+
+
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
+    console.log('here');
     const user = new User({
         username: body.username,
         name: body.name,
         passwordHash,
     })
-
+    console.log('user', user);
     const savedUser = await user.save()
+    if(!savedUser) {
+        return console.log("ERROR:", response.error);
+    }
+    console.log('savedUser', savedUser);
 
     response.json(savedUser)
 })

@@ -4,6 +4,18 @@
 // http://expressjs.com/en/api.html#router
 const blogsRouter = require('express').Router()
 
+const config = require('../utils/config')
+const jwt = require('jsonwebtoken')
+
+// A function to get the authentication token sent by the front end. Isolates the token from the authorization header
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
+
 // establishing connection to the database has been done in app.js, so the blog model only defines the schema for blogs
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -20,11 +32,23 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
     console.log('BLOGSROUTER POST========================== ');
-
     body = request.body
 
+    // Making sure that only logged in users can create new notes
+    const token = getTokenFrom(request)
+    console.log('token: ', token);
+    // jwt very checks if the token is valid and decodes the token (or returns the initial object the token was based on)
+    // The decoded object contains the fields username and id
+    const decodedToken = jwt.verify(token, config.SECRET)
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    // const user = await User.findById(body.userId)
+    console.log('decodedToken: ', decodedToken);
+    console.log('user: ', user);
 
-    const user = await User.findById(body.userId)
+
 
     const blog = new Blog({
         likes: body.likes,
@@ -58,9 +82,13 @@ blogsRouter.get('/:id', async (request, response) => {
     // https://stackoverflow.com/questions/14940660/whats-mongoose-error-cast-to-objectid-failed-for-value-xxx-at-path-id
 
     // If ID is not valid in Mongo:
-    if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-        return response.status(400).end()
-    }
+    // if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    //     return response.status(400).end()
+    // }
+
+    // edit: commented out because it can also be bypassed by using the error handling middleware.
+
+
 
     // If Id is valid:
     const blog = await Blog.findById(request.params.id)
@@ -77,10 +105,10 @@ blogsRouter.get('/:id', async (request, response) => {
 blogsRouter.put('/:id', async (request, response) => {
 
     // If ID is not valid in Mongo:
-    if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-
-        return response.status(400).json({ error: 'Invalid ID' })
-    }
+    /*     if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    
+            return response.status(400).json({ error: 'Invalid ID' })
+        } */
 
     // If ID is valid
     const blog = request.body

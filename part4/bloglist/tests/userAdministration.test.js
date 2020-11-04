@@ -20,7 +20,7 @@ describe('when there is initially one user in db', () => {
   })
 
 
-  test('creation succeeds with a fresh username', async () => {
+  test('user creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
@@ -43,7 +43,7 @@ describe('when there is initially one user in db', () => {
   })
 
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
+  test('user creation fails with proper statuscode and message if username already taken', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
@@ -65,27 +65,54 @@ describe('when there is initially one user in db', () => {
   })
 
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb()
 
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
-    }
-
-    const result = await api
+  test('User creationg fails if password is missing or shorter than 3 characters', async () => {
+    console.log('ENTERING TEST ===========================');
+    
+    await api
       .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
+      .send(helper.userShortPassword)
+      .expect(401)
 
-    expect(result.body.error).toContain('`username` to be unique')
+    await api
+      .post('/api/users')
+      .send(helper.userNoPassword)
+      .expect(401)
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    await api
+      .post('/api/users')
+      .send(helper.userNullPassword)
+      .expect(401)
   })
+
+  test('User creationg fails if username is missing or shorter than 3 characters', async () => {
+
+    const res1 = await api
+      .post('/api/users')
+      .send(helper.userShortUsername)
+      .expect(400)
+
+      console.log('01------------', res1.error);
+
+      const res2 =  await api
+      .post('/api/users')
+      .send(helper.userNoUsername)
+      .expect(400)
+
+      console.log('02------------', res2.error);
+
+
+      const res3 =  await api
+      .post('/api/users')
+      .send(helper.userNullUsername)
+      .expect(400)
+      console.log('03------------', res3.error);
+
+  })
+
 })
+
+
 
 afterAll(() => {
   mongoose.connection.close()
