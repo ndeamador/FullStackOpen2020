@@ -37,6 +37,7 @@ blogsRouter.post('/', async (request, response) => {
     // Making sure that only logged in users can create new notes
     console.log("request token", request.token);
     const token = request.token
+
     // jwt very checks if the token is valid and decodes the token (or returns the initial object the token was based on)
     // The decoded object contains the fields username and id
     const decodedToken = jwt.verify(token, config.SECRET)
@@ -44,7 +45,7 @@ blogsRouter.post('/', async (request, response) => {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
     const user = await User.findById(decodedToken.id)
-    // const user = await User.findById(body.userId)
+
     console.log('decodedToken: ', decodedToken);
     console.log('user: ', user);
 
@@ -129,8 +130,34 @@ blogsRouter.put('/:id', async (request, response) => {
 
 
 blogsRouter.delete('/:id', async (request, response) => {
+
+    const blog = await Blog.findOne({ _id: request.params.id })
+    console.log("blog", blog);
+
+    // Making sure that only the creator of the blog can delete it:
+    const token = request.token
+
+    const decodedToken = jwt.verify(token, config.SECRET)
+    console.log("decodedtoken: ", decodedToken);
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    console.log("DELETE USER", user);
+
+    console.log(blog.user.toString(), typeof (blog.user.toString()));
+    console.log(user._id.toString(), typeof (user._id.toString()));
+
+    // the ids are objects (reference types) and can't be compared with the === operator, so we stringify them for convenience:
+    if (blog.user.toString() !== user._id.toString()) {
+        console.log('incorrecto');
+        return response.status(401).json({ error: 'only the author of the blog can delete it' })
+    }
+
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
+
+
 })
 
 module.exports = blogsRouter
