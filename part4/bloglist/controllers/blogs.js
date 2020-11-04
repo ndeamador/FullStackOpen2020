@@ -8,13 +8,13 @@ const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
 
 // A function to get the authentication token sent by the front end. Isolates the token from the authorization header
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        return authorization.substring(7)
-    }
-    return null
-}
+// const getTokenFrom = request => {
+//     const authorization = request.get('authorization')
+//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//         return authorization.substring(7)
+//     }
+//     return null
+// }
 
 // establishing connection to the database has been done in app.js, so the blog model only defines the schema for blogs
 const Blog = require('../models/blog')
@@ -35,8 +35,8 @@ blogsRouter.post('/', async (request, response) => {
     body = request.body
 
     // Making sure that only logged in users can create new notes
-    const token = getTokenFrom(request)
-    console.log('token: ', token);
+    console.log("request token", request.token);
+    const token = request.token
     // jwt very checks if the token is valid and decodes the token (or returns the initial object the token was based on)
     // The decoded object contains the fields username and id
     const decodedToken = jwt.verify(token, config.SECRET)

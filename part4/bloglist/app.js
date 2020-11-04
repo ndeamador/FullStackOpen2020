@@ -29,6 +29,11 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, us
 app.use(cors())
 // The json-parser middleware should be among the very first middleware loaded into Express
 app.use(express.json())
+
+// This middleware takes the token from the Authorization header of the request and creates a new request.token field with it.
+// We place the middleware before the route handlers so that they have access to the token through request.token.
+app.use(middleware.getTokenFrom)
+
 // since the express.Router() object in blogsRouter.js is a middleware, we use it with app.use:
 // the first parameter indicates the root of the used route (the routes in blogsRouter.js are relative to this one)
 app.use('/api/blogs', blogsRouter)
