@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
     },
     name: String,
     passwordHash: String,
-    // the note ids are stored as an array of Mongo ids:
-    notes: [
+    // the blog ids are stored as an array of Mongo ids:
+    blogs: [
         {
             // the reference is just syntax, Mongo does not know what we are referencing.
             // As we are storing the blog's ids, the type is objectId (ids are not strings).
