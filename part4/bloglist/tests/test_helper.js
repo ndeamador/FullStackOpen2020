@@ -17,6 +17,20 @@ const initialBlogs = [
     }
 ]
 
+const initialUsers = [
+    {
+        username: 'KaroloV',
+        name: 'Charles Habsburg',
+        password: 'Pavia'
+    },
+    {
+        username: 'FranFran',
+        name: 'Francis Valois',
+        password: 'lovingMadrid'
+    }
+]
+
+
 const genericNewBlog = {
     title: 'newcomer',
     author: 'test',
@@ -44,12 +58,6 @@ const onlyAuthorBlog = {
     author: 'he who writes nothing',
 }
 
-
-const blogsInDb = async () => {
-    const blogs = await Blog.find({})
-    return blogs.map(blog => blog.toJSON())
-}
-
 const nonExistingId = async () => {
     const blog = new Blog({ title: 'willremovethissoon' })
     await blog.save()
@@ -58,6 +66,11 @@ const nonExistingId = async () => {
     return blog._id.toString()
 }
 
+
+const blogsInDb = async () => {
+    const blogs = await Blog.find({})
+    return blogs.map(blog => blog.toJSON())
+}
 
 // Users:
 
@@ -99,7 +112,8 @@ const userNullPassword = {
     name: 'user with no username',
     password: ''
 }
-    
+
+
 
 
 
@@ -121,5 +135,6 @@ module.exports = {
     userNoUsername,
     userNullUsername,
     userNoPassword,
-    userNullPassword
+    userNullPassword,
+    initialUsers
 }

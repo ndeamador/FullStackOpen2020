@@ -7,18 +7,11 @@ const blogsRouter = require('express').Router()
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
 
-// A function to get the authentication token sent by the front end. Isolates the token from the authorization header
-// const getTokenFrom = request => {
-//     const authorization = request.get('authorization')
-//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-//         return authorization.substring(7)
-//     }
-//     return null
-// }
-
 // establishing connection to the database has been done in app.js, so the blog model only defines the schema for blogs
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+
 
 
 // These are relative paths, since in app js the router has been linked to the address api/blogs  (so route /:id goes to api/blogs/:id)
@@ -31,11 +24,9 @@ blogsRouter.get('/', async (request, response) => {
 
 
 blogsRouter.post('/', async (request, response) => {
-    console.log('BLOGSROUTER POST========================== ');
     body = request.body
 
     // Making sure that only logged in users can create new notes
-    console.log("request token", request.token);
     const token = request.token
 
     // jwt very checks if the token is valid and decodes the token (or returns the initial object the token was based on)
@@ -46,11 +37,6 @@ blogsRouter.post('/', async (request, response) => {
     }
     const user = await User.findById(decodedToken.id)
 
-    console.log('decodedToken: ', decodedToken);
-    console.log('user: ', user);
-
-
-
     const blog = new Blog({
         likes: body.likes,
         title: body.title,
@@ -59,15 +45,12 @@ blogsRouter.post('/', async (request, response) => {
         user: user._id
     })
 
-    console.log('blog', blog);
-
     if (!blog.title && !blog.url) {
         return response.status(400).json({ error: 'Blog requires title or url' })
     }
 
     const savedBlog = await blog.save()
-    console.log('savedBlog', savedBlog);
-    console.log('user', user);
+
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
 
@@ -132,25 +115,19 @@ blogsRouter.put('/:id', async (request, response) => {
 blogsRouter.delete('/:id', async (request, response) => {
 
     const blog = await Blog.findOne({ _id: request.params.id })
-    console.log("blog", blog);
 
     // Making sure that only the creator of the blog can delete it:
     const token = request.token
 
     const decodedToken = jwt.verify(token, config.SECRET)
-    console.log("decodedtoken: ", decodedToken);
+
     if (!token || !decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
     const user = await User.findById(decodedToken.id)
-    console.log("DELETE USER", user);
-
-    console.log(blog.user.toString(), typeof (blog.user.toString()));
-    console.log(user._id.toString(), typeof (user._id.toString()));
 
     // the ids are objects (reference types) and can't be compared with the === operator, so we stringify them for convenience:
     if (blog.user.toString() !== user._id.toString()) {
-        console.log('incorrecto');
         return response.status(401).json({ error: 'only the author of the blog can delete it' })
     }
 

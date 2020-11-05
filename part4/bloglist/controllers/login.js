@@ -5,18 +5,14 @@ const User = require('../models/user')
 const config = require('../utils/config')
 
 loginRouter.post('/', async (request, response) => {
-    console.log('LOGIN ROUTER POST ==========================');
     const body = request.body
-    console.log(body.password);
 
     // if the user is not found, we get a 401 unauthorized state.
     const user = await User.findOne({ username: body.username })
-    console.log(user.passwordHash);
+
     const passwordCorrect = user === null
         ? false
         : await bcrypt.compare(body.password, user.passwordHash)
-
-    console.log(passwordCorrect);
 
     if (!(user && passwordCorrect)) {
         return response.status(401).json({

@@ -67,8 +67,7 @@ describe('when there is initially one user in db', () => {
 
 
   test('User creationg fails if password is missing or shorter than 3 characters', async () => {
-    console.log('ENTERING TEST ===========================');
-    
+
     await api
       .post('/api/users')
       .send(helper.userShortPassword)
@@ -87,26 +86,20 @@ describe('when there is initially one user in db', () => {
 
   test('User creationg fails if username is missing or shorter than 3 characters', async () => {
 
-    const res1 = await api
+    await api
       .post('/api/users')
       .send(helper.userShortUsername)
       .expect(400)
 
-      console.log('01------------', res1.error);
-
-      const res2 =  await api
+    await api
       .post('/api/users')
       .send(helper.userNoUsername)
       .expect(400)
 
-      console.log('02------------', res2.error);
-
-
-      const res3 =  await api
+    await api
       .post('/api/users')
       .send(helper.userNullUsername)
       .expect(400)
-      console.log('03------------', res3.error);
 
   })
 

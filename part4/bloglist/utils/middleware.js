@@ -3,7 +3,6 @@ const logger = require('./logger')
 
 // A function to get the authentication token sent by the front end. Isolates the token from the authorization header
 const getTokenFrom = (request, response, next) => {
-    console.log("INSIDE GETTOKENFORM");
     const authorization = request.get('authorization')
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         // As we are extracting the token through middleware, instead of returing the value, we add a token property to the request to be passed on to the route handlers.

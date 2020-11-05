@@ -10,6 +10,29 @@ const api = supertest(app)
 
 // Since this test is done with the actual Mongo testing DB, we import the required parts to prepare and
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+
+
+// Declare token as a "global" variable for this file so that it can be accessed by the tests
+let globalToken = ''
+
+// One-time setup to log in to the database before testing
+beforeAll(async () => {
+  await User.deleteMany({})
+
+  // Populate the database with some vali users.
+  for (let user of helper.initialUsers) {
+    await api.post('/api/users').send(user)
+  }
+
+  // login
+  const loginResponse = await api
+    .post('/api/login')
+    .send({ username: 'KaroloV', password: 'Pavia' })
+
+  globalToken = loginResponse.body.token
+})
 
 
 // JestbeforeEAch method runs a function before each test in the file.
@@ -28,14 +51,17 @@ beforeEach(async () => {
   for (let blog of helper.initialBlogs) {
     let blogObject = new Blog(blog)
     await blogObject.save()
+    // await api.post('/api/blogs').send(blogObject)
   }
 
   // Version executed in parallel with Promise.all()
   // const blogObjects = helper.initialBlogs
   //   .map(blog => new Blog(blog))
   // const promiseArray = blogObjects.map(blog => blog.save())
-  // await Promise.all(promiseArray)
+  // await Promise.all(promiseArray) 
 })
+
+
 
 
 describe('Test blogs initialization', () => {
@@ -113,6 +139,7 @@ describe('Posting new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
       .send(helper.genericNewBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -132,6 +159,7 @@ describe('Posting new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
       .send(helper.noLikesBlog)
       .expect(200)
 
@@ -147,24 +175,36 @@ describe('Posting new blogs', () => {
     // Blog with title but no url should be successful
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
       .send(helper.noTitleBlog)
       .expect(200)
 
     // Blog with url but no title should be successful
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
       .send(helper.noUrlBlog)
       .expect(200)
 
     // Blog without title AND url should return 400
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
       .send(helper.onlyAuthorBlog)
       .expect(400)
 
     const response = await api.get('/api/blogs')
 
     expect(response.body).toHaveLength(helper.initialBlogs.length + 2)
+  })
+
+  test('Adding a blog fails with 401 if a token is not provided', async () => {
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${undefined}`)
+      .send(helper.genericNewBlog)
+      .expect(401)
   })
 })
 
@@ -222,7 +262,7 @@ describe('Updating blogs', () => {
       .expect(404)
 
     const response = await api.get(`/api/blogs/`)
-   
+
     expect(200)
     expect(response.body[blogToUpdate].likes).toBe(helper.initialBlogs[blogToUpdate].likes)
   })
@@ -233,22 +273,41 @@ describe('Updating blogs', () => {
 
 describe('Deleting blogs', () => {
   test('succeeds with status 204 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+
+    const initialBlogs = await helper.blogsInDb()
+    const numberOfInitialBlogs = initialBlogs.length
+
+    const usersInDb = await helper.usersInDb()
+    const author = usersInDb[0]
+
+    const newBlog = {
+      likes: 0,
+      title: 'Blog to be deleted',
+      author: author.name,
+      url: 'http://deleteme.test'
+    }
+
+    const serverPostResponse = await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${globalToken}`)
+      .send(newBlog).expect(200)
+
+    const blogsAfterPost = await helper.blogsInDb()
+    expect(blogsAfterPost).toHaveLength(numberOfInitialBlogs + 1)
+
+    const blogToDelete = serverPostResponse.body
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${globalToken}`)
       .expect(204)
 
-    const blogsAtEnd = await helper.blogsInDb()
+    const blogsAfterDeletion = await helper.blogsInDb()
+    expect(blogsAfterDeletion).toHaveLength(numberOfInitialBlogs)
 
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    )
 
-    const title = blogsAtEnd.map(r => r.title)
-
-    expect(title).not.toContain(blogToDelete.title)
+    const titles = blogsAfterDeletion.map(r => r.title)
+    expect(titles).not.toContain(blogToDelete.title)
   })
 })
 
