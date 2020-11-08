@@ -4,7 +4,10 @@ import loginService from './services/login'
 import './App.css'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
-
+import Toggleable from './components/Toggleable'
+import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -100,6 +103,12 @@ const App = () => {
     }
   }
 
+  const clearBlogFormFields = () => {
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
   const addBlog = async (event) => {
     event.preventDefault()
 
@@ -115,10 +124,10 @@ const App = () => {
 
       setNotification({ type: 'success', text: `Blog "${title}" added` })
       notificationTimeout()
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
+      // setTitle('')
+      // setAuthor('')
+      // setUrl('')
+      clearBlogFormFields()
 
     } catch (exception) {
       setNotification({ type: 'error', text: 'Failed to add blog' })
@@ -127,83 +136,86 @@ const App = () => {
   }
 
 
-  const loginForm = () => (
-    <>
-      <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </>
-  )
 
-  const blogForm = () => (
-    <>
-      <h2>create new</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          author
-          <input
-            type="text"
-            name="author"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url
-          <input
-            type="text"
-            name="url"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="create">create</button>
-      </form>
-    </>
-  )
 
-  const blogList = () => {
-    return (
-      <>
-        <h2>blogs</h2>
-        <div id="logged-in-line">{user.name} logged-in<button type="submit" onClick={handleLogout}>logout</button></div>
-        
-        {
-          blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )
-        }
-      </>
-    )
-  }
+  // const LoginForm = () => (
+  //   <>
+  //     <h2>Log in to application</h2>
+  //     <form onSubmit={handleLogin}>
+  //       <div>
+  //         username
+  //         <input
+  //           type="text"
+  //           value={username}
+  //           name="Username"
+  //           onChange={({ target }) => setUsername(target.value)}
+  //         />
+  //       </div>
+  //       <div>
+  //         password
+  //         <input
+  //           type="password"
+  //           value={password}
+  //           name="Password"
+  //           onChange={({ target }) => setPassword(target.value)}
+  //         />
+  //       </div>
+  //       <button type="submit">login</button>
+  //     </form>
+  //   </>
+  // )
+
+  // const blogForm = () => (
+  //   <>
+  //     <h2>create new</h2>
+  //     <form onSubmit={addBlog}>
+  //       <div>
+  //         title
+  //         <input
+  //           type="text"
+  //           name="title"
+  //           value={title}
+  //           onChange={({ target }) => setTitle(target.value)}
+  //         />
+  //       </div>
+  //       <div>
+  //         author
+  //         <input
+  //           type="text"
+  //           name="author"
+  //           value={author}
+  //           onChange={({ target }) => setAuthor(target.value)}
+  //         />
+  //       </div>
+  //       <div>
+  //         url
+  //         <input
+  //           type="text"
+  //           name="url"
+  //           value={url}
+  //           onChange={({ target }) => setUrl(target.value)}
+  //         />
+  //       </div>
+  //       <button type="create">create</button>
+  //     </form>
+  //   </>
+  // )
+
+  // const blogList = () => {
+  //   return (
+  //     <>
+  //       <h2>blogs</h2>
+  //       <div id="logged-in-line">{user.name} logged-in<button type="submit" onClick={handleLogout}>logout</button></div>
+
+  //       {
+  //         blogs.map(blog =>
+  //           <Blog key={blog.id} blog={blog} />
+  //         )
+  //       }
+  //     </>
+  //   )
+  // }
+
 
 
 
@@ -216,16 +228,41 @@ const App = () => {
 
       {/* A react trick to render forms conditionally. If the first statement is false or falsy, the second statement -which generates the form- is not executed */}
       {/* user === null depends on an user being logged in or not */}
-      {/* {user === null && loginForm()}  */}
+      {/* {user === null && LoginForm()}  */}
       {user === null ?
-        loginForm() :
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleLogin={handleLogin}
+        /> :
+        // LoginForm() :
         <div>
-          {blogForm()}
-          {blogList()}
+          {/* {blogForm()} */}
+          {/* {blogList()} */}
+
+          <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
+
+          <Toggleable buttonLabel1='new note' buttonLabel2='cancel 'resetFormState={clearBlogFormFields}>
+
+            <BlogForm
+              initial_state='hide'
+              title={title}
+              author={author}
+              url={url}
+              handleTitleChange={({ target }) => setTitle(target.value)}
+              handleAuthorChange={({ target }) => setAuthor(target.value)}
+              handleUrlChange={({ target }) => setUrl(target.value)}
+              handleSubmit={addBlog}
+            />
+
+            <div initial_state='show'>temporary solution</div>
+
+          </Toggleable>
         </div>
       }
 
-     
 
     </div>
   )
