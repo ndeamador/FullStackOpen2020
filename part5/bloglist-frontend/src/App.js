@@ -126,6 +126,20 @@ const App = () => {
   }
 
 
+  const updateBlog = async (blogId, updatedBlog) => {
+    try {
+      const response = await blogService.update(blogId, updatedBlog)
+     
+      setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
+
+    } catch (exception) {
+      setNotification({ type: 'error', text: exception.response.data.error })
+      notificationTimeout()
+    }
+
+  }
+
+
   return (
 
     <div>
@@ -151,7 +165,7 @@ const App = () => {
             <BlogForm initial_state='hide' createBlog={addBlog} />
           </Toggleable>
 
-          <BlogList blogs={blogs} />
+          <BlogList blogs={blogs} updateBlog={updateBlog} />
         </div>
       }
 
