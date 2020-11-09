@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
-import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Toggleable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
@@ -15,13 +14,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({ type: null, text: null })
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-
-
-
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -41,6 +33,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
 
 
   const notificationTimeout = () => {
@@ -88,6 +81,8 @@ const App = () => {
     }
   }
 
+
+
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
       try {
@@ -103,121 +98,32 @@ const App = () => {
     }
   }
 
-  const clearBlogFormFields = () => {
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
 
+  // the useRef hook creates a ref that we will assign to the Toggleable component.
+  // this variable acts as a reference to the component. The same reference is kept between re-renders
+  const blogFormRef = useRef()
+
+  const addBlog = async (newObject) => {
     try {
-      const newObject = {
-        title,
-        author,
-        url
-      }
+      console.log('in app.js')
+
+      // close the form when the new blog is created by the user
+      blogFormRef.current.toggleVisibility()
+
       const response = await blogService.create(newObject)
 
       setBlogs(blogs.concat(response))
 
-      setNotification({ type: 'success', text: `Blog "${title}" added` })
+      setNotification({ type: 'success', text: `Blog "${newObject.title}" added` })
       notificationTimeout()
-      // setTitle('')
-      // setAuthor('')
-      // setUrl('')
-      clearBlogFormFields()
+
 
     } catch (exception) {
-      setNotification({ type: 'error', text: 'Failed to add blog' })
+      setNotification({ type: 'error', text: exception.response.data.error })
       notificationTimeout()
     }
   }
-
-
-
-
-  // const LoginForm = () => (
-  //   <>
-  //     <h2>Log in to application</h2>
-  //     <form onSubmit={handleLogin}>
-  //       <div>
-  //         username
-  //         <input
-  //           type="text"
-  //           value={username}
-  //           name="Username"
-  //           onChange={({ target }) => setUsername(target.value)}
-  //         />
-  //       </div>
-  //       <div>
-  //         password
-  //         <input
-  //           type="password"
-  //           value={password}
-  //           name="Password"
-  //           onChange={({ target }) => setPassword(target.value)}
-  //         />
-  //       </div>
-  //       <button type="submit">login</button>
-  //     </form>
-  //   </>
-  // )
-
-  // const blogForm = () => (
-  //   <>
-  //     <h2>create new</h2>
-  //     <form onSubmit={addBlog}>
-  //       <div>
-  //         title
-  //         <input
-  //           type="text"
-  //           name="title"
-  //           value={title}
-  //           onChange={({ target }) => setTitle(target.value)}
-  //         />
-  //       </div>
-  //       <div>
-  //         author
-  //         <input
-  //           type="text"
-  //           name="author"
-  //           value={author}
-  //           onChange={({ target }) => setAuthor(target.value)}
-  //         />
-  //       </div>
-  //       <div>
-  //         url
-  //         <input
-  //           type="text"
-  //           name="url"
-  //           value={url}
-  //           onChange={({ target }) => setUrl(target.value)}
-  //         />
-  //       </div>
-  //       <button type="create">create</button>
-  //     </form>
-  //   </>
-  // )
-
-  // const blogList = () => {
-  //   return (
-  //     <>
-  //       <h2>blogs</h2>
-  //       <div id="logged-in-line">{user.name} logged-in<button type="submit" onClick={handleLogout}>logout</button></div>
-
-  //       {
-  //         blogs.map(blog =>
-  //           <Blog key={blog.id} blog={blog} />
-  //         )
-  //       }
-  //     </>
-  //   )
-  // }
-
-
-
 
 
   return (
@@ -237,32 +143,17 @@ const App = () => {
           handlePasswordChange={({ target }) => setPassword(target.value)}
           handleLogin={handleLogin}
         /> :
-        // LoginForm() :
         <div>
-          {/* {blogForm()} */}
-          {/* {blogList()} */}
+          <h2>blogs</h2>
+          <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
 
-          <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
-
-          <Toggleable buttonLabel1='new note' buttonLabel2='cancel 'resetFormState={clearBlogFormFields}>
-
-            <BlogForm
-              initial_state='hide'
-              title={title}
-              author={author}
-              url={url}
-              handleTitleChange={({ target }) => setTitle(target.value)}
-              handleAuthorChange={({ target }) => setAuthor(target.value)}
-              handleUrlChange={({ target }) => setUrl(target.value)}
-              handleSubmit={addBlog}
-            />
-
-            <div initial_state='show'>temporary solution</div>
-
+          <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
+            <BlogForm initial_state='hide' createBlog={addBlog} />
           </Toggleable>
+
+          <BlogList blogs={blogs} />
         </div>
       }
-
 
     </div>
   )

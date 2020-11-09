@@ -1,3 +1,5 @@
+/* Notifications */
+
 .success {
   color: green;
   background: lightgrey;
@@ -27,6 +29,52 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+
+/* Blogs */
+
+.blog-container > div {
+  border: 2px solid rgb(170, 170, 170);
+  border-radius: 5px;
+  padding: 4px 8px  ;
+  margin: 5px;
+  display: flex;
+}
+
+.blog-container > .toggleable-container > div {
+  display: flex;
+  flex-grow: 100;
+}
+
+.blog-content {
+  flex-grow: 100;
+}
+
+.blog-title-and-author {
+  padding: 0 10px;  
+}
+
+.extended-blog {
+  border-top: 2px solid rgb(80, 80, 80);
+  padding: 4px;
+  padding-top: 10px;
+  margin: 5px;
+}
+
+/* Blogform */
+
+.test {
+  margin-bottom: 30px;
+}
+
+.blogform-container > h2 {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+
+
+/* Default React styles */
 
 #logged-in-line {
   padding-bottom: 15px;

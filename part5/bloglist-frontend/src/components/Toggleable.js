@@ -1,13 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useImperativeHandle } from 'react'
+console.log('in toggleable');
 
-// To pass components as arguments, the variable name must be capialized.
-const Toggleable = (props) => {
-
-    console.log(props.children);
-
-    const initiallyHiddenChildren = props.children.filter(child => child.props.initial_state === 'hide')
-    const initiallyShownChildren = props.children.filter(child => child.props.initial_state === 'show')
-
+// Wrapping the functioninside a forwardRef funciton call gives the component access the ref assigned to it.
+const Toggleable = React.forwardRef((props, ref) => {
 
     const [visible, setVisible] = useState(false)
 
@@ -19,20 +14,46 @@ const Toggleable = (props) => {
         setVisible(!visible)
     }
 
+    // this hook makes the toggleVisibility fucntion available outside the component
+    useImperativeHandle(ref, () => {
+        console.log('inside toggleable ref')
+
+        return {
+            toggleVisibility
+        }
+    })
+
+
+    let initiallyHiddenChildren = null
+    let initiallyShownChildren = null
+
+    // This is an attempt to allow the reusable Toggleable module to render elements with different initial hide/show states.
+    // When only one child is present, the shildren don't come in an array of objects, so the filter method throws an error
+    // * I have tried using the spread operator for the assignment but I kept getting a
+    if (props.children.length > 1) {
+        initiallyHiddenChildren = props.children.filter(child => child.props.initial_state === 'hide')
+        initiallyShownChildren = props.children.filter(child => child.props.initial_state === 'show')
+
+    } else {
+        const childInitialState = props.children.props.initial_state
+        childInitialState === 'hide' ? initiallyHiddenChildren = props.children : initiallyShownChildren = props.children
+
+    }
+
+
     return (
-        <>
+        <div className="toggleable-container">
             <div style={hideWhenVisible}>
-                {initiallyShownChildren}
                 <button onClick={toggleVisibility}>{props.buttonLabel1}</button>
+                {initiallyShownChildren}
             </div>
             <div style={showWhenVisible}>
+                <button onClick={toggleVisibility}>{props.buttonLabel2}</button>
                 {initiallyHiddenChildren}
-                {/* note the syntax for calling two functions with the same onClick in ReactJS. The arguments are function alls */}
-                <button onClick={ ()=> {toggleVisibility(); props.resetFormState()}}>{props.buttonLabel2}</button>
             </div>
-        </>
+        </div>
     )
 
-}
+})
 
 export default Toggleable
