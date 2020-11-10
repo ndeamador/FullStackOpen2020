@@ -54,7 +54,11 @@ blogsRouter.post('/', async (request, response) => {
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
 
-    response.status(200).json(savedBlog)
+    const populatedBlog = await Blog.findById(savedBlog._id).populate('user', { username: 1, name: 1 })
+
+    response.status(200).json(populatedBlog)
+    // response.status(200).json(savedBlog)
+
 })
 
 
@@ -131,10 +135,9 @@ blogsRouter.delete('/:id', async (request, response) => {
         return response.status(401).json({ error: 'only the author of the blog can delete it' })
     }
 
-    await Blog.findByIdAndRemove(request.params.id)
+    await Blog.findByIdAndRemove(request.params.id)    
+   
     response.status(204).end()
-
-
 })
 
 module.exports = blogsRouter

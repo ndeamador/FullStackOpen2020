@@ -32,8 +32,25 @@ usersRouter.post('/', async (request, response) => {
         passwordHash,
     })
     const savedUser = await user.save()
+
+    const populatedUser = await User.findById(savedUser._id).populate('blogs', { title: 1, author: 1, url: 1})
  
-    response.json(savedUser)
+    response.json(populatedUser)
+    // response.json(savedUser)
+
+})
+
+usersRouter.get('/:id', async (request, response) => {
+
+    // If Id is valid:
+    const user = await User.findById(request.params.id)
+
+    if (user) {
+        response.json(user)
+    } else {
+        // the .end() method ends responses that send back no content.
+        response.status(404).end()
+    }
 })
 
 module.exports = usersRouter
