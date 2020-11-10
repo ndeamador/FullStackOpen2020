@@ -85,7 +85,7 @@ const App = () => {
 
 
   const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
+    if (window.confirm('Are you sure you want to logout?')) {
       try {
         setUser(null)
         window.localStorage.removeItem('loggedBlogappUser')
@@ -128,7 +128,7 @@ const App = () => {
   const updateBlog = async (blogId, updatedBlog) => {
     try {
       const response = await blogService.update(blogId, updatedBlog)
-     
+
       setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
 
     } catch (exception) {
@@ -143,7 +143,6 @@ const App = () => {
 
       setBlogs(blogs.filter(blog => blog.id !== blogId))
     } catch (exception) {
-      console.dir(exception);
       setNotification({ type: 'error', text: exception.response.data.error })
       notificationTimeout()
     }
@@ -177,7 +176,7 @@ const App = () => {
             <BlogForm initial_state='hide' createBlog={addBlog} />
           </Toggleable>
 
-          <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
+          <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
         </div>
       }
 
