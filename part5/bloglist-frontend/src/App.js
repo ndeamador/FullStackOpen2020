@@ -8,6 +8,7 @@ import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -106,8 +107,6 @@ const App = () => {
 
   const addBlog = async (newObject) => {
     try {
-      console.log('in app.js')
-
       // close the form when the new blog is created by the user
       blogFormRef.current.toggleVisibility()
 
@@ -136,14 +135,27 @@ const App = () => {
       setNotification({ type: 'error', text: exception.response.data.error })
       notificationTimeout()
     }
+  }
+
+  const deleteBlog = async (blogId) => {
+    try {
+      await blogService.deleteBlog(blogId)
+
+      setBlogs(blogs.filter(blog => blog.id !== blogId))
+    } catch (exception) {
+      console.dir(exception);
+      setNotification({ type: 'error', text: exception.response.data.error })
+      notificationTimeout()
+    }
 
   }
+
+
 
 
   return (
 
     <div>
-
       <Notification message={notification} />
 
       {/* A react trick to render forms conditionally. If the first statement is false or falsy, the second statement -which generates the form- is not executed */}
@@ -165,7 +177,7 @@ const App = () => {
             <BlogForm initial_state='hide' createBlog={addBlog} />
           </Toggleable>
 
-          <BlogList blogs={blogs} updateBlog={updateBlog} />
+          <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
         </div>
       }
 

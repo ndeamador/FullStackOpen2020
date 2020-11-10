@@ -28,5 +28,24 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+// delete is a protected word in Javascript, so we have to find a different name for the handler.
+// const deleteBlog = id => {
+//   const config = {
+//     headers: { Authorization: token },
+//   }
+  
+//   const request = axios.delete(`${baseUrl}/${id}`, config)
+//   return request.then(response => response.data)
+// }
 
-export default { getAll, create, update, setToken }
+const deleteBlog = async id => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response.data
+}
+
+
+export default { getAll, create, update, setToken, deleteBlog }

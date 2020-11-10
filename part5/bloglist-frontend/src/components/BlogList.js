@@ -2,8 +2,7 @@ import React from 'react'
 import Blog from './Blog'
 
 
-const BlogList = ({ blogs, updateBlog }) => {
-  console.log('in inbloglist');
+const BlogList = ({ blogs, updateBlog, deleteBlog, user }) => {
 
   const orderedBlogs = blogs.sort((a, b) => {
     if (a.likes > b.likes) {
@@ -15,8 +14,6 @@ const BlogList = ({ blogs, updateBlog }) => {
     }
   })
 
-  console.log(orderedBlogs);
-
   return (
     <div className="bloglist-container">
       {
@@ -24,7 +21,7 @@ const BlogList = ({ blogs, updateBlog }) => {
         orderedBlogs.map((blog, i) =>
           // Remember that class is a keyword in JS and JSX, so className has to be used instead of class when working with React.
           <div className="blog-container" key={i}>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
           </div>
         )
       }
