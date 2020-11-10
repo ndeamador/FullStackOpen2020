@@ -23,7 +23,6 @@ const Toggleable = React.forwardRef((props, ref) => {
 
     let initiallyHiddenChildren = null
     let initiallyShownChildren = null
-    console.log("initial children", props.children);
 
     // This is an attempt to allow the reusable Toggleable module to render elements with different initial hide/show states.
     // When only one child is present, the shildren don't come in an array of objects, so the filter method throws an error
@@ -38,9 +37,6 @@ const Toggleable = React.forwardRef((props, ref) => {
         childInitialState === 'hide' ? initiallyHiddenChildren = props.children : initiallyShownChildren = props.children
 
     }
-
-    console.log("after ------------------------", initiallyHiddenChildren, initiallyShownChildren);
-
 
 
     return (

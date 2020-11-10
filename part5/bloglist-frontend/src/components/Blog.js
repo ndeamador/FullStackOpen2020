@@ -37,12 +37,15 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     }
   }
 
-  const createdByCurrentUser = blog.user.username === user.username
+  // Added the or to prevent inconsistencies with "populate" in the backend.
+  const createdByCurrentUser = user.id === (blog.user.id || blog.user)
+
 
 
   const deleteButton = () => (
     <button className="blog-delete-button" initial_state="hide" onClick={confirmDeletion}>Delete blog</button>
   )
+
 
 
   return (
