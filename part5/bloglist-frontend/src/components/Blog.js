@@ -37,8 +37,8 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     }
   }
 
-  // Added the or to prevent inconsistencies with "populate" in the backend.
-  const createdByCurrentUser = user.id === (blog.user.id || blog.user)
+  const createdByCurrentUser = (user.id === blog.user.id)
+
 
 
 

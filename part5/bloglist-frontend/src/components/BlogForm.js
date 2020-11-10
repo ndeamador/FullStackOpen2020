@@ -14,7 +14,6 @@ const BlogForm = ({ createBlog }) => {
     }
 
     const addBlog = async (event) => {
-        console.log('entering blogform addblog');
         event.preventDefault()
 
         const newObject = {
@@ -26,8 +25,6 @@ const BlogForm = ({ createBlog }) => {
         createBlog(newObject)
 
         clearBlogFormFields()
-        console.log('exiting blogform addblog');
-
     }
 
 
