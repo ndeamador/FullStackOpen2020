@@ -8,7 +8,7 @@ usersRouter.get('/', async (request, response) => {
     // the arguments are the fields we want to include in each referenced blog: 
     // https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/#return-the-specified-fields-and-the-id-field-only
     const users = await User
-        .find({}).populate('blogs', { title: 1, author: 1, url: 1})
+        .find({}).populate('blogs', { title: 1, author: 1, url: 1 })
     response.json(users)
 })
 
@@ -18,7 +18,7 @@ usersRouter.post('/', async (request, response) => {
 
     // It's not a good idea to test password restrictions with just Mongoose restrictions, so we validate them first in the controller
     // This due to the received (uncrypted) password not being the same as the stored hash.
-    if (!body.password || body.password.length < 3 ) {
+    if (!body.password || body.password.length < 3) {
         return response.status(401).json({ error: 'A password of at least 3 characters is required' })
     }
 
@@ -33,8 +33,8 @@ usersRouter.post('/', async (request, response) => {
     })
     const savedUser = await user.save()
 
-    const populatedUser = await User.findById(savedUser._id).populate('blogs', { title: 1, author: 1, url: 1})
- 
+    const populatedUser = await User.findById(savedUser._id).populate('blogs', { title: 1, author: 1, url: 1 })
+
     response.json(populatedUser)
     // response.json(savedUser)
 
@@ -52,5 +52,17 @@ usersRouter.get('/:id', async (request, response) => {
         response.status(404).end()
     }
 })
+
+
+usersRouter.delete('/:id', async (request, response) => {
+
+    console.log(request.params.id);
+    const user = await User.findById(request.params.id)
+    console.log(user);
+    const test = await User.findByIdAndRemove(request.params.id)
+    console.log(test);
+    response.status(204).end()
+})
+
 
 module.exports = usersRouter
