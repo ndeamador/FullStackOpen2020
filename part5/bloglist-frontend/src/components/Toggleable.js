@@ -46,14 +46,15 @@ const Toggleable = React.forwardRef((props, ref) => {
     buttonLabel2 = props.buttonLabel1
   }
 
+  // The children of the Toggleable component have an property determining which will be shown initially and which will be hidden.
 
   return (
     <div className="toggleable-container">
-      <div style={hideWhenVisible}>
+      <div className="toggleable-initially-shown" style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel1}</button>
         {initiallyShownChildren}
       </div>
-      <div style={showWhenVisible}>
+      <div className="toggleable-initially-hidden" style={showWhenVisible}>
         <button onClick={toggleVisibility}>{buttonLabel2}</button>
         {initiallyHiddenChildren}
       </div>

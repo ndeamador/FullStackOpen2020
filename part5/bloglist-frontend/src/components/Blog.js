@@ -5,8 +5,9 @@ import Toggleable from './Toggleable'
 const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
 
   const blogTitleAndAuthor = () => (
-    <div className="blog-title-and-author" initial-state="show"> {blog.title}, by {blog.author}</div>
+    <div className="blog-title-and-author" initial_state="show"> {blog.title}, by {blog.author}</div>
   )
+
 
   const extendedBlog = () => (
     <div className="blog-content" initial_state="hide">
@@ -47,10 +48,9 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   )
 
 
-
   return (
     <Toggleable buttonLabel1='view' buttonLabel2='hide'>
-      <div className="blog-title-and-author" initial_state="show"> {blog.title}, by {blog.author}</div>
+      {blogTitleAndAuthor()}
       {extendedBlog()}
       {/* The delete button is only shown if the current logged in user is the creator of the blog entry */}
       {createdByCurrentUser && deleteButton()}
@@ -60,3 +60,4 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
 
 }
 export default Blog
+

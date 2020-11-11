@@ -33,6 +33,10 @@
 
 /* Blogs */
 
+.bloglist-container {
+  max-width: 1000px;
+}
+
 .blog-container > div {
   border: 2px solid rgb(170, 170, 170);
   border-radius: 5px;
