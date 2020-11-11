@@ -6,7 +6,9 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
-    "test": "clear && NODE_ENV=test jest --verbose --runInBand"
+    "test": "clear && NODE_ENV=test jest --verbose --runInBand",
+    "start:test": "cross-env NODE_ENV=test node index.js"
+
   },
   "author": "Nicolás de Amador",
   "license": "ISC",

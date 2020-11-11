@@ -13,7 +13,7 @@ const BlogList = ({ blogs, updateBlog, deleteBlog, user }) => {
       return 0
     }
   })
-
+  
   return (
     <div className="bloglist-container">
       {

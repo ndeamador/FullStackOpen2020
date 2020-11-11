@@ -47,7 +47,6 @@ const Toggleable = React.forwardRef((props, ref) => {
   }
 
   // The children of the Toggleable component have an property determining which will be shown initially and which will be hidden.
-
   return (
     <div className="toggleable-container">
       <div className="toggleable-initially-shown" style={hideWhenVisible}>

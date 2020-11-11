@@ -106,7 +106,7 @@ blogsRouter.put('/:id', async (request, response) => {
         return response.status(400).json({ error: 'Blog requires title or url' })
     }
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true }).populate('user', { username: 1, name: 1 })
 
     if (updatedBlog) {
         response.json(updatedBlog)

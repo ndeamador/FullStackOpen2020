@@ -40,13 +40,9 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
 
   const createdByCurrentUser = (user.id === blog.user.id)
 
-
-
-
   const deleteButton = () => (
     <button className="blog-delete-button" initial_state="hide" onClick={confirmDeletion}>Delete blog</button>
   )
-
 
   return (
     <Toggleable buttonLabel1='view' buttonLabel2='hide'>
