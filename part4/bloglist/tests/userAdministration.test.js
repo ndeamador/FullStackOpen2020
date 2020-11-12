@@ -106,10 +106,6 @@ describe('when there is initially one user in db', () => {
 })
 
 
-afterAll(async () => {
-
-  // Clear the database to prevent conflicts with other updated tests.
-  await User.deleteMany({})
-
+afterAll(() => {
   mongoose.connection.close()
 })

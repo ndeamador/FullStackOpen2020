@@ -13,9 +13,9 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     <div className="blog-content" initial_state="hide">
       {blogTitleAndAuthor()}
       <div className="extended-blog">
-        <div>{blog.url}</div>
-        <div>likes: {blog.likes} <button onClick={addLike}>like</button></div>
-        <div>Entry created by: {blog.user.name}</div>
+        <div className="url-line">{blog.url}</div>
+        <div className="likes-line">likes: {blog.likes} <button onClick={addLike}>like</button></div>
+        <div className="creator-line">Entry created by: {blog.user.name}</div>
       </div>
     </div>
   )

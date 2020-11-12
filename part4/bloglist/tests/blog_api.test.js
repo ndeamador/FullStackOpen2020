@@ -315,10 +315,6 @@ describe('Deleting blogs', () => {
 
 // close the database connection after all the tests are finished with jest's afterall() method:
 // https://jestjs.io/docs/en/api.html#afterallfn-timeout
-afterAll(async () => {
-
-  // Clear the database to prevent conflicts with other updated tests.
-  await Blog.deleteMany({})
-
+afterAll(() => {
   mongoose.connection.close()
 })

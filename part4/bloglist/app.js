@@ -1,5 +1,5 @@
 // ¿Config imported first to make sure dotenv is imported as early as possible?
-const config  = require('./utils/config')
+const config = require('./utils/config')
 const express = require('express')
 // express-async-errors handles async errors on its own, so we don't need try-catch blocks or the next function.
 require('express-async-errors')
@@ -18,12 +18,12 @@ const mongoUrl = config.MONGODB_URI
 logger.info('connecting to', mongoUrl)
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-.then(() => {
-    logger.info('connected to MonboDB')
-})
-.catch((error) => {
-    logger.error('error connecting to MongoDB:', error.message)
-})
+    .then(() => {
+        logger.info('connected to MonboDB')
+    })
+    .catch((error) => {
+        logger.error('error connecting to MongoDB:', error.message)
+    })
 
 
 app.use(cors())
@@ -39,6 +39,12 @@ app.use(middleware.getTokenFrom)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+
+if (process.env.NODE_ENV === 'test') {
+    console.log('NODE ENV CORRECT');
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing', testingRouter)
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
