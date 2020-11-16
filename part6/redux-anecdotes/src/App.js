@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addVoteTo } from './reducers/anecdoteReducer'
+import { addVoteTo, createAnecdote } from './reducers/anecdoteReducer'
 
 const App = () => {
   // The hook useSelector allows a component to access the data in the store
@@ -14,6 +14,13 @@ const App = () => {
     dispatch(addVoteTo(id))
   }
 
+
+  const addAnecdote = (event) => {
+    event.preventDefault()
+    const anecdote = event.target.anecdote.value
+    event.target.anecdote.value = ''
+    dispatch(createAnecdote(anecdote))
+  }
 
 
   return (
@@ -31,9 +38,9 @@ const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
+      <form onSubmit={addAnecdote}>
+        <div><input name="anecdote" /></div>
+        <button type="submit">create</button>
       </form>
     </div>
   )

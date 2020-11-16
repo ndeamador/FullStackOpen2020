@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-freeze'
-import anecdoteReducer, { addVoteTo } from './anecdoteReducer'
+import anecdoteReducer, { addVoteTo, createAnecdote } from './anecdoteReducer'
 
 describe('Anecdote reducer', () => {
     const initialState = [
@@ -34,5 +34,13 @@ describe('Anecdote reducer', () => {
             }
         ])
 
+    })
+
+    test('state not being mutated on anecdote creation', () => {
+
+        const state = initialState
+
+        deepFreeze(state)
+        anecdoteReducer(state, createAnecdote('testing mutability'))
     })
 })
