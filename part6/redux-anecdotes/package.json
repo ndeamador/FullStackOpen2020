@@ -11,7 +11,8 @@
     "react-dom": "^16.14.0",
     "react-redux": "^7.2.2",
     "react-scripts": "3.4.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -20,9 +21,6 @@
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json",
     "lint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [

@@ -13,7 +13,7 @@ _fill_
 
 ## Part 2 - [Communicating with server](https://fullstackopen.com/en/part2)
 
-_fill_
+_JSON Server_
 
 - [project name](addlink) - Project description
 - [project name](addlink) - Project description
@@ -42,7 +42,7 @@ _Token based authentication, local storage, props.children and proptypes, refere
 
 ## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
 
-_Flux architecture_
+_Flux architecture, deep-freeze library, react-redux, Redux DevTools extension & redux-devtools-extension library, redux-thunk_
 
 - [project name](addlink) - Project description
 
