@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addVoteTo } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
-import store from '../store'
 
 const AnecdoteList = () => {
     // The hook useSelector allows a component to access the data in the store
