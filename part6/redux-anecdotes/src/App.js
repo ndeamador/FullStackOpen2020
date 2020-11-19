@@ -9,24 +9,24 @@ import anecdoteService from './services/anecdotes'
 
 const App = () => {
 
-  const dispatch = useDispatch()
-  // The empty array in the second argument of the effect hook makes it trigger only in the first render
-  useEffect(() => {
-    anecdoteService
-      .getAll().then(anecdotes => dispatch(initializeAnecdotes(anecdotes)))
-  }, [])
+    const dispatch = useDispatch()
+    // The [dispatch] in the second argument of the effect hook makes it trigger only when there are changes to dispatch
+    useEffect(() => {
+        anecdoteService
+            .getAll().then(anecdotes => dispatch(initializeAnecdotes(anecdotes)))
+    }, [dispatch])
 
 
 
-  return (
-    <div>
-      <Notification />
-      <h2>Anecdotes</h2>
-      <Filter />
-      <AnecdoteList />
-      <AnecdoteForm />
-    </div>
-  )
+    return (
+        <div>
+            <Notification />
+            <h2>Anecdotes</h2>
+            <Filter />
+            <AnecdoteList />
+            <AnecdoteForm />
+        </div>
+    )
 }
 
 export default App

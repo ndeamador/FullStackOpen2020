@@ -17,7 +17,7 @@ const notificationReducer = (state = initialState, action) => {
 export const setNotification = (notification) => {
     return {
         type: 'SET',
-        data: { text: notification}
+        data: { text: notification }
     }
 }
 

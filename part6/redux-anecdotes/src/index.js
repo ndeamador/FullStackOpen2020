@@ -6,8 +6,8 @@ import store from './store'
 
 // React-Redux's Provider allows its nested components to access the store: https://react-redux.js.org/api/provider
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 )
