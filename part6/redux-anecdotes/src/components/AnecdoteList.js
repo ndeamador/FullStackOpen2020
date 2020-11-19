@@ -18,7 +18,7 @@ const AnecdoteList = () => {
 
 
     const vote = (anecdote) => {
-        dispatch(addVoteTo(anecdote.id))
+        dispatch(addVoteTo(anecdote))
         // as this is not a console.log, the text in the argument can't be separated by commas, hence the +
         dispatch(setNotification(`you voted the anecdote:  '` + anecdote.content + `'`))
 

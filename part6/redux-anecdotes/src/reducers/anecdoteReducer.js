@@ -5,9 +5,7 @@ const reducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_VOTE': {
             const id = action.data.id
-            const anectdoteToChange = state.find(anecdote => anecdote.id === id)
-            const changedAnecdote = { ...anectdoteToChange, votes: anectdoteToChange.votes + 1 }
-            return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+            return state.map(anecdote => anecdote.id !== id ? anecdote : action.data)
         }
 
         case 'ADD_ANECDOTE':
@@ -22,10 +20,18 @@ const reducer = (state = [], action) => {
 }
 
 // Action creators are defined with their own export commands
-export const addVoteTo = (id) => {
-    return {
-        type: 'ADD_VOTE',
-        data: { id }
+export const addVoteTo = (anecdote) => {
+
+    const upvotedAnecdote = {...anecdote, votes: anecdote.votes + 1}
+
+    // this dispatch is possible thanks to redux-thunk
+    // "we return a function that redux=thunk will call and pass dispatch as an argument"
+    return async dispatch => {
+        const response = await anecdoteService.update(upvotedAnecdote)
+        dispatch({
+            type: 'ADD_VOTE',            
+            data: response
+        })
     }
 }
 
