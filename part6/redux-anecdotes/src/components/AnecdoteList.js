@@ -1,28 +1,28 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { addVoteTo } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+// import { useSelector, useDispatch } from 'react-redux'
 
-const AnecdoteList = () => {
+// the connect method is outdated, but it's useful to understand it in case older code needs to be maintaned. It replaces dispatch and useSelector.
+import { connect } from 'react-redux'
+import { addVoteTo } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
+
+const AnecdoteList = (props) => {
     // The hook useSelector allows a component to access the data in the store
     // The parameter is function that selects or searches data in the store. Since we want all our anecdotes, the selection function returns the whole state.
-    const anecdotes = useSelector(state => state.anecdotes)
-    const filter = useSelector(state => state.filter)
+    // const anecdotes = useSelector(state => state.anecdotes)
+    // const filter = useSelector(state => state.filter)
 
-    const orderedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
-    const filteredAnecdotes = orderedAnecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()) === true)
+    const orderedAnecdotes = props.anecdotes.sort((a, b) => b.votes - a.votes)
+    const filteredAnecdotes = orderedAnecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(props.filter.toLowerCase()) === true)
 
     // The hook useDispatch providces the "store.dispatch" function (of the store defined in index.js) to any React component, so that they can make changes to the state. (state => {return state})
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
 
 
     const vote = (anecdote) => {
-        dispatch(addVoteTo(anecdote))
-        dispatch(setNotification(`you voted the anecdote:  '${anecdote.content}'`, 10))
-
-        // note that calling timeouts in quick succession makes them overlap, so the first call might clear the last call notification ahead of the inteded tiem.
-        // setTimeout(() => dispatch(clearNotification()), 5000)
+        props.addVoteTo(anecdote)
+        props.setNotification(`you voted the anecdote:  '${anecdote.content}'`, 10)
     }
 
     return (
@@ -42,5 +42,27 @@ const AnecdoteList = () => {
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        anecdotes: state.anecdotes,
+        filter: state.filter
+    }
+}
 
-export default AnecdoteList
+const mapDispatchToProps = {
+    addVoteTo,
+    setNotification
+}
+
+// Transform the AnecdoteList component into a "connected componet"
+// mapStateToProps is similar to subscribe, it is called anytime the store is updated.
+// the second parameter of connect, mapDispatchToProps, which groups the action creator functions passed to the connected component as props.
+// connects modifies the functions returned by mapStateToProps to use dispatch, so we don't need to call it in our code.
+const ConnectedAnecdoteList = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AnecdoteList)
+export default ConnectedAnecdoteList
+
+
+// export default AnecdoteList
