@@ -45,6 +45,9 @@ module.exports = {
             'error',
             'never'
         ]
+        ,
+        // Added this rule to prevent an error due to missing proptypes, which I believe are not a concern this section.
+        "react/prop-types": 0
     },
     // added this because I was getting a "react version not specified" warning
     'settings': {

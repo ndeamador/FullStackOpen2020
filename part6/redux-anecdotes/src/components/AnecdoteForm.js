@@ -17,6 +17,7 @@ const AnecdoteForm = (props) => {
         // dispatch(setNotification(`You have created the anecdote:  '${anecdote}'`, 10))
         props.createAnecdote(anecdote)
         props.setNotification(`You have created the anecdote:  '${anecdote}'`, 10)
+
     }
 
 

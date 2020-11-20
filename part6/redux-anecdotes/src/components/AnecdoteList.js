@@ -49,6 +49,8 @@ const mapStateToProps = (state) => {
     }
 }
 
+// The functions passed here must be action creators.
+// This is a regular JS object, in it's shorthand form (instead of addVoteTo: addVoteTo)
 const mapDispatchToProps = {
     addVoteTo,
     setNotification

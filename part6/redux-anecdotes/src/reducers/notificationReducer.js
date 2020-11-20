@@ -15,6 +15,8 @@ const notificationReducer = (state = initialState, action) => {
 }
 
 export const setNotification = (notification, timer) => {
+    // clear the current notification deadline to avoid overlapping (prevent that an earlier timeout clears a later notification ahead of time)
+    clearTimeout(setNotification.timeoutID)
 
     return dispatch => {
 
@@ -22,8 +24,7 @@ export const setNotification = (notification, timer) => {
             type: 'SET',
             data: { text: notification }
         })
-
-        setTimeout(() => dispatch(clearNotification()), timer * 1000)
+        setNotification.timeoutID = setTimeout(() => dispatch(clearNotification()), timer * 1000)
     }
 }
 
