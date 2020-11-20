@@ -19,11 +19,10 @@ const AnecdoteList = () => {
 
     const vote = (anecdote) => {
         dispatch(addVoteTo(anecdote))
-        // as this is not a console.log, the text in the argument can't be separated by commas, hence the +
-        dispatch(setNotification(`you voted the anecdote:  '` + anecdote.content + `'`))
+        dispatch(setNotification(`you voted the anecdote:  '${anecdote.content}'`, 10))
 
         // note that calling timeouts in quick succession makes them overlap, so the first call might clear the last call notification ahead of the inteded tiem.
-        setTimeout(() => dispatch(clearNotification()), 5000)
+        // setTimeout(() => dispatch(clearNotification()), 5000)
     }
 
     return (

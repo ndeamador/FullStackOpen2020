@@ -14,10 +14,17 @@ const notificationReducer = (state = initialState, action) => {
     }
 }
 
-export const setNotification = (notification) => {
-    return {
-        type: 'SET',
-        data: { text: notification }
+export const setNotification = (notification, timer) => {
+
+    return dispatch => {
+
+        dispatch({
+            type: 'SET',
+            data: { text: notification }
+        })
+
+        // note that calling timeouts in quick succession makes them overlap, so the first call might clear the last call notification ahead of the inteded tiem.
+        setTimeout(() => dispatch(clearNotification()), timer * 1000)
     }
 }
 
