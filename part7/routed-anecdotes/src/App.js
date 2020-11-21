@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import {
   Switch, Route, Link, useHistory, useRouteMatch
-  // , useParams
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -69,9 +69,10 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
 
   // With the useHistory hook we can access the history object, which lets us modify the browser's url programatically. We will use it later to show the home page after creating a new anecdote.
   const history = useHistory()
@@ -80,14 +81,14 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
 
     // Pass a new temporary notification to be temporarily displayed in the homepage.
-    props.stateSetter(`New anecdote "${content}" created!`)
+    props.stateSetter(`New anecdote "${content.value}" created!`)
     setTimeout(() => props.stateSetter(''), 10000)
 
     // Go back to the homepage after creating a new note
@@ -100,15 +101,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
@@ -163,11 +164,9 @@ const App = () => {
   // everytime the comopnent is rendered (when the browser url changes) the useRouteMatch('/anecdotes/:id') is executed
   // if the url in the browser is matching, the match variable is assigned an object containing the parametrized part of the path, including the id of the anecdote to be displayed.
   const match = useRouteMatch('/anecdotes/:id')
-  console.log(match);
   const anecdote = match
     ? anecdotes.find(anecdote => anecdote.id === match.params.id)
     : null
-  console.log(anecdote);
 
   return (
     // Rendering our components as children of the Router (BrowserRouter) tag imported by react-router-dom lets us handle dynamic routing.
