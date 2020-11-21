@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, useParams
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -21,11 +21,32 @@ const Menu = () => {
   )
 }
 
+const Anecdote = ({ anecdotes }) => {
+  // The useParams() method imported from react-router lets us access the id from the url (for instance: /anecdotes/3)
+  const id = useParams().id
+  // Both the id extracted from the url and the id field in the "database" anecdotes are strings. If the id  in the database were a number, we would have to transform the url id for the comparison (Number(id))
+  const anecdote = anecdotes.find(anecdote => anecdote.id === id)
+
+  return (
+    <div>
+      <h2><strong>{anecdote.content}</strong></h2>
+      <div>{anecdote.author}</div>
+      <div>{anecdote.info}</div>
+      <div>{anecdote.votes}</div>
+    </div>
+  )
+}
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote =>
+        // <li key={anecdote.id} >{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
+      )}
     </ul>
   </div>
 )
@@ -137,8 +158,11 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Menu />
 
-      {/* The order of the components in the switch is important, we have to put "/" last because all paths start with / and otherwise nothing would get rendered */}
+      {/* The order of the components in the switch is important, we have to put "/" last because all paths start with / and otherwise nothing would get rendered. Same goes with /notes and /notes/:id */}
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdotes={anecdotes} />
+        </Route>
         <Route path="/create">
           <CreateNew addNew={addNew} />
         </Route>
