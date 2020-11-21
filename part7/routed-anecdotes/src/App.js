@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
-  BrowserRouter as Router,
-  Switch, Route, Link, useParams
+  Switch, Route, Link, useHistory, useRouteMatch
+  // , useParams
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -13,26 +13,22 @@ const Menu = () => {
       <Link style={padding} to="/">home</Link>
       <Link style={padding} to="/create">create new</Link>
       <Link style={padding} to="/about">about</Link>
-      {/* 
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a> */}
     </div>
   )
 }
 
-const Anecdote = ({ anecdotes }) => {
+const Anecdote = ({ anecdote }) => {
   // The useParams() method imported from react-router lets us access the id from the url (for instance: /anecdotes/3)
-  const id = useParams().id
+  // const id = useParams().id
   // Both the id extracted from the url and the id field in the "database" anecdotes are strings. If the id  in the database were a number, we would have to transform the url id for the comparison (Number(id))
-  const anecdote = anecdotes.find(anecdote => anecdote.id === id)
+  // const anecdote = anecdotes.find(anecdote => anecdote.id === id)
 
   return (
     <div>
       <h2><strong>{anecdote.content}</strong></h2>
-      <div>{anecdote.author}</div>
-      <div>{anecdote.info}</div>
-      <div>{anecdote.votes}</div>
+      <div>Author:  {anecdote.author}</div>
+      <div>url:  {anecdote.info}</div>
+      <div>Votes:  {anecdote.votes}</div>
     </div>
   )
 }
@@ -42,7 +38,6 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map(anecdote =>
-        // <li key={anecdote.id} >{anecdote.content}</li>
         <li key={anecdote.id}>
           <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
         </li>
@@ -78,6 +73,9 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  // With the useHistory hook we can access the history object, which lets us modify the browser's url programatically. We will use it later to show the home page after creating a new anecdote.
+  const history = useHistory()
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -87,6 +85,13 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    // Pass a new temporary notification to be temporarily displayed in the homepage.
+    props.stateSetter(`New anecdote "${content}" created!`)
+    setTimeout(() => props.stateSetter(''), 10000)
+
+    // Go back to the homepage after creating a new note
+    history.push('/')
   }
 
   return (
@@ -111,6 +116,9 @@ const CreateNew = (props) => {
   )
 
 }
+
+const Notification = ({ text }) => { return <div>{text}</div> }
+
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -151,20 +159,32 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+
+  // everytime the comopnent is rendered (when the browser url changes) the useRouteMatch('/anecdotes/:id') is executed
+  // if the url in the browser is matching, the match variable is assigned an object containing the parametrized part of the path, including the id of the anecdote to be displayed.
+  const match = useRouteMatch('/anecdotes/:id')
+  console.log(match);
+  const anecdote = match
+    ? anecdotes.find(anecdote => anecdote.id === match.params.id)
+    : null
+  console.log(anecdote);
+
   return (
     // Rendering our components as children of the Router (BrowserRouter) tag imported by react-router-dom lets us handle dynamic routing.
     // Browse router uses the HTML5 API to be able to modify the website's url without refreshing the page: https://css-tricks.com/using-the-html5-history-api/
-    <Router>
+    // <Router> //moved to index, as we cannot use useRouteMatch in the same component that handles the routing.
+    <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification text={notification} />
 
       {/* The order of the components in the switch is important, we have to put "/" last because all paths start with / and otherwise nothing would get rendered. Same goes with /notes and /notes/:id */}
       <Switch>
         <Route path="/anecdotes/:id">
-          <Anecdote anecdotes={anecdotes} />
+          <Anecdote anecdote={anecdote} />
         </Route>
         <Route path="/create">
-          <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} stateSetter={setNotification} />
         </Route>
         <Route path="/about">
           <About />
@@ -175,7 +195,8 @@ const App = () => {
       </Switch>
 
       <Footer />
-    </Router>
+    </div>
+    // </Router > // moved to index
   )
 }
 
