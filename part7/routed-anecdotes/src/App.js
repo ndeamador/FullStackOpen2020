@@ -70,21 +70,14 @@ const Footer = () => (
 
 const CreateNew = (props) => {
 
-  // const [contentReset, ...content] = useField('content')
-  // const [authorReset, ...author] = useField('author')
-  // const [infoReset, ...info] = useField('info')
+  const {reset: contentReset, ...content} = useField('content')
+  const {reset: authorReset, ...author} = useField('author')
+  const {reset: infoReset, ...info} = useField('info')
 
-  const content = useField('content')
-  const author = useField('author')
-  const info = useField('info')
-
-  // console.log('reset:', contentReset)
-  console.log('content:', content);
-
-  const reset = () => {
-    // contentReset()
-    // authorReset()
-    // infoReset()
+  const clearFields = () => {
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   // With the useHistory hook we can access the history object, which lets us modify the browser's url programatically. We will use it later to show the home page after creating a new anecdote.
@@ -124,9 +117,10 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        {/* We need to specify the button type to prevent that the form considers all buttons as a submit. */}
+        <button type="submit">create</button>
+        <button type="button" onClick={clearFields}>reset</button>
       </form>
-      <button onClick={() => reset()}>reset</button>
     </div>
   )
 
