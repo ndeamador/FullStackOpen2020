@@ -70,9 +70,22 @@ const Footer = () => (
 
 const CreateNew = (props) => {
 
+  // const [contentReset, ...content] = useField('content')
+  // const [authorReset, ...author] = useField('author')
+  // const [infoReset, ...info] = useField('info')
+
   const content = useField('content')
   const author = useField('author')
   const info = useField('info')
+
+  // console.log('reset:', contentReset)
+  console.log('content:', content);
+
+  const reset = () => {
+    // contentReset()
+    // authorReset()
+    // infoReset()
+  }
 
   // With the useHistory hook we can access the history object, which lets us modify the browser's url programatically. We will use it later to show the home page after creating a new anecdote.
   const history = useHistory()
@@ -113,6 +126,7 @@ const CreateNew = (props) => {
         </div>
         <button>create</button>
       </form>
+      <button onClick={() => reset()}>reset</button>
     </div>
   )
 
