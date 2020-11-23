@@ -1,0 +1,126 @@
+/* Notifications */
+
+.success {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.exception {
+  color: yellow;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* Blogs */
+
+.bloglist-container {
+  max-width: 1000px;
+}
+
+.blog-container > div {
+  border: 2px solid rgb(170, 170, 170);
+  border-radius: 5px;
+  padding: 4px 8px  ;
+  margin: 5px;
+  display: flex;
+}
+
+.blog-container > .toggleable-container > div {
+  display: flex;
+  flex-grow: 100;
+}
+
+.blog-content {
+  flex-grow: 100;
+}
+
+.blog-title-and-author {
+  padding: 0 10px;  
+}
+
+.extended-blog {
+  border-top: 2px solid rgb(80, 80, 80);
+  padding: 4px;
+  padding-top: 10px;
+  margin: 5px;
+}
+
+/* Blogform */
+
+.test {
+  margin-bottom: 30px;
+}
+
+.blogform-container > h2 {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+
+
+/* Default React styles */
+
+#logged-in-line {
+  padding-bottom: 15px;
+}
+
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
