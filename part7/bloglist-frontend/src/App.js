@@ -7,6 +7,9 @@ import Toggleable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs, addBlog } from './reducers/blogsReducer'
+import { setNotification, clearNotification } from './reducers/notificationReducer'
 
 
 const App = () => {
@@ -16,10 +19,16 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({ type: null, text: null })
 
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   blogService.getAll().then(blogs =>
+  //     setBlogs(blogs)
+  //   )
+  // }, [])
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    dispatch(initializeBlogs()) 
   }, [])
 
 
@@ -37,16 +46,27 @@ const App = () => {
 
 
 
-  const notificationTimeout = () => {
-    setTimeout(() => {
-      setNotification(
-        {
-          type: null,
-          text: null
-        }
-      )
-    }, 5000)
-  }
+
+  // const notificationTimeout = () => {
+  //   setTimeout(() => {
+  //     setNotification(
+  //       {
+  //         type: null,
+  //         text: null
+  //       }
+  //     )
+  //   }, 5000)
+  // }
+
+  // const notificationTimeout = () => {
+  //   setTimeout(() => {
+  //     dispatch(setNotification(  {
+  //       type: null,
+  //       text: null
+  //     }))
+  //   }, 5000)
+  // }
+
 
 
   const handleLogin = async (event) => {
@@ -73,12 +93,12 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      setNotification({ type: 'success', text: 'Login successful' })
-      notificationTimeout()
+      dispatch(setNotification({ type: 'success', text: 'Login successful' }))
+      // notificationTimeout()
 
     } catch (exception) {
-      setNotification({ type: 'error', text: 'Wrong username or password' })
-      notificationTimeout()
+      dispatch(setNotification({ type: 'error', text: 'Wrong username or password' }))
+      // notificationTimeout()
     }
   }
 
@@ -90,11 +110,11 @@ const App = () => {
         setUser(null)
         window.localStorage.removeItem('loggedBlogappUser')
 
-        setNotification({ type: 'success', text: 'Successfully logged out' })
-        notificationTimeout()
+        dispatch(setNotification({ type: 'success', text: 'Successfully logged out' }))
+        // notificationTimeout()
       } catch (exception) {
-        setNotification({ type: 'error', text: 'Unable to logout' })
-        notificationTimeout()
+        dispatch(setNotification({ type: 'error', text: 'Unable to logout' }))
+        // notificationTimeout()
       }
     }
   }
@@ -105,24 +125,27 @@ const App = () => {
   // this variable acts as a reference to the component. The same reference is kept between re-renders
   const blogFormRef = useRef()
 
-  const addBlog = async (newObject) => {
-    try {
-      // close the form when the new blog is created by the user
-      blogFormRef.current.toggleVisibility()
-
-      const response = await blogService.create(newObject)
-
-      setBlogs(blogs.concat(response))
-
-      setNotification({ type: 'success', text: `Blog "${newObject.title}" added` })
-      notificationTimeout()
+  // const addBlog = async (newObject) => {
 
 
-    } catch (exception) {
-      setNotification({ type: 'error', text: exception.response.data.error })
-      notificationTimeout()
-    }
-  }
+  //   try {
+  //     // close the form when the new blog is created by the user
+  //     blogFormRef.current.toggleVisibility()
+
+  //     const response = await blogService.create(newObject)
+
+  //     // setBlogs(blogs.concat(response))
+  //     dispatch(addBlog(response))
+
+  //     dispatch(setNotification({ type: 'success', text: `Blog "${newObject.title}" added` }))
+  //     notificationTimeout()
+
+
+  //   } catch (exception) {
+  //     setNotification({ type: 'error', text: exception.response.data.error })
+  //     notificationTimeout()
+  //   }
+  // }
 
 
   const updateBlog = async (blogId, updatedBlog) => {
@@ -132,8 +155,8 @@ const App = () => {
       setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
 
     } catch (exception) {
-      setNotification({ type: 'error', text: exception.response.data.error })
-      notificationTimeout()
+      dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
+      // notificationTimeout()
     }
   }
 
@@ -143,8 +166,8 @@ const App = () => {
 
       setBlogs(blogs.filter(blog => blog.id !== blogId))
     } catch (exception) {
-      setNotification({ type: 'error', text: exception.response.data.error })
-      notificationTimeout()
+      dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
+      // notificationTimeout()
     }
 
   }
@@ -173,7 +196,7 @@ const App = () => {
           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
 
           <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
-            <BlogForm initial_state='hide' createBlog={addBlog} />
+            <BlogForm initial_state='hide' />
           </Toggleable>
 
           <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />

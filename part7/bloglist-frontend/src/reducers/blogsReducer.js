@@ -26,8 +26,10 @@ export const initializeBlogs = () => {
 }
 
 export const addBlog = (newObject) => {
+  console.log('reducer addblog newobject:', newObject);
   return async dispatch => {
     const response = await blogService.create(newObject)
+    console.log('response:', response);
     dispatch({
       type: 'ADD_BLOG',
       data: response

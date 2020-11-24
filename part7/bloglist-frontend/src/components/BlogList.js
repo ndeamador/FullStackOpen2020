@@ -1,10 +1,15 @@
 import React from 'react'
 import Blog from './Blog'
+import blogReducer from '../reducers/blogsReducer'
+import { useSelector, useDispatch } from 'react-redux'
 
 
-const BlogList = ({ blogs, updateBlog, deleteBlog, user }) => {
 
-  const orderedBlogs = blogs.sort((a, b) => {
+const BlogList = ({ updateBlog, deleteBlog, user }) => {
+
+  const initialBlogs = useSelector(store => store.blogs)
+
+  const orderedBlogs = initialBlogs.sort((a, b) => {
     if (a.likes > b.likes) {
       return -1
     } else if (a.likes < b.likes) {

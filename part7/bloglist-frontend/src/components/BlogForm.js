@@ -1,24 +1,20 @@
 
 import React, { useState } from 'react'
-import { clearBlogForm } from '../reducers/blogFormReducer'
+import { useDispatch } from 'react-redux'
+import { addBlog } from '../reducers/blogsReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
 
-  // const [title, setTitle] = useState('')
-  // const [author, setAuthor] = useState('')
-  // const [url, setUrl] = useState('')
+  const dispatch = useDispatch()
 
-  // const clearBlogFormFields = () => {
-  //   setTitle('')
-  //   setAuthor('')
-  //   setUrl('')
-  // }
-
-
-
-
-  const addBlog = async (event) => {
+  const addNewBlog = async (event) => {
     event.preventDefault()
+
+    // console.log('target', event.target);
+    // console.log('title:', event.target.title.value,
+    //   'author:', event.target.author.value,
+    //   'url:', event.target.url.value);
 
     const newObject = {
       title: event.target.title.value,
@@ -26,26 +22,37 @@ const BlogForm = ({ createBlog }) => {
       url: event.target.url.value
     }
 
-    createBlog(newObject)
+    console.log('newObject:', newObject);
 
-    clearBlogForm()
+    event.target.reset()
+
+    try {
+      //     // close the form when the new blog is created by the user
+      //     blogFormRef.current.toggleVisibility()
+
+      await dispatch(addBlog(newObject))
+
+      // const test = await dispatch(addBlog(newObject))
+      // console.log('test:', test);
+
+      dispatch(setNotification({ type: 'success', text: `Blog "${newObject.title}" added` }))
+
+    } catch (exception) {
+      dispatch(setNotification({ type: 'error', text: exception.message }))
+    }
   }
 
 
   return (
     <div className="blogform-container">
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={addNewBlog}>
         <div>
           title
           <input
             id="blogform-title-input"
             type="text"
             name="title"
-            // value={title}
-            // onChange={({ target }) => setTitle(target.value)}
-            // onChange={({ target }) => editBlogForm({title: target.value})}
-
           />
         </div>
         <div>
@@ -54,8 +61,6 @@ const BlogForm = ({ createBlog }) => {
             id="blogform-author-input"
             type="text"
             name="author"
-            // value={author}
-            // onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
@@ -64,8 +69,6 @@ const BlogForm = ({ createBlog }) => {
             id="blogform-url-input"
             type="text"
             name="url"
-            // value={url}
-            // onChange={({ target }) => setUrl(target.value)}
           />
         </div>
         <button className="blogform-create-button" type="create">create</button>
