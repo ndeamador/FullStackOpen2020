@@ -10,12 +10,18 @@ const reducer = (state = [], action) => {
     case 'ADD_BLOG':
       return state.concat(action.data)
 
-    default: 
-    return state
+    case 'UPDATE_BLOG':
+      return state.map(blog => blog.id === action.data.id ? action.data : blog)
+
+    case 'DELETE_BLOG':
+      return state.filter(blog => blog.id !== action.data)
+
+    default:
+      return state
   }
 }
 
-export const initializeBlogs = () => {  
+export const initializeBlogs = () => {
   return async dispatch => {
     const response = await blogService.getAll()
     dispatch({
@@ -35,7 +41,44 @@ export const addBlog = (newObject) => {
       data: response
     })
   }
-
 }
+
+export const updateBlog = (blogId, updatedBlog) => {
+
+  return async dispatch => {
+    const response = await blogService.update(blogId, updatedBlog)
+
+    dispatch({
+      type: 'UPDATE_BLOG',
+      data: response
+    })
+  }
+}
+
+
+export const deleteBlog = (blogId) => {
+
+  return async dispatch => {
+    await blogService.deleteBlog(blogId)
+    
+    dispatch({
+      type: 'DELETE_BLOG',
+      data: blogId
+    })
+  }    
+}
+
+
+// const updateBlog = async (blogId, updatedBlog) => {
+//   try {
+//     const response = await blogService.update(blogId, updatedBlog)
+
+//     setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
+
+//   } catch (exception) {
+//     dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
+//     // notificationTimeout()
+//   }
+// }
 
 export default reducer

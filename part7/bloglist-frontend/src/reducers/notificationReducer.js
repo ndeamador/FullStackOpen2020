@@ -16,9 +16,7 @@ export const setNotification = (notification, timer = 5) => {
   // clear the current notification deadline to avoid overlapping (prevent that an earlier timeout clears a later notification ahead of time)
   clearTimeout(setNotification.timeoutID)
 
-  console.log('action notification:', notification);
-
-  return dispatch => {
+  return async dispatch => {
 
       dispatch({
           type: 'SET_NOTIFICATION',

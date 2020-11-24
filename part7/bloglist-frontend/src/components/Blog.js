@@ -1,8 +1,13 @@
 import React from 'react'
 import Toggleable from './Toggleable'
+import { updateBlog, deleteBlog } from '../reducers/blogsReducer'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
 
-const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
+const Blog = ({ blog, user }) => {
+
+  const dispatch = useDispatch()
 
   const blogTitleAndAuthor = () => (
     <div className="blog-title-and-author" initial_state="show"> {blog.title}, by {blog.author}</div>
@@ -21,20 +26,32 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   )
 
   const addLike = async () => {
-    const updatedBlog = {
-      author: blog.author,
-      likes: blog.likes + 1,
-      title: blog.title,
-      user: blog.user.id
+
+    try {
+      const updatedBlog = {
+        author: blog.author,
+        likes: blog.likes + 1,
+        title: blog.title,
+        user: blog.user.id
+      }
+
+      await dispatch(updateBlog(blog.id, updatedBlog))
+
+    } catch (err) {
+      dispatch(setNotification({ type: 'error', text: err.message }))
     }
 
-    await updateBlog(blog.id, updatedBlog)
   }
 
   const confirmDeletion = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
 
-      deleteBlog(blog.id)
+      try {
+        dispatch(deleteBlog(blog.id))
+
+      } catch (err) {
+        dispatch(setNotification({ type: 'error', text: err.message }))
+      }
     }
   }
 

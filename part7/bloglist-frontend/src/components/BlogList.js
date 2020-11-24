@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 
 
-const BlogList = ({ updateBlog, deleteBlog, user }) => {
+const BlogList = ({ user }) => {
 
   const initialBlogs = useSelector(store => store.blogs)
 
@@ -18,6 +18,7 @@ const BlogList = ({ updateBlog, deleteBlog, user }) => {
       return 0
     }
   })
+ 
   
   return (
     <div className="bloglist-container">
@@ -26,7 +27,7 @@ const BlogList = ({ updateBlog, deleteBlog, user }) => {
         orderedBlogs.map((blog, i) =>
           // Remember that class is a keyword in JS and JSX, so className has to be used instead of class when working with React.
           <div className="blog-container" key={i}>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+            <Blog key={blog.id} blog={blog} user={user} />
           </div>
         )
       }

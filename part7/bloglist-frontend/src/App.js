@@ -148,29 +148,29 @@ const App = () => {
   // }
 
 
-  const updateBlog = async (blogId, updatedBlog) => {
-    try {
-      const response = await blogService.update(blogId, updatedBlog)
+  // const updateBlog = async (blogId, updatedBlog) => {
+  //   try {
+  //     const response = await blogService.update(blogId, updatedBlog)
 
-      setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
+  //     setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
 
-    } catch (exception) {
-      dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
-      // notificationTimeout()
-    }
-  }
+  //   } catch (exception) {
+  //     dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
+  //     // notificationTimeout()
+  //   }
+  // }
 
-  const deleteBlog = async (blogId) => {
-    try {
-      await blogService.deleteBlog(blogId)
+  // const deleteBlog = async (blogId) => {
+  //   try {
+  //     await blogService.deleteBlog(blogId)
 
-      setBlogs(blogs.filter(blog => blog.id !== blogId))
-    } catch (exception) {
-      dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
-      // notificationTimeout()
-    }
+  //     setBlogs(blogs.filter(blog => blog.id !== blogId))
+  //   } catch (exception) {
+  //     dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
+  //     // notificationTimeout()
+  //   }
 
-  }
+  // }
 
 
 
@@ -199,7 +199,7 @@ const App = () => {
             <BlogForm initial_state='hide' />
           </Toggleable>
 
-          <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+          <BlogList blogs={blogs} user={user} />
         </div>
       }
 
