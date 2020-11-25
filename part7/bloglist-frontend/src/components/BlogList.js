@@ -1,7 +1,6 @@
 import React from 'react'
 import Blog from './Blog'
-import blogReducer from '../reducers/blogsReducer'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 

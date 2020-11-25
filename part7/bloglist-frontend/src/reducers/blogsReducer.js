@@ -32,10 +32,8 @@ export const initializeBlogs = () => {
 }
 
 export const addBlog = (newObject) => {
-  console.log('reducer addblog newobject:', newObject);
   return async dispatch => {
     const response = await blogService.create(newObject)
-    console.log('response:', response);
     dispatch({
       type: 'ADD_BLOG',
       data: response
@@ -44,10 +42,8 @@ export const addBlog = (newObject) => {
 }
 
 export const updateBlog = (blogId, updatedBlog) => {
-
   return async dispatch => {
     const response = await blogService.update(blogId, updatedBlog)
-
     dispatch({
       type: 'UPDATE_BLOG',
       data: response
@@ -55,30 +51,14 @@ export const updateBlog = (blogId, updatedBlog) => {
   }
 }
 
-
 export const deleteBlog = (blogId) => {
-
   return async dispatch => {
-    await blogService.deleteBlog(blogId)
-    
+    await blogService.deleteBlog(blogId)    
     dispatch({
       type: 'DELETE_BLOG',
       data: blogId
     })
   }    
 }
-
-
-// const updateBlog = async (blogId, updatedBlog) => {
-//   try {
-//     const response = await blogService.update(blogId, updatedBlog)
-
-//     setBlogs(blogs.map(blog => blog.id === blogId ? response : blog))
-
-//   } catch (exception) {
-//     dispatch(setNotification({ type: 'error', text: exception.response.data.error }))
-//     // notificationTimeout()
-//   }
-// }
 
 export default reducer

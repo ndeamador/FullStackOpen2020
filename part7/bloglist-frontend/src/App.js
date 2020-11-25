@@ -196,7 +196,7 @@ const App = () => {
           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
 
           <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
-            <BlogForm initial_state='hide' />
+            <BlogForm initial_state='hide' toggleVisibility={() => blogFormRef.current.toggleVisibility()}/>
           </Toggleable>
 
           <BlogList blogs={blogs} user={user} />

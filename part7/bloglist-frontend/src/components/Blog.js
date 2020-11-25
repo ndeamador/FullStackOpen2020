@@ -43,12 +43,12 @@ const Blog = ({ blog, user }) => {
 
   }
 
-  const confirmDeletion = () => {
+  const confirmDeletion = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
 
       try {
-        dispatch(deleteBlog(blog.id))
-
+        await dispatch(deleteBlog(blog.id))
+        dispatch(setNotification({ type: 'success', text: `Blog '${blog.title}' successfully deleted.` }))
       } catch (err) {
         dispatch(setNotification({ type: 'error', text: err.message }))
       }
@@ -69,8 +69,8 @@ const Blog = ({ blog, user }) => {
       {createdByCurrentUser && deleteButton()}
     </Toggleable>
   )
-
-
 }
+
+
 export default Blog
 

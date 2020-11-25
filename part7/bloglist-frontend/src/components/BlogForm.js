@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = () => {
+const BlogForm = ({toggleVisibility}) => {
 
   const dispatch = useDispatch()
 
@@ -17,17 +17,15 @@ const BlogForm = () => {
       url: event.target.url.value
     }
 
-    console.log('newObject:', newObject);
-
     event.target.reset()
 
     try {
-      //     // close the form when the new blog is created by the user
-      //     blogFormRef.current.toggleVisibility()
+      toggleVisibility()
 
       await dispatch(addBlog(newObject))
 
       dispatch(setNotification({ type: 'success', text: `Blog "${newObject.title}" added` }))
+
 
     } catch (exception) {
       dispatch(setNotification({ type: 'error', text: exception.message }))
