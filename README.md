@@ -48,7 +48,7 @@ _Flux architecture, deep-freeze library, react-redux, Redux DevTools extension &
 
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
-_React Bootstrap, MaterialUI, Webpack_
+_React Bootstrap, MaterialUI, refactoring React apps to use Redux_
 
 - [project name](addlink) - Project description
 

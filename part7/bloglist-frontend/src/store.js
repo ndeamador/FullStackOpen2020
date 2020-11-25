@@ -8,15 +8,15 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 const reducer = combineReducers({
   toggleableVisibility: toggleableReducer,
-  login: loginReducer,
+  user: loginReducer,
   blogs: blogsReducer,
   notification: notificationReducer
 })
 
-const store = createStore (
+const store = createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk))
-  )
+)
 
 store.subscribe(() => console.log(store.getState()))
 

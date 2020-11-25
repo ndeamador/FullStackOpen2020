@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({toggleVisibility}) => {
+const BlogForm = ({ toggleVisibility }) => {
 
   const dispatch = useDispatch()
 

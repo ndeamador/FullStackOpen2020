@@ -17,8 +17,8 @@ const BlogList = ({ user }) => {
       return 0
     }
   })
- 
-  
+
+
   return (
     <div className="bloglist-container">
       {

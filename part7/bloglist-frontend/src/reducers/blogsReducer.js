@@ -53,12 +53,12 @@ export const updateBlog = (blogId, updatedBlog) => {
 
 export const deleteBlog = (blogId) => {
   return async dispatch => {
-    await blogService.deleteBlog(blogId)    
+    await blogService.deleteBlog(blogId)
     dispatch({
       type: 'DELETE_BLOG',
       data: blogId
     })
-  }    
+  }
 }
 
 export default reducer
