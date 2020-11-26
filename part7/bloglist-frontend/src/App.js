@@ -6,10 +6,13 @@ import Toggleable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import UsersView from './components/UsersView'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/loginReducer'
+import { Switch, Route, Link } from 'react-router-dom'
+import { initializeUsers } from './reducers/userViewReducer'
 
 
 
@@ -21,6 +24,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
 
@@ -56,21 +60,52 @@ const App = () => {
   const blogFormRef = useRef()
 
 
+  //   return (
+  //     <div>
+
+  //       <Notification />
+
+  //       {user === null ?
+  //         <LoginForm /> :
+  //         <div>
+  //           <h2>blogs</h2>
+  //           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
+
+  //           <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
+  //             <BlogForm initial_state='hide' toggleVisibility={() => blogFormRef.current.toggleVisibility()} />
+  //           </Toggleable>
+
+  //           <BlogList user={user} />
+  //         </div>
+  //       }
+  //     </div>
+  //   )
+  // }
+
+
   return (
     <div>
       <Notification />
-
       {user === null ?
         <LoginForm /> :
         <div>
           <h2>blogs</h2>
           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
 
-          <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
-            <BlogForm initial_state='hide' toggleVisibility={() => blogFormRef.current.toggleVisibility()} />
-          </Toggleable>
+          <Switch>
+            <Route path='/users'>
+              <UsersView />
+            </Route>
 
-          <BlogList user={user} />
+            <Route path='/'>
+              <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
+                <BlogForm initial_state='hide' toggleVisibility={() => blogFormRef.current.toggleVisibility()} />
+              </Toggleable>
+
+              <BlogList user={user} />
+            </Route>
+          </Switch>
+
         </div>
       }
     </div>
