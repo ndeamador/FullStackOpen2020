@@ -14,7 +14,6 @@ export const initializeUsers = () => {
 
   return async dispatch => {
     const users = await userService.getAll()
-    console.log('actioncreator:', users);
 
     dispatch({
       type: 'INITIALIZE_USERS',

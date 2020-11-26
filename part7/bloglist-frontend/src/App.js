@@ -6,13 +6,14 @@ import Toggleable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
-import UsersView from './components/UsersView'
+import AllUsersView from './components/AllUsersView'
+import SingleUserView from './components/SingleUserView'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/loginReducer'
 import { Switch, Route, Link } from 'react-router-dom'
-import { initializeUsers } from './reducers/userViewReducer'
+import { initializeUsers } from './reducers/usersReducer'
 
 
 
@@ -23,8 +24,13 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeBlogs())
-    dispatch(initializeUsers())
+    const initialize = async () => {
+      await dispatch(initializeBlogs())
+      await dispatch(initializeUsers())
+    }
+    initialize()
+    // dispatch(initializeBlogs())
+    // dispatch(initializeUsers())
   }, [dispatch])
 
 
@@ -93,8 +99,12 @@ const App = () => {
           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
 
           <Switch>
+            <Route path='/users/:id'>
+              <SingleUserView />
+            </Route>
+
             <Route path='/users'>
-              <UsersView />
+              <AllUsersView />
             </Route>
 
             <Route path='/'>
