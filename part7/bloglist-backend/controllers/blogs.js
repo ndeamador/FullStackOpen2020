@@ -64,21 +64,6 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.get('/:id', async (request, response) => {
 
-    // There seems to be a problem with Mongo returning error 500 if an invalid id is provided and stopping the execution.
-    // It seems to be a common problem with Mongo, so I will handle the invalid id beforehand
-    // https://github.com/strapi/strapi/issues/5930
-    // https://stackoverflow.com/questions/14940660/whats-mongoose-error-cast-to-objectid-failed-for-value-xxx-at-path-id
-
-    // If ID is not valid in Mongo:
-    // if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    //     return response.status(400).end()
-    // }
-
-    // edit: commented out because it can also be bypassed by using the error handling middleware.
-
-
-
-    // If Id is valid:
     const blog = await Blog.findById(request.params.id)
 
     if (blog) {
@@ -92,13 +77,6 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
 
-    // If ID is not valid in Mongo:
-    /*     if (!request.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    
-            return response.status(400).json({ error: 'Invalid ID' })
-        } */
-
-    // If ID is valid
     const blog = request.body
 
     if (!blog.title && !blog.url) {
@@ -135,9 +113,17 @@ blogsRouter.delete('/:id', async (request, response) => {
         return response.status(401).json({ error: 'only the author of the blog can delete it' })
     }
 
-    await Blog.findByIdAndRemove(request.params.id)    
-   
+    await Blog.findByIdAndRemove(request.params.id)
+
     response.status(204).end()
+})
+
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, {"$push": {"comments": request.body.message}}, {new: true})
+
+  response.json(updatedBlog)
 })
 
 module.exports = blogsRouter
