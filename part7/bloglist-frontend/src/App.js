@@ -25,11 +25,6 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // const initialize = async () => {
-    //   await dispatch(initializeBlogs())
-    //   await dispatch(initializeUsers())
-    // }
-    // initialize()
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
   }, [dispatch])
@@ -67,28 +62,6 @@ const App = () => {
   const blogFormRef = useRef()
 
 
-  //   return (
-  //     <div>
-
-  //       <Notification />
-
-  //       {user === null ?
-  //         <LoginForm /> :
-  //         <div>
-  //           <h2>blogs</h2>
-  //           <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
-
-  //           <Toggleable buttonLabel1='new blog' buttonLabel2='cancel' ref={blogFormRef}>
-  //             <BlogForm initial_state='hide' toggleVisibility={() => blogFormRef.current.toggleVisibility()} />
-  //           </Toggleable>
-
-  //           <BlogList user={user} />
-  //         </div>
-  //       }
-  //     </div>
-  //   )
-  // }
-
 
   return (
     <div>
@@ -96,8 +69,14 @@ const App = () => {
       {user === null ?
         <LoginForm /> :
         <div>
-          <h2>blogs</h2>
-          <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
+          <div>
+            <Link to="/">blogs</Link>
+            <Link to="/users">users</Link>
+            <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
+          </div>
+
+          <h2>blog app</h2>
+
 
           <Switch>
             <Route path='/users/:id'>
