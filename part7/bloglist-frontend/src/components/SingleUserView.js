@@ -16,7 +16,7 @@ const SingleUserView = () => {
       <h3>added blogs</h3>
 
       <ul>
-      {userBlogs === null || userBlogs.length === 0 ?  'No blogs found' : userBlogs}
+        {userBlogs === null || userBlogs.length === 0 ? 'No blogs found' : userBlogs}
       </ul>
     </div >
   )

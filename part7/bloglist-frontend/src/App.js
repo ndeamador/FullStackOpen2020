@@ -8,6 +8,7 @@ import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import AllUsersView from './components/AllUsersView'
 import SingleUserView from './components/SingleUserView'
+import SingleBlogView from './components/SingleBlogView'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setNotification } from './reducers/notificationReducer'
@@ -24,13 +25,13 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const initialize = async () => {
-      await dispatch(initializeBlogs())
-      await dispatch(initializeUsers())
-    }
-    initialize()
-    // dispatch(initializeBlogs())
-    // dispatch(initializeUsers())
+    // const initialize = async () => {
+    //   await dispatch(initializeBlogs())
+    //   await dispatch(initializeUsers())
+    // }
+    // initialize()
+    dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
 
@@ -105,6 +106,10 @@ const App = () => {
 
             <Route path='/users'>
               <AllUsersView />
+            </Route>
+
+            <Route path='/blogs/:id'>
+              <SingleBlogView />
             </Route>
 
             <Route path='/'>
