@@ -5,6 +5,11 @@ import { setUser } from '../reducers/loginReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 
+import {
+  Button,
+  TextField
+} from '@material-ui/core'
+
 const LoginForm = () => {
 
   const dispatch = useDispatch()
@@ -45,22 +50,22 @@ const LoginForm = () => {
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
-          username
-          <input
+          <TextField
             className="login-username-input"
             type="text"
             name="username"
+            label="username"
           />
         </div>
         <div>
-          password
-          <input
+          <TextField
             className="login-password-input"
             type="password"
             name="password"
+            label="password"
           />
         </div>
-        <button className="login-button" type="submit">login</button>
+        <Button variant="contained" color="secondary" size="small" type="submit">login</Button>
       </form>
     </div>
   )

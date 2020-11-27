@@ -37,13 +37,13 @@
   max-width: 1000px;
 }
 
-.blog-container {
+/* .blog-container {
   border: 2px solid rgb(170, 170, 170);
   border-radius: 5px;
   padding: 4px 8px  ;
   margin: 5px;
   display: flex;
-}
+} */
 
 .blog-container > .toggleable-container > div {
   display: flex;

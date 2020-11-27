@@ -15,6 +15,7 @@ import { setNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/loginReducer'
 import { Switch, Route, Link } from 'react-router-dom'
 import { initializeUsers } from './reducers/usersReducer'
+import Container from '@material-ui/core/Container'
 
 
 
@@ -64,7 +65,7 @@ const App = () => {
 
 
   return (
-    <div>
+    <Container>
       <Notification />
       {user === null ?
         <LoginForm /> :
@@ -102,7 +103,7 @@ const App = () => {
 
         </div>
       }
-    </div>
+    </Container>
   )
 }
 
