@@ -1,12 +1,14 @@
-
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button, TextField } from '@material-ui/core'
+import { addBlogToUser } from '../reducers/usersReducer'
 
 const BlogForm = ({ toggleVisibility }) => {
 
   const dispatch = useDispatch()
+  const currentUserId = useSelector(store => store.user.id)
 
   const addNewBlog = async (event) => {
     event.preventDefault()
@@ -21,11 +23,11 @@ const BlogForm = ({ toggleVisibility }) => {
 
     try {
       toggleVisibility()
-
-      await dispatch(addBlog(newObject))
-
+      const response = await dispatch(addBlog(newObject))
+      // eslint-disable-next-line no-unused-vars
+      const { user, comments, likes, ...formattedBlog } = response
+      dispatch(addBlogToUser(currentUserId, formattedBlog))
       dispatch(setNotification({ type: 'success', text: `Blog "${newObject.title}" added` }))
-
 
     } catch (exception) {
       dispatch(setNotification({ type: 'error', text: exception.message }))
@@ -38,30 +40,30 @@ const BlogForm = ({ toggleVisibility }) => {
       <h2>create new</h2>
       <form onSubmit={addNewBlog}>
         <div>
-          title
-          <input
+          <TextField
             id="blogform-title-input"
             type="text"
             name="title"
+            label="title"
           />
         </div>
         <div>
-          author
-          <input
+          <TextField
             id="blogform-author-input"
             type="text"
             name="author"
+            label="author"
           />
         </div>
         <div>
-          url
-          <input
+          <TextField
             id="blogform-url-input"
             type="text"
             name="url"
+            label="url"
           />
         </div>
-        <button className="blogform-create-button" type="create">create</button>
+        <Button id="blogform-create-button" variant="contained" color="primary" size="small" type="create">create</Button>
       </form>
     </div>
   )

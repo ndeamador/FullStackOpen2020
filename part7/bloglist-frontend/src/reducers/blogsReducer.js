@@ -41,6 +41,7 @@ export const addBlog = (newObject) => {
       type: 'ADD_BLOG',
       data: response
     })
+    return response
   }
 }
 

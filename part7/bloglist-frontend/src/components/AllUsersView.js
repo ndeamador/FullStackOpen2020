@@ -9,7 +9,6 @@ const AllUsersView = () => {
   const users = useSelector(store => store.allUsers)
   const usersRows = users ? users.map(user => (<tr key={user.username}><td><Link to={`/users/${user.id}`}>{user.name}</Link></td><td>{user.blogs.length}</td></tr>)) : null
 
-
   return (
     <div>
       <h2>Users</h2>

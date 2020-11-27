@@ -11,11 +11,11 @@ import SingleUserView from './components/SingleUserView'
 import SingleBlogView from './components/SingleBlogView'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
-import { setNotification } from './reducers/notificationReducer'
 import { setUser } from './reducers/loginReducer'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { initializeUsers } from './reducers/usersReducer'
 import Container from '@material-ui/core/Container'
+import NavBar from './components/NavBar'
 
 
 
@@ -43,25 +43,9 @@ const App = () => {
     }
   }, [dispatch])
 
-
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      try {
-        dispatch(setUser(null))
-        window.localStorage.removeItem('loggedBlogappUser')
-        dispatch(setNotification({ type: 'success', text: 'Successfully logged out' }))
-
-      } catch (exception) {
-        dispatch(setNotification({ type: 'error', text: 'Unable to logout' }))
-      }
-    }
-  }
-
-
   // the useRef hook creates a ref that we will assign to the Toggleable component.
   // this variable acts as a reference to the component. The same reference is kept between re-renders
   const blogFormRef = useRef()
-
 
 
   return (
@@ -70,14 +54,9 @@ const App = () => {
       {user === null ?
         <LoginForm /> :
         <div>
-          <div>
-            <Link to="/">blogs</Link>
-            <Link to="/users">users</Link>
-            <div id="logged-in-line">{user.name} logged in<button type="submit" onClick={handleLogout}>logout</button></div>
-          </div>
+          <NavBar />
 
           <h2>blog app</h2>
-
 
           <Switch>
             <Route path='/users/:id'>

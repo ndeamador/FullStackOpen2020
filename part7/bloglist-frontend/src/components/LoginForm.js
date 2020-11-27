@@ -65,7 +65,7 @@ const LoginForm = () => {
             label="password"
           />
         </div>
-        <Button variant="contained" color="secondary" size="small" type="submit">login</Button>
+        <Button id="login-button" variant="contained" color="secondary" size="small" type="submit">login</Button>
       </form>
     </div>
   )

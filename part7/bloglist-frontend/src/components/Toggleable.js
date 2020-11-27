@@ -3,6 +3,9 @@ import React, { useState, useImperativeHandle } from 'react'
 // The prop-types library is used to define mandatory props for comonents:
 import PropTypes from 'prop-types'
 
+import { Button } from '@material-ui/core'
+
+
 // Wrapping the functioninside a forwardRef funciton call gives the component access the ref assigned to it.
 const Toggleable = React.forwardRef((props, ref) => {
 
@@ -50,11 +53,11 @@ const Toggleable = React.forwardRef((props, ref) => {
   return (
     <div className="toggleable-container">
       <div className="toggleable-initially-shown" style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel1}</button>
+        <Button variant="outlined" color="primary" size="small" onClick={toggleVisibility}>{props.buttonLabel1}</Button>
         {initiallyShownChildren}
       </div>
       <div className="toggleable-initially-hidden" style={showWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel2}</button>
+        <Button variant="outlined" color="secondary" size="small" onClick={toggleVisibility}>{buttonLabel2}</Button>
         {initiallyHiddenChildren}
       </div>
     </div>
