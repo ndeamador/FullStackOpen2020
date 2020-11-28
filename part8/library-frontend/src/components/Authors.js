@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client'
 
 const Authors = (props) => {
   const response = useQuery(ALL_AUTHORS)
+
   if (!props.show) {
     return null
   }
