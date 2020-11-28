@@ -1,6 +1,6 @@
 # [Full Stack Open 2020](https://fullstackopen.com/en/about) - Coursework
 
-Coursework for the 2020 edition of the Full Stack Open course by the University of Helsinki, Finland. 
+Coursework for the 2020 edition of the Full Stack Open course by the University of Helsinki, Finland.
 
 ## Part 1 - [Introduction to React](https://fullstackopen.com/en/part1)
 
@@ -54,7 +54,7 @@ _React Bootstrap, MaterialUI, refactoring React apps to use Redux_
 
 ## Part 8 - [GraphQL](https://fullstackopen.com/en/part8)
 
-_fill_
+_uuid, Apollo client_
 
 - [project name](addlink) - Project description
 
