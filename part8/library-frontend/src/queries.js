@@ -45,25 +45,17 @@ mutation createBook(
 }
 `
 
-
-
-// export const CREATE_BOOK = gql`
-// mutation createBook(
-//   $title: String!
-//   $published: Int
-//   $author: String
-//   $genres: [String]
-// ) {
-//   addBook (
-//     title: $title
-//     published: $published
-//     author: $author
-//     genres: $genres
-// ) {
-//     title
-//     published
-//     author
-//     genres
-//   }
-// }
-// `
+export const SET_BIRTHYEAR = gql`
+  mutation setBirthyear(
+    $author: String!
+    $birthYear: Int!
+    ) {
+      editAuthor(
+        name: $author
+        setBornTo: $birthYear
+      ) {
+        name
+        born
+      }
+  }
+`
