@@ -14,6 +14,9 @@ const NewBook = (props) => {
   // we use the hookds 'refetchQueries' parameter to query allBooks(and allAuthors) again so that the changes are reflected without refreshing the page.
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onError: (error) => {
+      props.setError(error.graphQLErrors[0].message)
+    }
   })
 
   if (!props.show) {

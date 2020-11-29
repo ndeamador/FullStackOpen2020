@@ -11,6 +11,9 @@ const Authors = (props) => {
 
   const [setBirthyear] = useMutation(SET_BIRTHYEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      props.setError(error.graphQLErrors[0].message)
+    }
   })
 
   if (!props.show) {
@@ -25,7 +28,6 @@ const Authors = (props) => {
 
   const setAge = (event) => {
     event.preventDefault()
-    console.log('test:', event.target.name.value, event.target.year.value, typeof(event.target.year.value), typeof(parseInt(event.target.year.value)));
     setBirthyear({ variables: {author: event.target.name.value, birthYear: parseInt(event.target.year.value)}})
     event.target.name.value = ''
     event.target.year.value = null
