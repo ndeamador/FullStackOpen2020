@@ -142,24 +142,24 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks:  async (root, args) => {
+    allBooks: async (root, args) => {
       if (!(args.author || args.genre)) {
         return Book.find({}).populate('author')
       }
       else if (args.author && args.genre) {
-        const author = await Author.findOne({name: args.author})
+        const author = await Author.findOne({ name: args.author })
         const authorId = author ? author._id : null
 
-        return Book.find({author: authorId, genres: {$elemMatch: {$eq: args.genre}}}).populate('author')
+        return Book.find({ author: authorId, genres: { $elemMatch: { $eq: args.genre } } }).populate('author')
       }
       else if (args.author) {
-        const author = await Author.findOne({name: args.author})
+        const author = await Author.findOne({ name: args.author })
         const authorId = author ? author._id : null
 
-        return Book.find({author: authorId}).populate('author')
+        return Book.find({ author: authorId }).populate('author')
       }
       else if (args.genre) {
-        return Book.find({genres: {$elemMatch: {$eq: args.genre}}}).populate('author')
+        return Book.find({ genres: { $elemMatch: { $eq: args.genre } } }).populate('author')
       }
     },
     allAuthors: () => Author.find({})
@@ -175,11 +175,23 @@ const resolvers = {
           const author = await new Author({ name: args.author })
           authorId = author._id
 
-          await author.save()
+          try {
+            await author.save()
+          } catch (err) {
+            throw new UserInputError(err.message, {
+              invalidArgs: args
+            })
+          }
         }
 
         const book = new Book({ ...args, author: authorId })
-        await book.save()
+        try {
+          await book.save()
+        } catch (err) {
+          throw new UserInputError(err.message, {
+            invalidArgs: args
+          })
+        }
 
         return Book.findById(book._id).populate('author')
       }
@@ -192,7 +204,14 @@ const resolvers = {
       const author = await Author.findOne({ name: args.name })
       author.born = args.setBornTo
 
-      return author.save()
+      try {
+        await author.save()
+      } catch (err) {
+        throw new UserInputError(err.message, {
+          invalidArgs: args
+        })
+      }
+      return author
     }
   }
 }
