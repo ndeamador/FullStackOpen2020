@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React from 'react'
 import { SET_BIRTHYEAR, ALL_AUTHORS } from '../queries'
 import { useQuery, useMutation } from '@apollo/client'
 

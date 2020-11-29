@@ -18,7 +18,10 @@ query {
   allBooks {
     title
     published
-    author
+    author {
+      name
+      id
+    }
     id
   }
 }
@@ -39,7 +42,10 @@ mutation createBook(
 ) {
     title
     published
-    author
+    author{
+      name
+      id
+    }
     genres
   }
 }
