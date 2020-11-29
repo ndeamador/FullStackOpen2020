@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Notification = ({errorMessage}) => {
-  console.log('not:', errorMessage);
 
   if ( !errorMessage ) {
     return null
