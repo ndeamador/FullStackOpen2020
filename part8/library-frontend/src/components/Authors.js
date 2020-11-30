@@ -29,6 +29,11 @@ const Authors = (props) => {
   const setAge = (event) => {
     event.preventDefault()
 
+    if (!event.target.year.value) {
+      props.setError("Please, specify year of birth.")
+      return
+    }
+
     setBirthyear({ variables: {author: event.target.selector.value, birthYear: parseInt(event.target.year.value)}})
     event.target.year.value = null
   }
