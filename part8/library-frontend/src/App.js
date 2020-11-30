@@ -34,7 +34,7 @@ const App = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       try {
         setToken(null)
-        // window.localStorage.removeItem('logged-libraryApp-user')
+        // window.localStorage.removeItem('loggedLibraryappUser')
         localStorage.clear()
         // It's important to reset Apollo's cache after logout as some queries might have fetched data which is only meant to be accessed by logged in  users.
         client.resetStore()

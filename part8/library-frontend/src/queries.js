@@ -20,6 +20,7 @@ export const ALL_BOOKS = gql`
         name
         id
       }
+      genres
       id
     }
   }
