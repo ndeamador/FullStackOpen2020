@@ -3,7 +3,7 @@ import { ALL_BOOKS } from "../queries"
 import { useQuery } from "@apollo/client"
 
 const Books = (props) => {
-  const [genreFilter, setGenreFilter] = useState(null)
+  const [genreFilter, setGenreFilter] = useState('all genres')
 
   const response = useQuery(ALL_BOOKS)
 
@@ -29,7 +29,7 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-
+      <div>in genre <strong>{genreFilter}</strong></div>
       <table>
         <tbody>
           <tr>
@@ -37,14 +37,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {/* {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))} */}
-          {books.map(book => ( genreFilter === null || book.genres.includes(genreFilter) ?
+          {books.map(book => ( genreFilter === 'all genres' || book.genres.includes(genreFilter) ?
             <tr key={book.title}>
               <td>{book.title}</td>
               <td>{book.author.name}</td>
@@ -60,7 +53,7 @@ const Books = (props) => {
             {genre}
           </button>
         ))}
-        <button onClick={() => setGenreFilter(null)}>all genres</button>
+        <button onClick={() => setGenreFilter('all genres')}>all genres</button>
       </div>
     </div>
   )

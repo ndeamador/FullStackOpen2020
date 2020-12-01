@@ -5,6 +5,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import Recommend from './components/Recommend'
 import { useApolloClient } from "@apollo/client"
 
 
@@ -34,10 +35,10 @@ const App = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       try {
         setToken(null)
-        // window.localStorage.removeItem('loggedLibraryappUser')
         localStorage.clear()
         // It's important to reset Apollo's cache after logout as some queries might have fetched data which is only meant to be accessed by logged in  users.
         client.resetStore()
+        setPage('books')
       } catch (err) {
         setErrorMessage('Unable to logout')
       }
@@ -50,6 +51,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         {token? <button onClick={() => setPage('add')}>add book</button> : null}
+        {token? <button onClick={() => setPage('recommend')}>recommend</button> : null}
         <button onClick={token ? handleLogout : () => setPage('login')}>{token? 'logout' : 'login'}</button>
       </div>
       <Notification errorMessage={errorMessage} />
@@ -66,6 +68,11 @@ const App = () => {
       <NewBook
         show={page === 'add'}
         setError={notify}
+      />
+
+      <Recommend
+        show={page === 'recommend'}
+        token={token}
       />
 
       <LoginForm

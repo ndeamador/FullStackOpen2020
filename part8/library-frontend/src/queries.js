@@ -61,12 +61,34 @@ export const SET_BIRTHYEAR = gql`
 
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
-    login(
-      username: $username
-      password: $password
-    ) {
+    login(username: $username, password: $password) {
       value
     }
   }
 `
 
+export const CURRENT_USER = gql`
+  query {
+    me {
+      username
+      id
+      favoriteGenre
+    }
+  }
+`
+
+export const CURRENT_USER_RECOMMENDATIONS = gql`
+query getUserRecommendations(
+  $favoriteGenre: String!
+) {
+  allBooks(
+    genre: $favoriteGenre
+  ) {
+    title
+    published
+    author {
+      name
+    }
+  }
+}
+`
