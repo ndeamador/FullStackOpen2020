@@ -1,0 +1,14 @@
+{
+  "name": "TypeScript-intro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts-node": "ts-node",
+    "bmi": "npm run ts-node -- bmiCalculator.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

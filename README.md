@@ -54,7 +54,7 @@ _React Bootstrap, MaterialUI, refactoring React apps to use Redux_
 
 ## Part 8 - [GraphQL](https://fullstackopen.com/en/part8)
 
-_uuid, Apollo client, Websockets_
+_uuid, Apollo client, Websockets, n+1 Query Problem_
 
 - [project name](addlink) - Project description
 
