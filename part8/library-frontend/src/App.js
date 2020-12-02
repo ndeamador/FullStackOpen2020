@@ -6,7 +6,8 @@ import NewBook from './components/NewBook'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
-import { useApolloClient } from "@apollo/client"
+import { useApolloClient, useSubscription } from "@apollo/client"
+import { BOOK_ADDED } from './queries'
 
 
 
@@ -44,6 +45,13 @@ const App = () => {
       }
     }
   }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log('subscriptiondata:', subscriptionData)
+      notify(`Book ${subscriptionData.data.bookAdded.title} has been added.`)
+    }
+  })
 
   return (
     <div>

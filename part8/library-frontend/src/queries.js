@@ -11,6 +11,18 @@ export const ALL_AUTHORS = gql`
   }
 `
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book  {
+    title
+    published
+    author {
+      name
+      id
+    }
+    genres
+  }
+`
+
 export const ALL_BOOKS = gql`
   query {
     allBooks {
@@ -91,4 +103,14 @@ query getUserRecommendations(
     }
   }
 }
+`
+
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
 `
