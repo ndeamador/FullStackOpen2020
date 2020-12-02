@@ -1,13 +1,20 @@
 
 import React from 'react'
-import { SET_BIRTHYEAR, ALL_AUTHORS } from '../queries'
-import { useQuery, useMutation } from '@apollo/client'
+import { SET_BIRTHYEAR, ALL_AUTHORS, BOOK_ADDED } from '../queries'
+import { useQuery, useMutation, useSubscription } from '@apollo/client'
 
 
 
 
 const Authors = (props) => {
   const response = useQuery(ALL_AUTHORS)
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: () => {
+      // Update book count when a new book is added.
+      response.refetch()
+    }
+  })
 
   const [setBirthyear] = useMutation(SET_BIRTHYEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -34,7 +41,7 @@ const Authors = (props) => {
       return
     }
 
-    setBirthyear({ variables: {author: event.target.selector.value, birthYear: parseInt(event.target.year.value)}})
+    setBirthyear({ variables: { author: event.target.selector.value, birthYear: parseInt(event.target.year.value) } })
     event.target.year.value = null
   }
 

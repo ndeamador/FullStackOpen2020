@@ -127,7 +127,6 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, { currentUser }) => {
-      console.log('addbook args:', args);
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }

@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
-import { CURRENT_USER, CURRENT_USER_RECOMMENDATIONS } from "../queries"
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { CURRENT_USER, CURRENT_USER_RECOMMENDATIONS, BOOK_ADDED } from "../queries"
+import { useLazyQuery, useSubscription, useApolloClient } from "@apollo/client"
 
 const Recommend = ({ show, token }) => {
+  const client = useApolloClient()
+
 
   // There seems to be a bug with the onCompleted method in the current version of Apollo. Adding the fetchpolicy "cache-and-network" serves as a workaround.
   // Without it, the application does not work properly or breaks when changing users.
@@ -14,6 +16,23 @@ const Recommend = ({ show, token }) => {
   })
 
   const [getRecommendations, { loading: booksLoading, data: booksData }] = useLazyQuery(CURRENT_USER_RECOMMENDATIONS)
+
+  // Subscription so taht the recommendation list is updated if a new book for the recommended genre is added.
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const recommendationsInCache = client.readQuery({ query: CURRENT_USER_RECOMMENDATIONS, variables: { favoriteGenre: userData.me.favoriteGenre } }).allBooks
+      const newBook = subscriptionData.data.bookAdded
+      const included = recommendationsInCache.map(p => p.id).includes(newBook.id)
+
+      if (!included) {
+        client.writeQuery({
+          query: CURRENT_USER_RECOMMENDATIONS,
+          variables: { favoriteGenre: userData.me.favoriteGenre },
+          data: { allBooks: recommendationsInCache.concat(newBook) }
+        })
+      }
+    }
+  })
 
   // The effect hooks triggers when the authentication token changes (when the user logs in)
   useEffect(() => {
