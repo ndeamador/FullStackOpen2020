@@ -85,18 +85,20 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Author: {
-    bookCount: async (root) => {
-      const authorId = (await Author.findOne({ name: root.name }))._id
-      return Book.collection.countDocuments({ author: authorId })
-    },
-  },
+  // Author: {
+  //   bookCount: async (root) => {
+  //     console.log('resolver:', root);
+  //     const authorId = (await Author.findOne({ name: root.name }))._id
+  //     return Book.collection.countDocuments({ author: authorId })
+  //   },
+  // },
   Query: {
     bookCount: () => Book.collection.countDocuments(),
 
     authorCount: () => Author.collection.countDocuments(),
 
     allBooks: async (root, args) => {
+
       if (!(args.author || args.genre)) {
         return Book.find({}).populate("author")
       } else if (args.author && args.genre) {
@@ -148,9 +150,14 @@ const resolvers = {
           }
         }
 
+        // const authorId = (await Author.findOne({ name: root.name }))._id
+        // return Book.collection.countDocuments({ author: authorId })
+
         const book = new Book({ ...args, author: authorId })
         try {
           await book.save()
+          // When a new book is added, increment the bookcount for the corresponding author (solution for the n+1 problem, as the author: bookCount resolver is no longern eeded)
+          await Author.findByIdAndUpdate(authorId, {$inc: {bookCount: 1}})
         } catch (err) {
           throw new UserInputError(err.message, {
             invalidArgs: args,
