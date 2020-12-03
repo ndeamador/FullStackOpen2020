@@ -1,3 +1,4 @@
+
 // A fix to prevent that variables are declared as global
 // This is to prevent conflicts with parseArguments, which is used in other files.
 export { };
@@ -51,7 +52,6 @@ const calculateExercises = (targetDailyHours: number, dailyHours: Array<number>)
 
 
 const parseArguments = (args: Array<string>): ParsedArguments => {
-
   if (args.length < 4) throw new Error('Not enough arguments');
 
   const argsAreNumbers: boolean = args.reduce((_result, arg, i) => {
@@ -73,10 +73,19 @@ const parseArguments = (args: Array<string>): ParsedArguments => {
 };
 
 
-try {
-  const { targetDailyHours, dailyHours } = parseArguments(process.argv);
-  console.log(calculateExercises(targetDailyHours, dailyHours));
-}
-catch (err) {
-  console.log('Something went wrong: ', err.message);
+// To prevent that this code block gets executed when importing functions from main, we wrap it for it to be only executed when run directly:
+// Otherwise it is run everytime a function is imported and it causes unwanted behaviour (including typescript errors)
+if (require.main === module) {
+  try {
+    const { targetDailyHours, dailyHours } = parseArguments(process.argv);
+    console.log(calculateExercises(targetDailyHours, dailyHours));
+  }
+  catch (err) {
+    if (err instanceof Error) {
+      console.log('Something went wrong: ', err.message);
+      throw err;
+    } else {
+      console.log('The argument passed to the error handler is not of type Error. The passed argument is: ', err);
+    }
+  }
 }
