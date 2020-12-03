@@ -18,7 +18,7 @@ interface ParsedArguments {
   dailyHours: Array<number>
 }
 
-const calculateExercises = (targetDailyHours: number, dailyHours: Array<number>): ResultObject => {
+export const calculateExercises = (targetDailyHours: number, dailyHours: Array<number>): ResultObject => {
 
   const periodLength: number = dailyHours.length;
   const averageDailyHours: number = dailyHours.reduce((acc, currentDayHours) => acc + currentDayHours) / periodLength;
@@ -42,7 +42,7 @@ const calculateExercises = (targetDailyHours: number, dailyHours: Array<number>)
   return {
     periodLength: periodLength,
     trainingDays: dailyHours.filter(day => day !== 0).length,
-    success: averageDailyHours >= targetDailyHours ? true : false,
+    success: averageDailyHours >= targetDailyHours,
     rating: rating,
     ratingDescription: message,
     target: targetDailyHours,
@@ -56,7 +56,7 @@ const parseArguments = (args: Array<string>): ParsedArguments => {
 
   const argsAreNumbers: boolean = args.reduce((_result, arg, i) => {
     if (i > 2) {
-      return !isNaN(Number(arg)) ? true : false;
+      return !isNaN(Number(arg));
     } else {
       return false;
     }
