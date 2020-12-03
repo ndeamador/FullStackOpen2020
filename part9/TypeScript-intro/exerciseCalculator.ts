@@ -1,4 +1,8 @@
 
+// A fix to prevent that variables are declared as global
+// This is to prevent conflicts with parseArguments, which is used in other files.
+export { };
+
 interface ResultObject {
   periodLength: number,
   trainingDays: number,
@@ -9,7 +13,12 @@ interface ResultObject {
   average: number
 }
 
-const calculateExercises = (dailyHours: Array<number>, targetDailyHours: number):ResultObject => {
+interface ParsedArguments {
+  targetDailyHours: number,
+  dailyHours: Array<number>
+}
+
+const calculateExercises = (targetDailyHours: number, dailyHours: Array<number>): ResultObject => {
 
   const periodLength: number = dailyHours.length
   const averageDailyHours: number = dailyHours.reduce((acc, currentDayHours) => acc + currentDayHours) / periodLength
@@ -41,4 +50,29 @@ const calculateExercises = (dailyHours: Array<number>, targetDailyHours: number)
   }
 }
 
-console.log('Reference execution: ', calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+
+const parseArguments = (args: Array<string>): ParsedArguments => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+
+  const argsAreNumbers: boolean = args.reduce((result, arg, i) => {
+    if (i > 2) return !isNaN(Number(arg)) ? true : false
+  }, false)
+
+  if (argsAreNumbers) {
+    return {
+      targetDailyHours: Number(args[2]),
+      dailyHours: (args.filter((arg, i) => i > 2)).map(arg => Number(arg))
+    }
+  } else {
+    throw new Error('Provided values were not numbers!');
+  }
+}
+
+
+try {
+  const { targetDailyHours, dailyHours } = parseArguments(process.argv);
+  console.log(calculateExercises(targetDailyHours, dailyHours));
+}
+catch (err) {
+  console.log('Something went wrong: ', err.message);
+}
