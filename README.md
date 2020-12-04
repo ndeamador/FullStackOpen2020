@@ -21,7 +21,7 @@ _JSON Server_
 
 ## Part 3 - [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 
-_fill_
+_Same origin policy and CORS_
 
 - [project name](addlink) - Project description
 
