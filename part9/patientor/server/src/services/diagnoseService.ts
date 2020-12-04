@@ -5,11 +5,6 @@ const getEntries = (): Array<Diagnose> => {
   return diagnoseData;
 };
 
-const addEntry = () => {
-  return null;
-};
-
 export default {
-  getEntries,
-  addEntry
+  getEntries
 };
