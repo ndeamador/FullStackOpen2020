@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useStateValue } from "../state";
+import { useStateValue, addFetchedPatientId, updatePatient } from "../state";
 import axios from "axios";
 import { Patient, Gender } from "../types";
 import { apiBaseUrl } from "../constants";
@@ -27,8 +27,10 @@ const PatientDetailsPage: React.FC = () => {
           `${apiBaseUrl}/patients/${id}`
         );
         setPatient(response.data);
-        dispatch({ type: "UPDATE_PATIENT", payload: response.data });
-        dispatch({ type: "ADD_FETCHED_PATIENT_ID", payload: response.data.id });
+        // dispatch({ type: "UPDATE_PATIENT", payload: response.data });
+        // dispatch({ type: "ADD_FETCHED_PATIENT_ID", payload: response.data.id });
+        dispatch(updatePatient(response.data));
+        dispatch(addFetchedPatientId(response.data.id));
       } else {
         setPatient(patients[id]);
       }

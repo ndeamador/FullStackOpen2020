@@ -1,6 +1,7 @@
 import { State } from "./state";
 import { Patient } from "../types";
 
+// Actions
 export type Action =
   | {
     type: "SET_PATIENT_LIST";
@@ -20,6 +21,40 @@ export type Action =
   };
 
 
+// Action creators
+
+export const setPatientList = (patientList: Patient[]): Action => {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: patientList
+  };
+};
+
+export const addPatient = (newPatient: Patient): Action => {
+  return {
+    type: "ADD_PATIENT",
+    payload: newPatient
+  };
+};
+
+export const updatePatient = (updatedPatient: Patient): Action => {
+  return {
+    type: "UPDATE_PATIENT",
+    payload: updatedPatient
+  };
+};
+
+export const addFetchedPatientId = (id: string): Action => {
+  return {
+    type: "ADD_FETCHED_PATIENT_ID",
+    payload: id
+  };
+};
+
+
+
+
+// Reducer
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_PATIENT_LIST":
