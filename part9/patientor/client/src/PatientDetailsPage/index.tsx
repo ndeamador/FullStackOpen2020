@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useStateValue, addFetchedPatientId, updatePatient } from "../state";
 import axios from "axios";
-import { Patient, Gender } from "../types";
+import { Patient, Gender, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 
 import { Container, Header, Icon } from "semantic-ui-react";
@@ -14,14 +14,14 @@ const PatientDetailsPage: React.FC = () => {
   // const [error, setError] = React.useState<string | undefined>();
 
   const fetchPatient = async (id: string) => {
-    console.log("IN FETCH ===========================");
-    console.log("indis:", individuallyFetchedPatients);
-    console.log("id:", id);
-    console.log("includes?:", individuallyFetchedPatients.includes(id));
+    // console.log("IN FETCH ===========================");
+    // console.log("indis:", individuallyFetchedPatients);
+    // console.log("id:", id);
+    // console.log("includes?:", individuallyFetchedPatients.includes(id));
 
     try {
       if (!individuallyFetchedPatients.includes(id)) {
-        console.log("-------------fetch inside if");
+        // console.log("-------------fetch inside if");
 
         const response = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${id}`
@@ -41,10 +41,10 @@ const PatientDetailsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("in useeffect");
+    // console.log("in useeffect");
     const patientsLoaded = Object.keys(patients).length > 0;
     if (patientsLoaded) fetchPatient(id);
-  }, [patients, id]);
+  }, [patients, id, dispatch]);
 
   if (!patient) return <div>Patient not found.</div>;
 
@@ -59,6 +59,31 @@ const PatientDetailsPage: React.FC = () => {
     }
   };
 
+  const displayEntries = (entries: Entry[]) => {
+    if (entries.length === 0) {
+      return null;
+    }
+
+
+    return (
+      <div style={{margin: 20}}>
+        <h4>entries</h4>
+        {entries.map((entry) => (
+          <div key={entry.id}>
+            <div>
+              {entry.date} {entry.description ? entry.description : null}
+            </div>
+            <ul>
+              {entry.diagnosisCodes
+                ? entry.diagnosisCodes.map((code) => <li key={code}>{code}</li>)
+                : null}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <Container>
       <Header>
@@ -67,6 +92,7 @@ const PatientDetailsPage: React.FC = () => {
       </Header>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+      {displayEntries(patient.entries)}
     </Container>
   );
 };

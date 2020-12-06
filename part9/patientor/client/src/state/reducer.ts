@@ -79,7 +79,7 @@ export const reducer = (state: State, action: Action): State => {
       };
 
     case "UPDATE_PATIENT":
-      console.log('in reducer update', state);
+      // console.log('in reducer update', state);
       return {
         ...state,
         patients: {
@@ -89,8 +89,8 @@ export const reducer = (state: State, action: Action): State => {
       };
 
     case "ADD_FETCHED_PATIENT_ID":
-      console.log('in reducer state', state.individuallyFetchedPatients);
-      console.log('in reducer action', action.payload);
+      // console.log('in reducer state', state.individuallyFetchedPatients);
+      // console.log('in reducer action', action.payload);
 
       // It seems that in some cases the reducer gets called twice, so I include this condition to avoid duplicate keys:
       if (state.individuallyFetchedPatients.includes(action.payload)) {
