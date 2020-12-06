@@ -21,13 +21,13 @@ export interface Patient {
 }
 
 interface Discharge {
-  date: string,
-  criteria: string,
+  date: string;
+  criteria: string;
 }
 
 interface SickLeave {
-  startDate: string,
-  endDate: string,
+  startDate: string;
+  endDate: string;
 }
 
 interface BaseEntry {

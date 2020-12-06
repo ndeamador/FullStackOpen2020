@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useStateValue, addFetchedPatientId, updatePatient } from "../state";
 import axios from "axios";
-import { Patient, Gender, Entry } from "../types";
+import { Patient, Gender, Entry, Diagnosis } from "../types";
 import { apiBaseUrl } from "../constants";
 
 import { Container, Header, Icon } from "semantic-ui-react";
 
 const PatientDetailsPage: React.FC = () => {
-  const [{ patients, individuallyFetchedPatients }, dispatch] = useStateValue();
+  const [{ patients, individuallyFetchedPatients, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = useState<Patient | undefined>();
   // const [error, setError] = React.useState<string | undefined>();
@@ -59,11 +59,10 @@ const PatientDetailsPage: React.FC = () => {
     }
   };
 
-  const displayEntries = (entries: Entry[]) => {
+  const displayEntries = (entries: Entry[], diagnoses: { [code: string]: Diagnosis }) => {
     if (entries.length === 0) {
       return null;
     }
-
 
     return (
       <div style={{margin: 20}}>
@@ -75,7 +74,7 @@ const PatientDetailsPage: React.FC = () => {
             </div>
             <ul>
               {entry.diagnosisCodes
-                ? entry.diagnosisCodes.map((code) => <li key={code}>{code}</li>)
+                ? entry.diagnosisCodes.map((code) => <li key={code}>{code}  {diagnoses[code].name}  </li>)
                 : null}
             </ul>
           </div>
@@ -92,7 +91,7 @@ const PatientDetailsPage: React.FC = () => {
       </Header>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
-      {displayEntries(patient.entries)}
+      {displayEntries(patient.entries, diagnoses)}
     </Container>
   );
 };
