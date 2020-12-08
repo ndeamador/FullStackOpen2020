@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useStateValue, addFetchedPatientId, updatePatient } from "../state";
 import axios from "axios";
-import { Patient, Gender, Entry, Diagnosis } from "../types";
+import { Patient, Gender, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 
-import { Container, Header, Icon } from "semantic-ui-react";
+import { Container, Header, Icon, Item, Divider } from "semantic-ui-react";
+import EntryDetails from "./EntryDetails";
 
 const PatientDetailsPage: React.FC = () => {
-  const [{ patients, individuallyFetchedPatients, diagnoses }, dispatch] = useStateValue();
+  const [{ patients, individuallyFetchedPatients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = useState<Patient | undefined>();
   // const [error, setError] = React.useState<string | undefined>();
@@ -59,39 +60,38 @@ const PatientDetailsPage: React.FC = () => {
     }
   };
 
-  const displayEntries = (entries: Entry[], diagnoses: { [code: string]: Diagnosis }) => {
+  const displayEntries = (entries: Entry[]) => {
     if (entries.length === 0) {
       return null;
     }
 
     return (
-      <div style={{margin: 20}}>
-        <h4>entries</h4>
-        {entries.map((entry) => (
-          <div key={entry.id}>
-            <div>
-              {entry.date} {entry.description ? entry.description : null}
-            </div>
-            <ul>
-              {entry.diagnosisCodes
-                ? entry.diagnosisCodes.map((code) => <li key={code}>{code}  {diagnoses[code].name}  </li>)
-                : null}
-            </ul>
-          </div>
-        ))}
-      </div>
+      <Container style={{ margin: 20 }}>
+        <Divider horizontal>
+          <Header as="h4">
+            <Icon name="ambulance" />
+            Entries
+          </Header>
+        </Divider>
+
+        <Item.Group divided>
+          {entries.map((entry) => (
+            <EntryDetails key={entry.id} entry={entry} />
+          ))}
+        </Item.Group>
+      </Container>
     );
   };
 
   return (
     <Container>
-      <Header>
+      <Header as="h3">
         {patient.name}
         <Icon name={getSemanticUiGender(patient.gender)} />
       </Header>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
-      {displayEntries(patient.entries, diagnoses)}
+      {displayEntries(patient.entries)}
     </Container>
   );
 };

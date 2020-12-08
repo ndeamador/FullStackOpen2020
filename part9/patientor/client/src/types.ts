@@ -45,23 +45,24 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntryType extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntryType extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: SickLeave;
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntryType extends BaseEntry {
   type: "Hospital";
   discharge: Discharge;
 }
 
+// Added 'type' to the type names to avoid conflicts with the components using the same name.
 export type Entry =
-  | HospitalEntry
-  | OccupationalHealthcareEntry
-  | HealthCheckEntry;
+  | HospitalEntryType
+  | OccupationalHealthcareEntryType
+  | HealthCheckEntryType;
