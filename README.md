@@ -60,7 +60,7 @@ _uuid, Apollo client, Websockets, n+1 Query Problem_
 
 ## Part 9 - [Typescript](https://fullstackopen.com/en/part9)
 
-_Typescript with Express and React, Semantic UI_
+_Typescript with Express and React, Semantic UI, Formik_
 
 - [project name](addlink) - Project description
 

@@ -1,21 +1,20 @@
-
 export interface Diagnosis {
   code: string,
   name: string,
   latin?: string
 }
 
-interface Discharge {
+export interface Discharge {
   date: string,
   criteria: string,
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string,
   endDate: string,
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
@@ -51,6 +50,13 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+export enum TypeOfEntry {
+  HospitalEntry = 'Hospital',
+  OccupationalHealthcareEntry = 'OccupationalHealthcare',
+  HealthCheckEntry = 'HealthCheck'
+}
+
+
 export enum Gender {
   Male = 'male',
   Female = 'female',
@@ -70,3 +76,7 @@ export interface Patient {
 export type NewPatient = Omit<Patient, 'id' | 'entries'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
+
+export type NewEntry = Omit<HospitalEntry, 'id'> | Omit<OccupationalHealthcareEntry, 'id'> | Omit<HealthCheckEntry, 'id'> ;
+
+export type NewBaseEntry = Omit<BaseEntry, 'id'>;
