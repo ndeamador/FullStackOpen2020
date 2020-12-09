@@ -1,0 +1,180 @@
+import React from "react";
+import { Grid, Button } from "semantic-ui-react";
+import { Field, Formik, Form } from "formik";
+
+import {
+  TextField,
+  SelectField,
+  formTypeOption,
+  DiagnosisSelection,
+} from "./FormField";
+import { NewEntry, TypeOfEntry } from "../types";
+import TypeFields from "./TypeFields";
+
+import { useStateValue } from "../state";
+
+/*
+ * use type Entry, but omit id and entries,
+ * because those are irrelevant for new entry object.
+ */
+export type EntryFormValues = NewEntry;
+
+// const ChangeType = (e: { target: { value: any; }; }) => {
+//   const { value } = e.target;
+//   const _regions = await getRegions(value);
+//   console.log(_regions);
+//   setFieldValue("country", value);
+//   setFieldValue("region", "");
+//   setFieldValue("regions", _regions);
+// };
+
+interface Props {
+  onSubmit: (values: NewEntry) => void;
+  onCancel: () => void;
+  // initialValues: NewEntry;
+}
+
+// const genderOptions: GenderOption[] = [
+//   { value: Gender.Male, label: "Male" },
+//   { value: Gender.Female, label: "Female" },
+//   { value: Gender.Other, label: "Other" }
+// ];
+
+const formTypeOptions: formTypeOption[] = [
+  { value: TypeOfEntry.Hospital, label: "Hospital" },
+  {
+    value: TypeOfEntry.OccupationalHealthcare,
+    label: "Occupational Healthcare",
+  },
+  { value: TypeOfEntry.HealthCheck, label: "Health Check" },
+];
+
+export const AddEntryForm: React.FC<Props> = ({
+  onSubmit,
+  onCancel,
+  // initialValues,
+}) => {
+  const [{ diagnoses }] = useStateValue();
+  // const [selectedEntryType, setEntryType] = useState("HospitalEntry");
+
+  return (
+    <Formik
+      initialValues={{
+        description: "",
+        date: "",
+        specialist: "",
+        diagnosisCodes: [],
+        type: TypeOfEntry.Hospital,
+        discharge: {
+          date: "",
+          criteria: "",
+        },
+        // employerName: "",
+        // sickLeave: {
+        //   startDate: "",
+        //   endDate: "",
+        // },
+        // healthCheckRating: 0,
+      }}
+      // initialValues={initialValues}
+      onSubmit={onSubmit}
+      validate={(values) => {
+        const requiredError = "Field is required";
+        const errors: { [field: string]: string } = {};
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        if (!values.type) {
+          errors.type = requiredError;
+        }
+        // if (values.type === TypeOfEntry.Hospital) {
+        //   if (!values.discharge) {
+        //     errors.type = requiredError;
+        //   }
+        //   if (!values.discharge.date) {
+        //     errors.type = requiredError;
+        //   }
+        //   if (!values.discharge.criteria) {
+        //     errors.type = requiredError;
+        //   }
+        // }
+        // if (values.type === TypeOfEntry.OccupationalHealthcare) {
+        //   if (!values.employerName) {
+        //     errors.type = requiredError;
+        //   }
+        // }
+        // if (values.type === TypeOfEntry.HealthCheck) {
+        //   if (!values.healthCheckRating) {
+        //     errors.type = requiredError;
+        //   }
+        // }
+        return errors;
+      }}
+    >
+      {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
+        return (
+          <Form className="form ui">
+            <Field
+              label="description"
+              placeholder="description"
+              name="description"
+              component={TextField}
+            />
+            <Field
+              label="Date"
+              placeholder="YYYY-MM-DD"
+              name="date"
+              component={TextField}
+            />
+            <Field
+              label="specialist"
+              placeholder="specialist"
+              name="specialist"
+              component={TextField}
+            />
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnoses)}
+            />
+            <SelectField
+              label="Entry Type"
+              name="type"
+              options={formTypeOptions}
+            />
+            {/* {console.log(values)}
+            {console.log("typeoftype:", typeof values.type)} */}
+
+            <TypeFields type={values.type} />
+
+            <Grid>
+              <Grid.Column floated="left" width={5}>
+                <Button type="button" onClick={onCancel} color="red">
+                  Cancel
+                </Button>
+              </Grid.Column>
+              <Grid.Column floated="right" width={5}>
+                <Button
+                  type="submit"
+                  floated="right"
+                  color="green"
+                  disabled={!dirty || !isValid}
+                >
+                  Add
+                </Button>
+              </Grid.Column>
+            </Grid>
+          </Form>
+        );
+      }}
+    </Formik>
+  );
+};
+
+export default AddEntryForm;
