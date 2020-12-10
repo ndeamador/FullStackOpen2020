@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useStateValue, addFetchedPatientId, updatePatient, addEntry } from "../state";
 import axios from "axios";
-import { Patient, Gender, Entry, NewBaseEntry } from "../types";
+import { Patient, Gender, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 
 import { Container, Header, Icon, Item, Divider, Button } from "semantic-ui-react";

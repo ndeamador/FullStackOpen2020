@@ -2,24 +2,11 @@ import React from "react";
 import { Header } from "semantic-ui-react";
 import { Field } from "formik";
 
-import {
-  TextField,
-  NumberField,
-} from "./FormField";
-import {
-  TypeOfEntry,
-} from "../types";
+import { TextField, NumberField } from "./FormField";
+import { TypeOfEntry } from "../types";
 import { assertNever } from "../utils";
 
-// const healthCheckFormTypeOptions: HealthCheckFormTypeOption[] = [
-//   { value: 0, label: "Healthy" },
-//   { value: 1, label: "LowRisk" },
-//   { value: 2, label: "HighRisk" },
-//   { value: 3, label: "CriticalRisk" },
-// ];
-
 export const TypeFields: React.FC<{ type: TypeOfEntry }> = ({ type }) => {
-
   switch (type) {
     case TypeOfEntry.HealthCheck:
       return (
@@ -55,20 +42,20 @@ export const TypeFields: React.FC<{ type: TypeOfEntry }> = ({ type }) => {
           <Field
             label="Employer name"
             placeholder="employer name"
-            name="employer-name"
+            name="employerName"
             component={TextField}
           />
           <Header>Sick leave details</Header>
           <Field
             label="Sick leave start date"
             placeholder="YYYY-MM-DD"
-            name="sickleave-start"
+            name="sickLeave.startDate"
             component={TextField}
           />
           <Field
             label="Sick leave dnd date"
             placeholder="YYYY-MM-DD"
-            name="sickleave-end"
+            name="sickLeave.endDate"
             component={TextField}
           />
         </div>

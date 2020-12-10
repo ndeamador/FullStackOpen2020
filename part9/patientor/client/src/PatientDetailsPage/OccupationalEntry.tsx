@@ -14,9 +14,14 @@ const OccupationalEntry: React.FC<{
       <Item.Content>
         <Item.Header as="h5"> {entry.date} {entry.employerName && <strong> - {entry.employerName}</strong>}</Item.Header>
 
+        {entry.sickLeave && (
+          <Item as="div"><strong>Sick leave:</strong> from {entry.sickLeave.startDate} to {entry.sickLeave.endDate}</Item>
+        )}
+
         {entry.description && (
           <Item.Description>{entry.description}</Item.Description>
         )}
+
 
         {entry.diagnosisCodes && <DiagnosesList codes={entry.diagnosisCodes} />}
 

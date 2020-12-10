@@ -19,8 +19,8 @@ const addEntry = (entry: NewEntry, id: string): Entry => {
   };
 
   // console.log('post:', newEntry);
-  console.log('foundpatient:', patients.find(patient => patient.id === id));
-  console.log('indexof:',  patients.findIndex(patient => patient.id === id));
+  // console.log('foundpatient:', patients.find(patient => patient.id === id));
+  // console.log('indexof:',  patients.findIndex(patient => patient.id === id));
 
   const patientIndex = patients.findIndex(patient => patient.id === id);
 
@@ -31,7 +31,7 @@ const addEntry = (entry: NewEntry, id: string): Entry => {
 
   patients[patientIndex].entries.push(newEntry);
 
-  console.log('afterpatient:', patients.find(patient => patient.id === id));
+  // console.log('afterpatient:', patients.find(patient => patient.id === id));
 
   return newEntry;
 };

@@ -13,32 +13,14 @@ import TypeFields from "./TypeFields";
 
 import { useStateValue } from "../state";
 
-/*
- * use type Entry, but omit id and entries,
- * because those are irrelevant for new entry object.
- */
-export type EntryFormValues = NewEntry;
 
-// const ChangeType = (e: { target: { value: any; }; }) => {
-//   const { value } = e.target;
-//   const _regions = await getRegions(value);
-//   console.log(_regions);
-//   setFieldValue("country", value);
-//   setFieldValue("region", "");
-//   setFieldValue("regions", _regions);
-// };
+export type EntryFormValues = NewEntry;
 
 interface Props {
   onSubmit: (values: NewEntry) => void;
   onCancel: () => void;
   // initialValues: NewEntry;
 }
-
-// const genderOptions: GenderOption[] = [
-//   { value: Gender.Male, label: "Male" },
-//   { value: Gender.Female, label: "Female" },
-//   { value: Gender.Other, label: "Other" }
-// ];
 
 const formTypeOptions: formTypeOption[] = [
   { value: TypeOfEntry.Hospital, label: "Hospital" },
@@ -55,7 +37,6 @@ export const AddEntryForm: React.FC<Props> = ({
   // initialValues,
 }) => {
   const [{ diagnoses }] = useStateValue();
-  // const [selectedEntryType, setEntryType] = useState("HospitalEntry");
 
   return (
     <Formik
@@ -93,27 +74,45 @@ export const AddEntryForm: React.FC<Props> = ({
         if (!values.type) {
           errors.type = requiredError;
         }
-        // if (values.type === TypeOfEntry.Hospital) {
-        //   if (!values.discharge) {
-        //     errors.type = requiredError;
-        //   }
-        //   if (!values.discharge.date) {
-        //     errors.type = requiredError;
-        //   }
-        //   if (!values.discharge.criteria) {
-        //     errors.type = requiredError;
-        //   }
-        // }
-        // if (values.type === TypeOfEntry.OccupationalHealthcare) {
-        //   if (!values.employerName) {
-        //     errors.type = requiredError;
-        //   }
-        // }
-        // if (values.type === TypeOfEntry.HealthCheck) {
-        //   if (!values.healthCheckRating) {
-        //     errors.type = requiredError;
-        //   }
-        // }
+        if (values.type === TypeOfEntry.Hospital) {
+          // if (!values.discharge) {
+          //   errors.type = requiredError;
+          // }
+          if (!values.discharge.date) {
+            console.log('en discharge');
+            errors.type = requiredError;
+          }
+          if (!values.discharge.criteria) {
+            console.log('en criteria');
+            errors.type = requiredError;
+          }
+        }
+        if (values.type === TypeOfEntry.OccupationalHealthcare) {
+          if (!values.employerName) {
+            console.log('en employername');
+
+            errors.type = requiredError;
+          }
+          if (values.sickLeave) {
+            if (!values.sickLeave.endDate) {
+              console.log('en sickend');
+
+              errors.type = requiredError;
+            }
+            if (!values.sickLeave.startDate) {
+              console.log('en sickstart');
+
+              errors.type = requiredError;
+            }
+          }
+        }
+        if (values.type === TypeOfEntry.HealthCheck) {
+          console.log('en healthcheck');
+
+          if (!values.healthCheckRating) {
+            errors.type = requiredError;
+          }
+        }
         return errors;
       }}
     >
@@ -148,8 +147,8 @@ export const AddEntryForm: React.FC<Props> = ({
               name="type"
               options={formTypeOptions}
             />
-            {/* {console.log(values)}
-            {console.log("typeoftype:", typeof values.type)} */}
+            {console.log(values)}
+            {console.log("typeoftype:", typeof values.type)}
 
             <TypeFields type={values.type} />
 
