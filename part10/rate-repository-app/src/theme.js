@@ -5,7 +5,7 @@ const theme = {
     textDarkBackground: 'white',
     primary: '#0366d6',
     secondary: '#24292e',
-    languageButton: '#0366d6',
+    containers: "white",
   },
   fontSizes: {
     body: 14,
