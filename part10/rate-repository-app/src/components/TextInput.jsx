@@ -9,14 +9,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.secondary,
     borderRadius: 5,
-    marginBottom: 10,
+    marginTop: 10,
     padding: 10,
+  },
+
+  errorInputStyle: {
+    borderColor: 'red',
   }
 });
 
 const TextInput = ({ style, error, ...props }) => {
   // When styles are given as arrays, the later entries take precedence.
-  const textInputStyle = [style, styles.textInput];
+  const textInputStyle = [style, styles.textInput, error && styles.errorInputStyle];
 
   return <NativeTextInput style={textInputStyle} {...props} />;
 };
