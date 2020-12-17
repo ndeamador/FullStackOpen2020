@@ -1,16 +1,65 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
+import Text from "./Text";
+import RatingsBox from "./RatingsBox";
+import theme from "../theme";
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    display: "flex",
+    padding: 10,
+    marginBottom: 1,
+    backgroundColor: "white",
+  },
+
+  repositoryContainer: {
+    flexDirection: "row",
+    padding: 10,
+  },
+
+  flexRow: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+
+  flexColumn: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    paddingLeft: 20,
+  },
+
+  tinyLogo: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
+  },
+
+  languageBox: {
+    color: theme.colors.textDarkBackground,
+    backgroundColor: theme.colors.primary,
+    padding: 5,
+    borderRadius: 5,
+  },
+});
 
 const RepositoryItem = ({ repository }) => {
   return (
-    <View>
-      <Text>Full name: {repository.fullName}</Text>
-      <Text>Description: {repository.description}</Text>
-      <Text>Language: {repository.language}</Text>
-      <Text>Stars: {repository.stargazersCount}</Text>
-      <Text>Forks: {repository.forksCount}</Text>
-      <Text>Reviews: {repository.reviewCount}</Text>
-      <Text>Rating: {repository.ratingAverage}</Text>
+    <View style={styles.mainContainer}>
+      <View style={styles.repositoryContainer}>
+        <Image
+          style={styles.tinyLogo}
+          source={{
+            uri: repository.ownerAvatarUrl,
+          }}
+        />
+        <View style={styles.flexColumn}>
+          <Text fontWeight="bold">{repository.fullName}</Text>
+          <Text>{repository.description}</Text>
+          <Text style={styles.languageBox}>{repository.language}</Text>
+        </View>
+      </View>
+
+      <RatingsBox repository={repository} />
     </View>
   );
 };
