@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import Constants from "expo-constants";
 import theme from "../theme";
 import AppBarTab from "./AppBarTab";
@@ -12,14 +12,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
-  // ...
+  scrollView: {
+    flexDirection: "row",
+  },
 });
 
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <Link to="/" component={AppBarTab} title="Repositories" />
-      <Link to="/signin" component={AppBarTab} title="Sign in" />
+      <ScrollView horizontal style={styles.scrollView}>
+        <Link to="/" component={AppBarTab} title="Repositories" />
+        <Link to="/signin" component={AppBarTab} title="Sign in" />
+      </ScrollView>
     </View>
   );
 };
