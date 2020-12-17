@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     display: "flex",
     padding: 10,
     marginBottom: 1,
-    backgroundColor: "white",
+    backgroundColor: theme.colors.containers,
   },
 
   repositoryContainer: {
