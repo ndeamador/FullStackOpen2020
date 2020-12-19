@@ -7,12 +7,9 @@ const useSignIn = () => {
 
   const signIn = async ({ username, password }) => {
     const { data } = await authorizeUser({ variables: { username, password } });
-    console.log('usesignin data:', data);
 
     return { data };
   };
-
-  console.log('signin result:', result);
 
   return [signIn, result];
 };
