@@ -21,7 +21,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-web": "~0.11.7",
     "react-router-native": "^5.2.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "@react-native-community/async-storage": "~1.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

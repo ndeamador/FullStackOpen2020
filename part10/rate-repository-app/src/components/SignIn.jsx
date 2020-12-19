@@ -8,6 +8,8 @@ import * as yup from "yup";
 
 import theme from "../theme";
 
+import useSignIn from "../hooks/useSignIn";
+
 const styles = {
   mainContainer: {
     backgroundColor: theme.colors.containers,
@@ -25,7 +27,7 @@ const styles = {
 
 const initialValues = {
   username: "",
-  passwrod: "",
+  password: "",
 };
 
 const validationSchema = yup.object().shape({
@@ -52,9 +54,20 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-  const handleSignin = ({ username, password }) => {
-    console.log("10.8 login values: ", username, password);
+  const [signIn] = useSignIn();
+
+
+  const handleSignin = async (values) => {
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log('handleSignin data', data);
+    } catch (e) {
+      console.log(e);
+    }
   };
+
 
   return (
     <Formik
