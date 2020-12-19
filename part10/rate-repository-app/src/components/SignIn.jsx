@@ -64,9 +64,6 @@ const SignIn = () => {
     try {
       const { data } = await signIn({ username, password });
 
-      const authentication = new AuthStorage;
-      await authentication.setAccessToken(data.authorize.accessToken);
-
     } catch (e) {
       console.log(e);
     }
