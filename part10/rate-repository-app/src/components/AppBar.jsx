@@ -5,6 +5,11 @@ import theme from "../theme";
 import AppBarTab from "./AppBarTab";
 import { Link } from "react-router-native";
 
+import { useQuery, useApolloClient } from "@apollo/react-hooks";
+import { CURRENT_USER } from "../graphql/queries";
+import { useContext } from 'react';
+import AuthStorageContext from '../contexts/AuthStorageContext';
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
@@ -18,11 +23,28 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const authStorage = useContext(AuthStorageContext);
+  const apolloClient = useApolloClient();
+  const { loading, error, data } = useQuery(CURRENT_USER);
+
+  const userLoggedIn = data && data.authorizedUser ? true : false;
+
+  const handleSignOut = async () => {
+    await authStorage.removeAccessToken();
+
+    // active queries will be called again (which means the current user query will return null due to being called with no token).
+    apolloClient.resetStore();
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scrollView}>
         <Link to="/" component={AppBarTab} title="Repositories" />
-        <Link to="/signin" component={AppBarTab} title="Sign in" />
+        {userLoggedIn ? (
+          <AppBarTab title="Sign out" onPress={handleSignOut}/>
+        ) : (
+          <Link to="/signin" component={AppBarTab} title="Sign in" />
+        )}
       </ScrollView>
     </View>
   );

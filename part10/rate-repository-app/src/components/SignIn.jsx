@@ -9,7 +9,6 @@ import * as yup from "yup";
 import theme from "../theme";
 
 import useSignIn from "../hooks/useSignIn";
-import AuthStorage from "../utils/authStorage";
 
 const styles = {
   mainContainer: {

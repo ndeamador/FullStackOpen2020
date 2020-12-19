@@ -18,7 +18,7 @@ const useSignIn = () => {
 
     await authStorage.setAccessToken(data.authorize.accessToken);
 
-    // clear Apollo cache cache and re-execute all active queries.
+    // clear Apollo cache cache and re-execute all active queries (which means the "current user" query will be executed with a valid token)
     apolloClient.resetStore();
 
     history.push("/");

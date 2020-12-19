@@ -23,3 +23,12 @@ query {
   }
 }
 `;
+
+export const CURRENT_USER = gql`
+{
+  authorizedUser {
+    id
+    username
+  }
+}
+`;

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
