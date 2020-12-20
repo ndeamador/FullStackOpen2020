@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const kFormatter = (num) => {
+export const kFormatter = (num) => {
   if (num >= 1000) {
     // ParseFloat gets rid of trailing zeros
     return `${parseFloat((num / 1000).toFixed(1))}k`;
@@ -39,19 +39,19 @@ const RatingsBox = ({ repository }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold">{kFormatter(repository.stargazersCount)}</Text>
+        <Text fontWeight="bold" testID="repositoryStars">{kFormatter(repository.stargazersCount)}</Text>
         <Text color="textSecondary">Stars</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold">{kFormatter(repository.forksCount)}</Text>
+        <Text fontWeight="bold" testID="repositoryForks">{kFormatter(repository.forksCount)}</Text>
         <Text color="textSecondary">Forks</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold">{repository.reviewCount}</Text>
+        <Text fontWeight="bold" testID="repositoryReviews">{repository.reviewCount}</Text>
         <Text color="textSecondary">Reviews</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold">{repository.ratingAverage}</Text>
+        <Text fontWeight="bold" testID="repositoryRating">{repository.ratingAverage}</Text>
         <Text color="textSecondary">Rating</Text>
       </View>
     </View>

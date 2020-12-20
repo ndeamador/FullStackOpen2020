@@ -53,9 +53,9 @@ const RepositoryItem = ({ repository }) => {
           }}
         />
         <View style={styles.flexColumn}>
-          <Text fontWeight="bold">{repository.fullName}</Text>
-          <Text>{repository.description}</Text>
-          <Text style={styles.languageBox}>{repository.language}</Text>
+          <Text fontWeight="bold" testID="repositoryName">{repository.fullName}</Text>
+          <Text testID="repositoryDescription">{repository.description}</Text>
+          <Text style={styles.languageBox} testID="repositoryLanguage">{repository.language}</Text>
         </View>
       </View>
 
