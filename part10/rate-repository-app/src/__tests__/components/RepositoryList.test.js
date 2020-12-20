@@ -1,7 +1,6 @@
-/* eslint-disable jest/expect-expect */
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { RepositoryListContainer } from '../../components/RepositoryList';
 import { kFormatter } from '../../components/RatingsBox';
 
