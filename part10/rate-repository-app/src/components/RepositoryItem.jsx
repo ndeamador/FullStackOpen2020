@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     paddingLeft: 20,
+    flexShrink: 1,
   },
 
   tinyLogo: {
