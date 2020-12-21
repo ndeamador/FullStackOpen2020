@@ -1,8 +1,19 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from "react-native";
 import Text from "./Text";
 import RatingsBox from "./RatingsBox";
 import theme from "../theme";
+
+// import { useQuery } from "@apollo/client";
+// import { GET_REPOSITORY } from "../graphql/queries";
+import * as Linking from "expo-linking";
+import { useHistory } from "react-router-native";
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -40,27 +51,67 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
   },
+
+  gitHubButton: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 5,
+    margin: 15,
+    padding: 15,
+    textAlign: "center",
+  },
 });
 
-const RepositoryItem = ({ repository }) => {
-  return (
-    <View style={styles.mainContainer}>
-      <View style={styles.repositoryContainer}>
-        <Image
-          style={styles.tinyLogo}
-          source={{
-            uri: repository.ownerAvatarUrl,
-          }}
-        />
-        <View style={styles.flexColumn}>
-          <Text fontWeight="bold" testID="repositoryName">{repository.fullName}</Text>
-          <Text testID="repositoryDescription">{repository.description}</Text>
-          <Text style={styles.languageBox} testID="repositoryLanguage">{repository.language}</Text>
-        </View>
-      </View>
+const RepositoryItem = ({ repository, singleRepositoryView }) => {
+  // const { loading, error, data } = useQuery(GET_REPOSITORY, {
+  //   variables: { id: repository.id },
+  // });
 
-      <RatingsBox repository={repository} />
-    </View>
+  // if (!repository) return "missing repo";
+
+  const history = useHistory();
+  const openSingleRepositoryView = (repository) => {
+    history.push(`/repositories/${repository.id}`);
+  };
+
+  const openInGitHub = () => {
+    Linking.openURL(repository.url);
+  };
+
+  return (
+    <TouchableOpacity onPress={() => openSingleRepositoryView(repository)}>
+      <View style={styles.mainContainer}>
+        <View style={styles.repositoryContainer}>
+          <Image
+            style={styles.tinyLogo}
+            source={{
+              uri: repository.ownerAvatarUrl,
+            }}
+          />
+          <View style={styles.flexColumn}>
+            <Text fontWeight="bold" testID="repositoryName">
+              {repository.fullName}
+            </Text>
+            <Text testID="repositoryDescription">{repository.description}</Text>
+            <Text style={styles.languageBox} testID="repositoryLanguage">
+              {repository.language}
+            </Text>
+          </View>
+        </View>
+
+        <RatingsBox repository={repository} />
+        {singleRepositoryView && (
+          <TouchableWithoutFeedback onPress={openInGitHub}>
+            <Text
+              color="textDarkBackground"
+              fontWeight="bold"
+              style={styles.gitHubButton}
+            >
+              Open in GitHub
+            </Text>
+          </TouchableWithoutFeedback>
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 
