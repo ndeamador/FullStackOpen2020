@@ -7,8 +7,8 @@ import { Link, useHistory } from "react-router-native";
 
 import { useQuery, useApolloClient } from "@apollo/react-hooks";
 import { CURRENT_USER } from "../graphql/queries";
-import { useContext } from 'react';
-import AuthStorageContext from '../contexts/AuthStorageContext';
+import { useContext } from "react";
+import AuthStorageContext from "../contexts/AuthStorageContext";
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +31,7 @@ const AppBar = () => {
   const userLoggedIn = data && data.authorizedUser ? true : false;
 
   const handleSignOut = async () => {
-    history.push('/');
+    history.push("/");
     await authStorage.removeAccessToken();
 
     // active queries will be called again (which means the current user query will return null due to being called with no token).
@@ -42,11 +42,24 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scrollView}>
         <Link to="/" component={AppBarTab} title="Repositories" />
-        {userLoggedIn && <Link to="/createreview" component={AppBarTab} title="Create a review" />}
+        {userLoggedIn && (
+          <Link
+            to="/createreview"
+            component={AppBarTab}
+            title="Create a review"
+          />
+        )}
         {userLoggedIn ? (
-          <AppBarTab title="Sign out" onPress={handleSignOut}/>
+          <AppBarTab title="Sign out" onPress={handleSignOut} />
         ) : (
           <Link to="/signin" component={AppBarTab} title="Sign in" />
+        )}
+        {!userLoggedIn && (
+          <Link
+            to="/signup"
+            component={AppBarTab}
+            title="Sign up"
+          />
         )}
       </ScrollView>
     </View>

@@ -93,9 +93,12 @@ const RepositoryItem = ({ repository, singleRepositoryView }) => {
               {repository.fullName}
             </Text>
             <Text testID="repositoryDescription">{repository.description}</Text>
-            <Text style={styles.languageBox} testID="repositoryLanguage">
-              {repository.language}
-            </Text>
+            {/* Newly created repositories have no language tag, so we don't want to display a blue blob with no text if no language is fetched. */}
+            {repository.language && (
+              <Text style={styles.languageBox} testID="repositoryLanguage">
+                {repository.language}
+              </Text>
+            )}
           </View>
         </View>
 

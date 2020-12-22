@@ -11,7 +11,6 @@ import theme from "../theme";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { CREATE_REVIEW } from "../graphql/mutations";
 
-
 const styles = {
   mainContainer: {
     backgroundColor: theme.colors.containers,
@@ -89,17 +88,20 @@ const CreateReview = () => {
   const history = useHistory();
 
   const handleSubmit = async ({ repositoryName, ownerName, rating, text }) => {
+    try {
+      const { data } = await createNewReview({
+        variables: {
+          repositoryName,
+          ownerName,
+          rating: parseInt(rating),
+          text,
+        },
+      });
 
-    const { data } = await createNewReview({
-      variables: {
-        repositoryName,
-        ownerName,
-        rating: parseInt(rating),
-        text,
-      },
-    });
-
-    history.push(`/repositories/${data.createReview.repositoryId}`);
+      history.push(`/repositories/${data.createReview.repositoryId}`);
+    } catch (e) {
+      console.log('CreateReview.jsx handleSubmit error: ', e);
+    }
   };
 
   return (
