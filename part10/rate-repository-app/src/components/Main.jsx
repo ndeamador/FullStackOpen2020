@@ -8,6 +8,7 @@ import SignIn from "./SignIn";
 
 import RepositoryItem from "./RepositoryItem";
 import SingleRepositoryView from "./SingleRepositoryView";
+import CreateReview from "./CreateReview";
 
 
 const styles = StyleSheet.create({
@@ -27,6 +28,7 @@ const Main = () => {
         <Route path="/" exact component={RepositoryList} />
         <Route path="/signin" component={SignIn} />
         <Route path="/repositories/:id" component={SingleRepositoryView}/>
+        <Route path="/createreview" component={CreateReview}/>
         <Redirect to="/" />
       </Switch>
     </View>

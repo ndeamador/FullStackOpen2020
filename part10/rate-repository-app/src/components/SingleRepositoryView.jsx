@@ -8,6 +8,7 @@ import theme from "../theme";
 import Text from "./Text";
 import { format, parseISO } from "date-fns";
 
+
 const styles = StyleSheet.create({
   reviewContainer: {
     display: "flex",
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
 });
 
 const ReviewItem = ({ review }) => {
@@ -60,9 +60,13 @@ const SingleRepositoryView = () => {
   let { id } = useParams();
   const { loading, error, data } = useQuery(GET_REPOSITORY, {
     variables: { id: id },
+    // prevent getting cached data with the query
+    fetchPolicy: 'cache-and-network'
   });
 
-  if (loading) return <Text>loadin...</Text>;
+
+
+  if (loading) return <Text>loading...</Text>;
 
   // return <RepositoryItem repository={data.repository} singleRepositoryView />;
 
@@ -74,7 +78,6 @@ const SingleRepositoryView = () => {
       ListHeaderComponent={() => (
         <RepositoryItem repository={data.repository} singleRepositoryView />
       )}
-      // ...
     />
   );
 };
