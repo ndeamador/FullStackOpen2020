@@ -1,29 +1,16 @@
 import { gql } from 'apollo-boost';
 import { CORE_REPOSITORY_PARTS } from './fragments';
 
-// export const GET_REPOSITORIES = gql`
-// query {
-//   repositories
-//    {
-//     edges {
-//       node {
-//         ...CoreRepositoryParts
-//       }
-//     }
-//   }
-// }
-// ${CORE_REPOSITORY_PARTS}
-// `;
-
-
 export const GET_REPOSITORIES = gql`
 query getRepositories(
   $orderDirection: OrderDirection,
-  $orderBy: AllRepositoriesOrderBy
+  $orderBy: AllRepositoriesOrderBy,
+  $searchKeyword: String
 ) {
   repositories (
     orderDirection: $orderDirection,
-    orderBy: $orderBy
+    orderBy: $orderBy,
+    searchKeyword: $searchKeyword
   )
    {
     edges {

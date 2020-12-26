@@ -1,34 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { FlatList, View, StyleSheet } from "react-native";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories, { sortingQueryOptions } from "../hooks/useRepositories";
-import { useHistory } from "react-router-native";
 import SortingMenu from "./SortingMenu";
+import Filter from "./Filter";
+import { Divider } from "react-native-paper";
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
+  },
+  listHeaderContainer: {
+    backgroundColor: "#e1e4e8",
   },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const TouchableRepositoryItem = (repository) => {
-  return (
-    // <TouchableOpacity onPress={() => openSingleRepositoryView(repository)}>
-    <RepositoryItem repository={repository.item} />
-    //  </TouchableOpacity>
-  );
+  return <RepositoryItem repository={repository.item} />;
 };
 
-const renderListHeaderComponent = (setOrderBy, setOrderDirection) => {
+const renderListHeaderComponent = (
+  setOrderBy,
+  setOrderDirection,
+  setSearchKeyword
+) => {
   return (
-    <>
+    <View style={styles.listHeaderContainer}>
+      <Filter setSearchKeyword={setSearchKeyword} />
+      <Divider />
       <SortingMenu
         setOrderBy={setOrderBy}
         setOrderDirection={setOrderDirection}
       />
-    </>
+    </View>
   );
 };
 
@@ -36,6 +42,7 @@ export const RepositoryListContainer = ({
   repositories,
   setOrderBy,
   setOrderDirection,
+  setSearchKeyword,
 }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -49,8 +56,11 @@ export const RepositoryListContainer = ({
       keyExtractor={(item) => item.id}
       ListHeaderComponent={renderListHeaderComponent(
         setOrderBy,
-        setOrderDirection
+        setOrderDirection,
+        setSearchKeyword
       )}
+      // The following prop makes the header sticky:
+      stickyHeaderIndices={[0]}
     />
   );
 };
@@ -60,14 +70,20 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState(
     sortingQueryOptions.descending
   );
+  const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { repositories } = useRepositories(orderBy, orderDirection);
+  const { repositories } = useRepositories(
+    orderBy,
+    orderDirection,
+    searchKeyword
+  );
 
   return (
     <RepositoryListContainer
       repositories={repositories}
       setOrderBy={setOrderBy}
       setOrderDirection={setOrderDirection}
+      setSearchKeyword={setSearchKeyword}
     />
   );
 };

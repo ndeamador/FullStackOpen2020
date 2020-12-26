@@ -66,6 +66,6 @@ _Typescript with Express and React, Semantic UI, Formik, React Context_
 
 ## Part 10 - [React Native](https://fullstackopen.com/en/part10)
 
-_fill_
+_Apollo, React Native Paper, debouncing, user-debounce_
 
 - [project name](addlink) - Project description
