@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, View, StyleSheet, TouchableOpacity } from "react-native";
 import RepositoryItem from "./RepositoryItem";
-import useRepositories from "../hooks/useRepositories";
+import useRepositories, { sortingQueryOptions } from "../hooks/useRepositories";
 import { useHistory } from "react-router-native";
+import SortingMenu from "./SortingMenu";
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,23 +13,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-// const renderItem = (repository) => (
-//   <TouchableOpacity onPress={() => openSingleRepositoryView(repository)}>
-//     <RepositoryItem repository={repository.item} />
-//   </TouchableOpacity>
-// );
-
 const TouchableRepositoryItem = (repository) => {
-  // const history = useHistory();
-
-  // const handleRepositoryPress = (repository) => {
-  //   console.log("clicked", repository);
-  // };
-
-  // const openSingleRepositoryView = (repository) => {
-  //   history.push(`/repositories/${repository.id}`);
-  // };
-
   return (
     // <TouchableOpacity onPress={() => openSingleRepositoryView(repository)}>
     <RepositoryItem repository={repository.item} />
@@ -36,7 +21,22 @@ const TouchableRepositoryItem = (repository) => {
   );
 };
 
-export const RepositoryListContainer = ({ repositories }) => {
+const renderListHeaderComponent = (setOrderBy, setOrderDirection) => {
+  return (
+    <>
+      <SortingMenu
+        setOrderBy={setOrderBy}
+        setOrderDirection={setOrderDirection}
+      />
+    </>
+  );
+};
+
+export const RepositoryListContainer = ({
+  repositories,
+  setOrderBy,
+  setOrderDirection,
+}) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -47,21 +47,29 @@ export const RepositoryListContainer = ({ repositories }) => {
       ItemSeparatorComponent={ItemSeparator}
       renderItem={TouchableRepositoryItem}
       keyExtractor={(item) => item.id}
+      ListHeaderComponent={renderListHeaderComponent(
+        setOrderBy,
+        setOrderDirection
+      )}
     />
   );
 };
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const [orderBy, setOrderBy] = useState(sortingQueryOptions.creationDate);
+  const [orderDirection, setOrderDirection] = useState(
+    sortingQueryOptions.descending
+  );
 
-  // const history = useHistory();
+  const { repositories } = useRepositories(orderBy, orderDirection);
 
-  // const openSingleRepositoryView = (repository) => {
-  //   history.push(`/repositories/${repository.item.id}`);
-  //   console.log(repository);
-  // };
-
-  return <RepositoryListContainer repositories={repositories} />;
+  return (
+    <RepositoryListContainer
+      repositories={repositories}
+      setOrderBy={setOrderBy}
+      setOrderDirection={setOrderDirection}
+    />
+  );
 };
 
 export default RepositoryList;

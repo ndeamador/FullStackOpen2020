@@ -75,11 +75,9 @@ const SignUp = () => {
 
   const handleSubmit = async ({ username, password }) => {
     try {
-      console.log("clicked", username);
       const { data } = await createNewUser({
         variables: { username, password },
       });
-      console.log("create response: ", data);
 
       // could just use "username", just making extra sure that user is only signed in if there is a response from sign up.
       await signIn({ username: data.createUser.username, password });
