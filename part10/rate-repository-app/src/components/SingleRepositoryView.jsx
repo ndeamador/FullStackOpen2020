@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-native";
 import RepositoryItem from "./RepositoryItem";
 import { useQuery } from "@apollo/client";
 import { GET_REPOSITORY } from "../graphql/queries";
-import { FlatList, View, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
 import theme from "../theme";
 import Text from "./Text";
 import { format, parseISO } from "date-fns";
-
+import useSingleRepository from "../hooks/useSingleRepository";
 
 const styles = StyleSheet.create({
   reviewContainer: {
@@ -58,26 +58,28 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepositoryView = () => {
   let { id } = useParams();
-  const { loading, error, data } = useQuery(GET_REPOSITORY, {
-    variables: { id: id },
-    // prevent getting cached data with the query
-    fetchPolicy: 'cache-and-network'
+
+  const { repository, loading, fetchMore } = useSingleRepository({
+    id,
+    first: 6,
   });
 
-
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   if (loading) return <Text>loading...</Text>;
 
-  // return <RepositoryItem repository={data.repository} singleRepositoryView />;
-
   return (
     <FlatList
-      data={data.repository.reviews.edges}
+      data={repository.reviews.edges}
       renderItem={({ item }) => <ReviewItem review={item.node} />}
       keyExtractor={(item) => item.node.id}
       ListHeaderComponent={() => (
-        <RepositoryItem repository={data.repository} singleRepositoryView />
+        <RepositoryItem repository={repository} singleRepositoryView />
       )}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

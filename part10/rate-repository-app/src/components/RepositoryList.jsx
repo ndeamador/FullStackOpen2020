@@ -43,6 +43,7 @@ export const RepositoryListContainer = ({
   setOrderBy,
   setOrderDirection,
   setSearchKeyword,
+  onEndReach,
 }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -61,6 +62,8 @@ export const RepositoryListContainer = ({
       )}
       // The following prop makes the header sticky:
       stickyHeaderIndices={[0]}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -72,11 +75,16 @@ const RepositoryList = () => {
   );
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { repositories } = useRepositories(
+  const { repositories, fetchMore } = useRepositories({
     orderBy,
     orderDirection,
-    searchKeyword
-  );
+    searchKeyword,
+    first: 6
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -84,6 +92,7 @@ const RepositoryList = () => {
       setOrderBy={setOrderBy}
       setOrderDirection={setOrderDirection}
       setSearchKeyword={setSearchKeyword}
+      onEndReach={onEndReach}
     />
   );
 };
