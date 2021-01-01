@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { Button, Menu } from "react-native-paper";
 import { sortingQueryOptions } from "../hooks/useRepositories";
 

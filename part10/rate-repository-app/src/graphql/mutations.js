@@ -52,7 +52,7 @@ mutation createNewReview(
 `;
 
 export const DELETE_REVIEW = gql`
-mutation deleteReview(
+mutation deleteReviewById(
   $id: ID!
 ) {
   deleteReview(id: $id)

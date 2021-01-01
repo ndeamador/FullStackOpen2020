@@ -34,14 +34,6 @@ query getRepositories(
 ${CORE_REPOSITORY_PARTS}
 `;
 
-// export const CURRENT_USER = gql`
-// {
-//   authorizedUser {
-//     id
-//     username
-//   }
-// }
-// `;
 
 export const CURRENT_USER = gql`
 query getCurrentUser ($withReviews: Boolean!, $first: Int, $after: String) {

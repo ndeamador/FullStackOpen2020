@@ -9,9 +9,6 @@ import {
 import Text from "./Text";
 import RatingsBox from "./RatingsBox";
 import theme from "../theme";
-
-// import { useQuery } from "@apollo/client";
-// import { GET_REPOSITORY } from "../graphql/queries";
 import * as Linking from "expo-linking";
 import { useHistory } from "react-router-native";
 
@@ -63,12 +60,6 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ repository, singleRepositoryView }) => {
-  // const { loading, error, data } = useQuery(GET_REPOSITORY, {
-  //   variables: { id: repository.id },
-  // });
-
-  // if (!repository) return "missing repo";
-
   const history = useHistory();
   const openSingleRepositoryView = (repository) => {
     history.push(`/repositories/${repository.id}`);

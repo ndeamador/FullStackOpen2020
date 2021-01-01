@@ -5,8 +5,7 @@ import FormikTextInput from "./FormikTextInput";
 import * as yup from "yup";
 import Text from "./Text";
 import theme from "../theme";
-
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { CREATE_USER } from "../graphql/mutations";
 import useSignIn from "../hooks/useSignIn";
 
@@ -70,7 +69,7 @@ const SignUpForm = ({ onSubmit }) => {
 };
 
 const SignUp = () => {
-  const [createNewUser, result] = useMutation(CREATE_USER);
+  const [createNewUser] = useMutation(CREATE_USER);
   const [signIn] = useSignIn();
 
   const handleSubmit = async ({ username, password }) => {
@@ -81,7 +80,6 @@ const SignUp = () => {
 
       // could just use "username", just making extra sure that user is only signed in if there is a response from sign up.
       await signIn({ username: data.createUser.username, password });
-
     } catch (e) {
       console.log(e);
     }

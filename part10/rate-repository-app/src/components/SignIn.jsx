@@ -1,13 +1,10 @@
 import React from "react";
-
 import Text from "./Text";
 import FormikTextInput from "./FormikTextInput";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { Formik } from "formik";
 import * as yup from "yup";
-
 import theme from "../theme";
-
 import useSignIn from "../hooks/useSignIn";
 
 const styles = {
@@ -81,8 +78,7 @@ const SignIn = () => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
-      console.log('sigin: ', data);
+      await signIn({ username, password });
     } catch (e) {
       console.log(e);
     }

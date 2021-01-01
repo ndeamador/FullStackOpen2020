@@ -50,9 +50,11 @@ describe('RepositoryList', () => {
         ],
       };
 
-      const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories} />);
+      // added a dummy setSearchKeyboard function to make the test compatible with the final version of the app:
+      const setSearchKeyword = () => {};
+      const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories} setSearchKeyword={setSearchKeyword} />);
 
-      // debug();
+      debug();
 
       repositories.edges.forEach((repository, i) => {
         expect(getAllByTestId('repositoryName')[i]).toHaveTextContent(repository.node.fullName);

@@ -1,16 +1,14 @@
-import React from 'react';
+import React from "react";
 import { View, StyleSheet } from "react-native";
-import Text from './Text';
-import theme from '../theme';
+import Text from "./Text";
+import theme from "../theme";
 import { format, parseISO } from "date-fns";
-
 
 const styles = StyleSheet.create({
   reviewContainer: {
     display: "flex",
     flexDirection: "row",
     padding: 25,
-    marginTop: 10,
     backgroundColor: theme.colors.containers,
   },
 
@@ -34,9 +32,6 @@ const styles = StyleSheet.create({
 });
 
 const ReviewItem = ({ review, myReviews }) => {
-
-  // console.log('inrevitem:', review);
-
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.scoreContainer}>
@@ -45,7 +40,9 @@ const ReviewItem = ({ review, myReviews }) => {
         </Text>
       </View>
       <View style={styles.textContainer}>
-        <Text fontWeight="bold">{myReviews ? review.repositoryId : review.user.username}</Text>
+        <Text fontWeight="bold">
+          {myReviews ? review.repositoryId : review.user.username}
+        </Text>
         <Text color="textSecondary">
           {format(parseISO(review.createdAt), "d.MM.yyyy")}
         </Text>

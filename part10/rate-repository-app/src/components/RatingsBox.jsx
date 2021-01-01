@@ -39,19 +39,27 @@ const RatingsBox = ({ repository }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold" testID="repositoryStars">{kFormatter(repository.stargazersCount)}</Text>
+        <Text fontWeight="bold" testID="repositoryStars">
+          {kFormatter(repository.stargazersCount)}
+        </Text>
         <Text color="textSecondary">Stars</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold" testID="repositoryForks">{kFormatter(repository.forksCount)}</Text>
+        <Text fontWeight="bold" testID="repositoryForks">
+          {kFormatter(repository.forksCount)}
+        </Text>
         <Text color="textSecondary">Forks</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold" testID="repositoryReviews">{repository.reviewCount}</Text>
+        <Text fontWeight="bold" testID="repositoryReviews">
+          {repository.reviewCount}
+        </Text>
         <Text color="textSecondary">Reviews</Text>
       </View>
       <View style={styles.flexColumn}>
-        <Text fontWeight="bold" testID="repositoryRating">{repository.ratingAverage}</Text>
+        <Text fontWeight="bold" testID="repositoryRating">
+          {repository.ratingAverage}
+        </Text>
         <Text color="textSecondary">Rating</Text>
       </View>
     </View>

@@ -4,13 +4,10 @@ import * as yup from "yup";
 import { TouchableWithoutFeedback, View } from "react-native";
 import FormikTextInput from "./FormikTextInput";
 import { useHistory } from "react-router-native";
-
 import Text from "./Text";
 import theme from "../theme";
-
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_REVIEW } from "../graphql/mutations";
-
 import { CURRENT_USER } from "../graphql/queries";
 
 const styles = {
@@ -85,7 +82,8 @@ const ReviewForm = ({ onSubmit }) => {
 };
 
 const CreateReview = () => {
-  const [createNewReview, result] = useMutation(CREATE_REVIEW, {
+  const [createNewReview] = useMutation(CREATE_REVIEW, {
+    // The Repository review list updates automatically after the review creation, but the user's review list does not seem to update without this query refetch.
     refetchQueries: [
       { query: CURRENT_USER, variables: { withReviews: true, first: 8 } },
     ],

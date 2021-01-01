@@ -1,8 +1,6 @@
-import React from 'react';
-import { TextInput as NativeTextInput, StyleSheet } from 'react-native';
-
+import React from "react";
+import { TextInput as NativeTextInput, StyleSheet } from "react-native";
 import theme from "../theme";
-
 
 const styles = StyleSheet.create({
   textInput: {
@@ -14,13 +12,17 @@ const styles = StyleSheet.create({
   },
 
   errorInputStyle: {
-    borderColor: 'red',
-  }
+    borderColor: "red",
+  },
 });
 
 const TextInput = ({ style, error, ...props }) => {
   // When styles are given as arrays, the later entries take precedence.
-  const textInputStyle = [style, styles.textInput, error && styles.errorInputStyle];
+  const textInputStyle = [
+    style,
+    styles.textInput,
+    error && styles.errorInputStyle,
+  ];
 
   return <NativeTextInput style={textInputStyle} {...props} />;
 };

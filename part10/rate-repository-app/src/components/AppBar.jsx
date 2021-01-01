@@ -4,14 +4,10 @@ import Constants from "expo-constants";
 import theme from "../theme";
 import AppBarTab from "./AppBarTab";
 import { Link, useHistory } from "react-router-native";
-
-import { useQuery, useApolloClient } from "@apollo/react-hooks";
-import { CURRENT_USER } from "../graphql/queries";
+import { useApolloClient } from "@apollo/react-hooks";
 import { useContext } from "react";
 import AuthStorageContext from "../contexts/AuthStorageContext";
-
 import useCurrentUser from "../hooks/useCurrentUser";
-import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,17 +24,10 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const authStorage = useContext(AuthStorageContext);
   const apolloClient = useApolloClient();
-  // const { loading, error, data } = useQuery(CURRENT_USER, {variables: {withReviews: false}});
-  // const { data } = useCurrentUser({ withReviews: false });
   const { authorizedUser } = useCurrentUser({ withReviews: false });
   const history = useHistory();
 
-  // const userLoggedIn = data && data.authorizedUser ? true : false;
   const userLoggedIn = authorizedUser;
-
-
-  console.log('component (AppBar) ==========================');
-  console.log('authorizedUser:', authorizedUser);
 
   const handleSignOut = async () => {
     history.push("/");

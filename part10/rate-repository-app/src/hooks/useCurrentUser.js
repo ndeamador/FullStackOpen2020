@@ -4,10 +4,9 @@ import { CURRENT_USER } from '../graphql/queries';
 const useCurrentUser = (variables) => {
 
   const { data, loading, fetchMore, ...result } = useQuery(CURRENT_USER, {
-    // it seems that the cache-and-network fetchPolicy makes the fetchMore buggy in this case.
     fetchPolicy: 'cache-and-network',
     variables,
-    onError: (error) => {console.log('CURRENT_USER Query error: ', error);}
+    onError: (error) => { console.log('CURRENT_USER Query error: ', error); }
   });
 
 
