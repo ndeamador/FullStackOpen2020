@@ -1,18 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORY } from '../graphql/queries';
 
-// export const sortingQueryOptions = {
-//   creationDate: 'CREATED_AT',
-//   rating: 'RATING_AVERAGE',
-//   ascending: 'ASC',
-//   descending: 'DESC'
-// };
-
 const useSingleRepository = (variables) => {
 
   const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORY, {
-    // it seems that the cache-and-network fetchPolicy makes the fetchMore buggy in this case.
-    // fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
     variables
   });
 
@@ -30,7 +22,7 @@ const useSingleRepository = (variables) => {
         ...variables,
         after: data.repository.reviews.pageInfo.endCursor
       },
-      // fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'cache-and-network',
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const nextResult = {
           repository: {
@@ -50,7 +42,6 @@ const useSingleRepository = (variables) => {
       },
     });
   };
-
 
   return {
     repository: data ? data.repository : undefined,

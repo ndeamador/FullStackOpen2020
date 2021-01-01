@@ -82,20 +82,11 @@ const SignIn = () => {
 
     try {
       const { data } = await signIn({ username, password });
+      console.log('sigin: ', data);
     } catch (e) {
       console.log(e);
     }
   };
-
-  // return (
-  //   <Formik
-  //     initialValues={initialValues}
-  //     onSubmit={handleSignin}
-  //     validationSchema={validationSchema}
-  //   >
-  //     {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-  //   </Formik>
-  // );
 
   return <SignInContainer onSubmit={handleSignin} />;
 };

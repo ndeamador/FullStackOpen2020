@@ -45,6 +45,9 @@ const useRepositories = (variables) => {
     });
   };
 
+  // console.log('hook (useRepositories) ==========================');
+  // console.log('data.repositories: ', data ? data.repositories : undefined);
+
   return {
     repositories: data ? data.repositories : undefined,
     fetchMore: handleFetchMore,

@@ -79,7 +79,7 @@ const RepositoryList = () => {
     orderBy,
     orderDirection,
     searchKeyword,
-    first: 6
+    first: 8
   });
 
   const onEndReach = () => {

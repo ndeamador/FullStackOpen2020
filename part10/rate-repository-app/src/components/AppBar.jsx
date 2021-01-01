@@ -10,6 +10,9 @@ import { CURRENT_USER } from "../graphql/queries";
 import { useContext } from "react";
 import AuthStorageContext from "../contexts/AuthStorageContext";
 
+import useCurrentUser from "../hooks/useCurrentUser";
+import Text from './Text';
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
@@ -25,10 +28,17 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const authStorage = useContext(AuthStorageContext);
   const apolloClient = useApolloClient();
-  const { loading, error, data } = useQuery(CURRENT_USER);
+  // const { loading, error, data } = useQuery(CURRENT_USER, {variables: {withReviews: false}});
+  // const { data } = useCurrentUser({ withReviews: false });
+  const { authorizedUser } = useCurrentUser({ withReviews: false });
   const history = useHistory();
 
-  const userLoggedIn = data && data.authorizedUser ? true : false;
+  // const userLoggedIn = data && data.authorizedUser ? true : false;
+  const userLoggedIn = authorizedUser;
+
+
+  console.log('component (AppBar) ==========================');
+  console.log('authorizedUser:', authorizedUser);
 
   const handleSignOut = async () => {
     history.push("/");
@@ -49,17 +59,16 @@ const AppBar = () => {
             title="Create a review"
           />
         )}
+        {userLoggedIn && (
+          <Link to="/myreviews" component={AppBarTab} title="My reviews" />
+        )}
         {userLoggedIn ? (
           <AppBarTab title="Sign out" onPress={handleSignOut} />
         ) : (
           <Link to="/signin" component={AppBarTab} title="Sign in" />
         )}
         {!userLoggedIn && (
-          <Link
-            to="/signup"
-            component={AppBarTab}
-            title="Sign up"
-          />
+          <Link to="/signup" component={AppBarTab} title="Sign up" />
         )}
       </ScrollView>
     </View>

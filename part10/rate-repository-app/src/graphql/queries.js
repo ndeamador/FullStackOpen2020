@@ -34,11 +34,38 @@ query getRepositories(
 ${CORE_REPOSITORY_PARTS}
 `;
 
+// export const CURRENT_USER = gql`
+// {
+//   authorizedUser {
+//     id
+//     username
+//   }
+// }
+// `;
+
 export const CURRENT_USER = gql`
-{
+query getCurrentUser ($withReviews: Boolean!, $first: Int, $after: String) {
   authorizedUser {
     id
     username
+    reviews(first: $first, after: $after) @include(if: $withReviews)  {
+      pageInfo {
+        hasNextPage
+        totalCount
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          repositoryId
+          rating
+          createdAt
+          text
+        }
+      }
+    }
   }
 }
 `;

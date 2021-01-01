@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import { TouchableWithoutFeedback, View } from "react-native";
 import FormikTextInput from "./FormikTextInput";
@@ -8,8 +8,10 @@ import { useHistory } from "react-router-native";
 import Text from "./Text";
 import theme from "../theme";
 
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { CREATE_REVIEW } from "../graphql/mutations";
+
+import { CURRENT_USER } from "../graphql/queries";
 
 const styles = {
   mainContainer: {
@@ -83,9 +85,14 @@ const ReviewForm = ({ onSubmit }) => {
 };
 
 const CreateReview = () => {
-  const [createNewReview, result] = useMutation(CREATE_REVIEW);
+  const [createNewReview, result] = useMutation(CREATE_REVIEW, {
+    refetchQueries: [
+      { query: CURRENT_USER, variables: { withReviews: true, first: 8 } },
+    ],
+  });
 
   const history = useHistory();
+
 
   const handleSubmit = async ({ repositoryName, ownerName, rating, text }) => {
     try {
@@ -100,7 +107,7 @@ const CreateReview = () => {
 
       history.push(`/repositories/${data.createReview.repositoryId}`);
     } catch (e) {
-      console.log('CreateReview.jsx handleSubmit error: ', e);
+      console.log("CreateReview.jsx handleSubmit error: ", e);
     }
   };
 

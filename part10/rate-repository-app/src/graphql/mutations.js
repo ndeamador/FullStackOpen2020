@@ -42,7 +42,11 @@ mutation createNewReview(
 		rating: $rating,
 		text: $text
   }) {
+    id,
     repositoryId,
+    rating,
+    createdAt,
+    text
   }
 }
 `;
