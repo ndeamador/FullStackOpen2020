@@ -16,14 +16,14 @@ Coursework for the 2020 edition of the Full Stack Open course by the University 
 
   [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/b2546840414ca0f644c69540ade127c3)
 
-  ![React Native Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/b2546840414ca0f644c69540ade127c3)
+  ![React Native Certificate](zzz_md-docs/certificate-reactnative.png)
 </details>
 <details>
   <summary>CI/CD</summary>
 
   [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/eafe3f3182884a374ae9e880c563d909)
 
-  ![CI/CD Native Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/eafe3f3182884a374ae9e880c563d909)
+  ![CI/CD Native Certificate](zzz_md-docs/certificate-cicd.png)
 </details>
 
 ---
