@@ -64,6 +64,16 @@ export interface HospitalEntryType extends BaseEntry {
   discharge: Discharge;
 }
 
+// Trying a workaround including all the conditional entry fields to pass as Formik's initial values
+export interface AllEntryFields extends BaseEntry {
+  type: TypeOfEntry;
+  healthCheckRating: HealthCheckRating;
+  employerName: string;
+  sickLeave?: SickLeave;
+  discharge: Discharge;
+}
+export type AllEntryFieldsType = Omit<AllEntryFields, 'id'>;
+
 // Added 'type' to the type names to avoid conflicts with the components using the same name.
 export type Entry =
   | HospitalEntryType

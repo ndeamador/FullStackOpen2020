@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Button } from "semantic-ui-react";
-import { Field, Formik, Form } from "formik";
+import { Field, Formik, Form, FormikErrors } from "formik";
 
 import {
   TextField,
@@ -8,16 +8,17 @@ import {
   formTypeOption,
   DiagnosisSelection,
 } from "./FormField";
-import { NewEntry, TypeOfEntry } from "../types";
+import { NewEntry, TypeOfEntry, AllEntryFieldsType } from "../types";
 import TypeFields from "./TypeFields";
 
 import { useStateValue } from "../state";
 
-
 export type EntryFormValues = NewEntry;
 
 interface Props {
-  onSubmit: (values: NewEntry) => void;
+  // onSubmit: (values: NewEntry) => void;
+  onSubmit: (values: AllEntryFieldsType) => void;
+
   onCancel: () => void;
   // initialValues: NewEntry;
 }
@@ -50,18 +51,20 @@ export const AddEntryForm: React.FC<Props> = ({
           date: "",
           criteria: "",
         },
-        // employerName: "",
-        // sickLeave: {
-        //   startDate: "",
-        //   endDate: "",
-        // },
-        // healthCheckRating: 0,
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
+        },
+        healthCheckRating: 0,
       }}
       // initialValues={initialValues}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
+        const invalidDate = "Date is in invalid format";
+        // const errors: { [field: string]: string } = {};
+        let errors: FormikErrors<AllEntryFieldsType> = {};
         if (!values.description) {
           errors.description = requiredError;
         }
@@ -71,48 +74,39 @@ export const AddEntryForm: React.FC<Props> = ({
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (!values.type) {
-          errors.type = requiredError;
-        }
         if (values.type === TypeOfEntry.Hospital) {
-          // if (!values.discharge) {
-          //   errors.type = requiredError;
-          // }
           if (!values.discharge.date) {
-            console.log('en discharge');
-            errors.type = requiredError;
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, date: requiredError },
+            };
+          // This is an extremelly basic date validation, just as a placeholder.
+          } else if (isNaN(Date.parse(values.discharge.date))) {
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, date: invalidDate },
+            };
           }
           if (!values.discharge.criteria) {
-            console.log('en criteria');
-            errors.type = requiredError;
+            errors = {
+              ...errors,
+              discharge: { ...errors.discharge, criteria: requiredError },
+            };
           }
         }
         if (values.type === TypeOfEntry.OccupationalHealthcare) {
           if (!values.employerName) {
-            console.log('en employername');
-
-            errors.type = requiredError;
-          }
-          if (values.sickLeave) {
-            if (!values.sickLeave.endDate) {
-              console.log('en sickend');
-
-              errors.type = requiredError;
-            }
-            if (!values.sickLeave.startDate) {
-              console.log('en sickstart');
-
-              errors.type = requiredError;
-            }
+            errors.employerName = requiredError;
           }
         }
-        if (values.type === TypeOfEntry.HealthCheck) {
-          console.log('en healthcheck');
 
-          if (!values.healthCheckRating) {
-            errors.type = requiredError;
-          }
-        }
+        // I have disabled the healthCheckRating warning/requirement as the default value is already 0 and therefore it can't be empty.
+
+        // if (values.type === TypeOfEntry.HealthCheck) {
+        //   if (!values.healthCheckRating) {
+        //     errors.healthCheckRating = requiredError;
+        //   }
+        // }
         return errors;
       }}
     >
@@ -147,8 +141,6 @@ export const AddEntryForm: React.FC<Props> = ({
               name="type"
               options={formTypeOptions}
             />
-            {console.log(values)}
-            {console.log("typeoftype:", typeof values.type)}
 
             <TypeFields type={values.type} />
 
