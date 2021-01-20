@@ -5,21 +5,21 @@ Coursework for the 2020 edition of the Full Stack Open course by the University 
 ---
 ## Certificates
 <details>
-  <summary>Main course</summary>
+  <summary>Main course (9 credits)</summary>
 
-  [Link]()
+  [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/ca83ccadabe5b4b3148077daac48ca4a)
 
-  ![React Native Certificate]()
+  ![Full Stack Certificate](zzz_md-docs/certificate-fullstack.png)
 </details>
 <details>
-  <summary>React Native</summary>
+  <summary>React Native (2 credits)</summary>
 
   [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/b2546840414ca0f644c69540ade127c3)
 
   ![React Native Certificate](zzz_md-docs/certificate-reactnative.png)
 </details>
 <details>
-  <summary>CI/CD</summary>
+  <summary>CI/CD (1 credit)</summary>
 
   [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/eafe3f3182884a374ae9e880c563d909)
 
@@ -99,12 +99,19 @@ _Typescript with Express and React, Semantic UI, Formik, React Context..._
 - [courseinfo-react-ts](https://github.com/ndeamador/FullStackOpen2020/tree/master/part9/courseinfo-react-ts) - Implementation of Typescript to part1's courseinfo app.
 - [patientor](https://github.com/ndeamador/FullStackOpen2020/tree/master/part9/patientor) - A website to keep track of hospital patients, visits and diagnoses.
 
+  ![patientor-main](zzz_md-docs/patientor-main.PNG)
+  ![patientor-details](zzz_md-docs/patientor-details.PNG)
+
+
 ## Part 10 - [React Native](https://fullstackopen.com/en/part10)
 
 _Apollo, Android Virtual Studio, Expo, React Native Paper, debouncing, user-debounce, Infinite scrolling, Styled-components, React-spring, React Navigation..._
 
 - [rate-repository-app](https://github.com/ndeamador/FullStackOpen2020/tree/master/part10/rate-repository-app) - Mobile Github repository rating app made with React Native.
 - [rate-repository-api](https://github.com/ndeamador/FullStackOpen2020/tree/master/part10/rate-repository-api) - Apollo GraphQL backend for the above.
+
+  ![rate-repository-app](zzz_md-docs/rate-repository-app.png)
+
 
 
 ## Part 11 - [CI/CD](https://fullstackopen.com/en/part11)
