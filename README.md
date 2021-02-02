@@ -1,6 +1,6 @@
-# [Full Stack Open 2020](https://fullstackopen.com/en/about) - Coursework
+# [Full Stack Open 2020](https://fullstackopen.com/en/about) - Projects
 
-Coursework for the 2020 edition of the Full Stack Open course by the University of Helsinki, Finland.
+Projects for the 2020 edition of the Full Stack Open course by the University of Helsinki, Finland.
 
 ---
 ## Certificates
