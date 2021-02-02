@@ -49,7 +49,7 @@ _JSON Server, Axios, Effect-hooks, REST..._
 
 _REST APIs, MongoDB, Mongoose Postman, Middleware, Deploying to Heroku, Same origin policy and CORS, production build and deployment scripts, Proxy, Deploying database to production, Validation and ESLint..._
 
-- [phonebook-backend](https://github.com/ndeamador/FullStackOpen2020/tree/master/part3/phonebook-backend) - Backend implementation for part2's phonebook using MongoDB.
+- [phonebook-backend](https://github.com/ndeamador/FullStackOpen2020/tree/master/part3/phonebook-backend) - Simple backend implementation for part2's phonebook using MongoDB. [Deployed to Heroku](https://ndeamador-fso2020-phonebook.herokuapp.com/).
 
 
 ## Part 4 - [Testing Express servers, user administration](https://fullstackopen.com/en/part4)
