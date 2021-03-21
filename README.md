@@ -54,7 +54,7 @@ _REST APIs, MongoDB, Mongoose Postman, Middleware, Deploying to Heroku, Same ori
 
 ## Part 4 - [Testing Express servers, user administration](https://fullstackopen.com/en/part4)
 
-_Jest, test environment, supertest, unit and integration tests, async/await, user administration with Mongoose, bcrypt, populate, token-based authentication with jsonwebtoken..._
+_Jest, test environment, supertest, unit and integration tests, async/await, user administration with Mongoose, bcrypt, populate, token-based authentication with jsonwebtoken, cross-env..._
 
 - [bloglist app backend](https://github.com/ndeamador/FullStackOpen2020/tree/master/part4/bloglist) - A RESTful HTTP API
 
