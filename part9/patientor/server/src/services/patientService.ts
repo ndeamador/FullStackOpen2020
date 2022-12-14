@@ -18,24 +18,12 @@ const addEntry = (entry: NewEntry, id: string): Entry => {
     ...entry
   };
 
-  // console.log('post:', newEntry);
-  // console.log('foundpatient:', patients.find(patient => patient.id === id));
-  // console.log('indexof:',  patients.findIndex(patient => patient.id === id));
-
   const patientIndex = patients.findIndex(patient => patient.id === id);
-
-  // patients.map(patient => patient.id === id
-  //   ? { ...patient, entries: patient.entries.concat(newEntry) }
-  //   : patient
-  // );
 
   patients[patientIndex].entries.push(newEntry);
 
-  // console.log('afterpatient:', patients.find(patient => patient.id === id));
-
   return newEntry;
 };
-
 
 const addPatient = (entry: NewPatient): Patient => {
 
