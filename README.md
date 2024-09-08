@@ -7,21 +7,21 @@ Projects for the 2020 edition of the Full Stack Open course by the University of
 <details>
   <summary>Main course (9 credits)</summary>
 
-  [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/ca83ccadabe5b4b3148077daac48ca4a)
+  [Link to certificate in University of Helsinki's website](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/ca83ccadabe5b4b3148077daac48ca4a)
 
   ![Full Stack Certificate](zzz_md-docs/certificate-fullstack.png)
 </details>
 <details>
   <summary>React Native (2 credits)</summary>
 
-  [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/b2546840414ca0f644c69540ade127c3)
+  [Link to certificate in University of Helsinki's website](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/b2546840414ca0f644c69540ade127c3)
 
   ![React Native Certificate](zzz_md-docs/certificate-reactnative.png)
 </details>
 <details>
   <summary>CI/CD (1 credit)</summary>
 
-  [Link](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/eafe3f3182884a374ae9e880c563d909)
+  [Link to certificate in University of Helsinki's website](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/eafe3f3182884a374ae9e880c563d909)
 
   ![CI/CD Native Certificate](zzz_md-docs/certificate-cicd.png)
 </details>
